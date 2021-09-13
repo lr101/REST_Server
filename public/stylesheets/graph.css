@@ -1,0 +1,121 @@
+html,body {
+    width: 100%;
+    min-height: 100%;
+    background-image: url("../pictures/sonne.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-color: #5FADDF;
+    background-attachment: fixed;
+    overflow-x: hidden;
+}
+
+button {
+    width: 75%;
+}
+
+.con {
+    min-width: 100%;
+    min-height: 100%;
+}
+
+.container {
+    margin-top: 20px;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0, 0.4);
+    border: 3px solid #f1f1f1;
+    width: 75%;
+    text-align: center;
+    color: white;
+
+}
+
+#myChart{
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+#hours {
+    padding-top: 10px ;
+}
+
+.button {
+    padding-top: 20px;
+    text-align: center;
+}
+
+#containerCanvas{
+    width: 100%;
+    padding-top: 50%;
+    position: relative;
+}
+
+
+.title {
+    text-align: center;
+    color: #ffffff;
+    font-size: 3pc;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0, 0.4);
+    border: 3px solid #f1f1f1;
+}
+
+#chartC{
+    position: relative;
+    height: max-content;
+    min-width: 100%;
+    text-align: center;
+    color: #ffffff;
+    font-size: 3pc;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: rgba(255,255,255, 0.9);
+    border: 3px solid #f1f1f1;
+    margin-bottom: 20px;
+}
+
+.sliderCon {
+    padding-top: 20px;
+}
+
+/* The slider itself */
+.slider {
+
+    -webkit-appearance: none;  /* Override default CSS styles */
+    appearance: none;
+    width: 100%; /* Full-width */
+    height: 10px; /* Specified height */
+    background: #d3d3d3; /* Grey background */
+    outline: none; /* Remove outline */
+    opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+    transition: opacity .2s;
+}
+
+/* Mouse-over effects */
+.slider:hover {
+    opacity: 1; /* Fully shown on mouse-over */
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    width: 25px; /* Set a specific slider handle width */
+    height: 25px; /* Slider handle height */
+    background: rgb(231, 40, 40); /* Green background */
+    cursor: pointer; /* Cursor on hover */
+}
+
+.slider::-moz-range-thumb {
+    width: 17px; /* Set a specific slider handle width */
+    height: 17px; /* Slider handle height */
+    background: rgb(231, 40, 40); /* Green background */
+    border-radius: 50%;
+    cursor: pointer; /* Cursor on hover */
+}

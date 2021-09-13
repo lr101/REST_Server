@@ -1,0 +1,91 @@
+
+html, body {
+    width: 100%;
+    min-height: 100%;
+    background-image: url("../pictures/sonne.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-color: #5FADDF;
+  background-attachment: fixed;
+
+}
+
+
+
+    
+
+#title {
+    text-align: center;
+    color: #ffffff;
+    font-size: 3pc;
+   padding-top: 10px;
+   padding-bottom: 10px;
+   background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0, 0.4);
+    border: 3px solid #f1f1f1;
+}
+
+.place {
+    padding-top: 2pc;
+    padding-bottom: 10px;
+    text-align: center;
+    color:white;
+    
+}
+
+.row {
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0, 0.4);
+    border: 3px solid #f1f1f1;
+    margin-bottom: 10px;
+}
+
+.temp {
+    text-align: center;
+    color: white;
+    display: block;
+    margin: 10px;
+}
+
+.container {
+    min-height: 85%;
+    padding-top: 5%;
+    overflow: auto;
+    margin-bottom: 35px;
+}
+
+#config {
+    margin-top: 1px;
+    margin-right: 1px;
+}
+
+#btconfig {
+    text-align: right;
+}
+
+
+footer {
+    height: 35px;
+    position:fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0, 0.4);
+    color: white;
+    text-align: center;
+
+}
+
+.link {
+    color: white;
+    border-color: white;
+}
+
+
+input {
+    width: 100%;
+
+}
+

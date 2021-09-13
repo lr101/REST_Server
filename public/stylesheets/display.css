@@ -1,0 +1,52 @@
+html,body {
+    min-width: 100%;
+    min-height: 100%;
+    background-image: url("../pictures/sonne.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-color: #5FADDF;
+    background-attachment: fixed;
+}
+
+
+.title {
+    min-width: 100%;
+    text-align: center;
+    color: #ffffff;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0, 0.4);
+    border: 3px solid #f1f1f1;
+    margin-bottom: 30px;
+}
+
+.temp {
+    min-width: 75%;
+    text-align: center;
+    color: #ffffff;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0, 0.4);
+    border: 3px solid #f1f1f1;
+    height: auto;
+    margin-bottom: 30px;
+    font-size: 100px;
+    margin-top: 100px;
+}
+
+#footer {
+    height: 30px;
+    position:fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0, 0.4);
+    color: white;
+    text-align: center;
+
+}
+
