@@ -153,6 +153,9 @@ app.post("/sensors/:sensorID/", function (req, res) {
         const date = validate.validateDate(req.body.date);
         const value = validate.validateValue(req.body.value);
 
+        console.log(date);
+        console.log(value);
+
         REST_API.POST_sensorID(con, sensorID, date, value).then(function (result) {
             if (result === true) {
                 res.status(200).send("ROW ADDED TO TABLE");
@@ -188,8 +191,18 @@ app.delete("/sensors/:sensorID", function (req, res) {
  */
 
 app.get('/',  async function (req, res) {
-    console.log(await REST_API.GET_id(con));
-    res.render('index.ejs', {sensors : await REST_API.GET_id(con)});
+    const sensors = await REST_API.GET_id(con);
+    res.render('index.ejs', {sensors : sensors});
+});
+
+app.get('/display/',  async function (req, res) {
+    const sensors = await REST_API.GET_id(con);
+    res.render('index.ejs', {sensors : sensors});
+});
+
+app.get('/graph/',  async function (req, res) {
+    const sensors = await REST_API.GET_id(con);
+    res.render('index.ejs', {sensors : sensors});
 });
 
 
