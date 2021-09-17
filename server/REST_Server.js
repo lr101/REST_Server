@@ -1,4 +1,10 @@
 /**
+ * logging files
+ */
+
+const serverLogFile = "./logging/server.log";
+
+/**
  * required modules
  */
 
@@ -9,17 +15,12 @@ const express = require('express');
 const mysql = require('mysql');
 const util = require('util');
 const fs = require('fs');
-const ejs = require('ejs')
+require('ejs')
 const path = require('path');
+require('dotenv').config();
+
 let app;
 
-/**
- * config data
- */
-
-const config = require('./config');
-const serverLogFile = config.serverLogFile();
-const dbLogin = config.dbLogin();
 
 /**
  * import js-files
@@ -196,11 +197,22 @@ app.get('/',  async function (req, res) {
 });
 
 app.get('/display/',  async function (req, res) {
-    const sensors = await REST_API.GET_id(con);
-    res.render('index.ejs', {sensors : sensors});
+    const sensorID = validate.validateSensorID(req.query.sensorID);
+    let values = (await REST_API.GET_id_sensorID_sensorNick(con, sensorID))[0];
+    values["sensorID"] = sensorID;
+    res.render('display.ejs', {sensor : values});
 });
 
-app.get('/graph/',  async function (req, res) {
+app.get('/display/graph', async function (req, res) {
+    const sensorID = validate.validateSensorID(req.query.sensorID);
+    let date1 = validate.validateDate(req.query.date1);
+    let date2 = validate.validateDate(req.query.date2);
+    let values = await REST_API.GET_sensorID(con, sensorID, date1, date2);
+    values = webpageParser.formatForGraph(values);
+    res.json(values);
+});
+
+app.get('/config/',  async function (req, res) {
     const sensors = await REST_API.GET_id(con);
     res.render('index.ejs', {sensors : sensors});
 });
@@ -242,6 +254,13 @@ server.listen(port);
 /**
  * Mysql connection
  */
+
+const dbLogin = {
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME
+};
 
 function makeDb() {
     const connection = mysql.createConnection(dbLogin);

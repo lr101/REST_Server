@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <link rel='stylesheet' href='./stylesheets/bootstrap.css'>
+    <link rel='stylesheet' href='./stylesheets/template.css'>
     <link rel='stylesheet' href='./stylesheets/index.css'>
-    <title>Data Display</title>
+    <title>Home Overview</title>
 </head>
 <body>
 <header class="text-center">
-    <h1 id="title" class="">Data Display</h1>
+    <h1 id="title">Data Display</h1>
 </header>
 
 <%
@@ -21,23 +22,25 @@ if (sensors !== undefined) {
     <%for (let count = 0; count < len;) { %>
     <div class="row" >
         <%for (let y = 0; y < 4 && count < len; count++, y++){ %>
-        <button class="col-md-3 text-center" id="section_<%=count%>" >
+        <form class="col-md-3 text-center" id="section_<%=count%>" method="get">
             <div class="ib">
                 <%if(count + 1 === len) {%>
-                    <p id="config">+</p>
+                    <p class="data" data-id="config" id="config">+</p>
                 <%} else {%>
-                <p data-id="<%=sensors[count].sensorID%>" id="sensor_<%=count%>"><%=sensors[count].sensorNick%></p>
-                <p id="value_<%=count%>">LOADING...</p>
+                    <p class="data" data-id="<%=sensors[count].sensorID%>" id="sensor_<%=count%>"><%=sensors[count].sensorNick%></p>
+                    <p id="value_<%=count%>">LOADING...</p>
+                    <input name="sensorID" hidden>
                 <%}%>
+
             </div>
-        </button>
+        </form>
         <%}%>
     </div>
     <% }}%>
 </main>
 
 <footer>
-
+    <h1>Sensor display page by Lukas Reim</h1>
 </footer>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script src="./javascript/index.js"></script>

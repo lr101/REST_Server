@@ -1,33 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <link rel='stylesheet' href='../public/stylesheets/bootstrap.css'>
-        <link rel='stylesheet' href='../public/stylesheets/index.css'>
-        <title>Data Display</title>
-    </head>
-    <body>
-        <header class="text-center">
-                <h1 id="title" class="">Data Display</h1>
-        </header>
+<head>
+    <meta charset="UTF-8">
+    <link rel='stylesheet' href='../public/stylesheets/bootstrap.css'>
+    <link rel='stylesheet' href='../public/stylesheets/index.css'>
+    <title>Data Display</title>
+</head>
+<body>
+<header class="text-center">
+    <h1 id="title" class="">Data Display</h1>
+</header>
 
-        <main>
-            <div class="row" >
-                <button class="col-md-3 text-center">
-                    <div class="ib">
-                        <p id="sensor">Tank_Up</p>
-                        <p id="value">TemP:10 C</p>
-                    </div>
-                </button>
+<main id="main" data-length="<%=len %>">
 
+
+    <div class="row" >
+        <button class="col-md-3 text-center" id="section_1>" >
+            <div class="ib">
+                <p data-id="<%=sensors[count].sensorID%>" id="sensor_1>">SENSOR_NAME</p>
+                <p id="value_1>">SENSOR_VALUE</p>
             </div>
-        </main>
+        </button>
+        <button class="col-md-3 text-center" id="section_2" >
+            <div class="ib">
+                <p data-id="<%=sensors[count].sensorID%>" id="sensor_2">SENSOR_NAME</p>
+                <p id="value_2">SENSOR_VALUE</p>
+            </div>
+        </button>
+        <button class="col-md-3 text-center" id="section_3" >
+            <div class="ib">
+                <p data-id="<%=sensors[count].sensorID%>" id="sensor_3">SENSOR_NAME</p>
+                <p id="value_3">SENSOR_VALUE</p>
+            </div>
+        </button>
+        <button class="col-md-3 text-center" id="section_4" >
+            <div class="ib">
+                <p data-id="<%=sensors[count].sensorID%>" id="sensor_4">SENSOR_NAME</p>
+                <p id="value_4">SENSOR_VALUE</p>
+            </div>
+        </button>
+    </div>
+</main>
 
-        <footer>
+<footer>
 
-        </footer>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-        <script src="./javascript/index.js"></script>
+</footer>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="./javascript/index.js"></script>
 
-    </body>
+</body>
 </html>

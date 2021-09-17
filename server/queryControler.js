@@ -1,8 +1,8 @@
-const config = require('./config');
+const sqlLogFile ="./logging/sql.log";
 const fs = require('fs');
-const sqlLogFile = config.sqlLogFile();
 
 let stream = fs.createWriteStream(sqlLogFile, {flags : 'a'});
+
 function logDB(e) {
     stream.write("[SQL QUERY -> " + new Date().toISOString() + "] " + e + "\n");
 }
@@ -83,6 +83,7 @@ module.exports  = {
     POST_sensorID : async function (con, sensorID, date, value) {
         try {
             let sql = "INSERT INTO "+ sensorID +" (date, value) VALUES ('"+date+"','"+value+"');";
+            logDB(sql);
             await con.query(sql);
             return true;
         } catch (e) {
