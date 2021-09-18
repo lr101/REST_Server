@@ -1,8 +1,5 @@
-/**
- * logging files
- */
 
-const serverLogFile = "./logging/server.log";
+
 
 /**
  * required modules
@@ -22,6 +19,10 @@ require('dotenv').config();
 let app;
 
 
+/**
+ * logging files
+ */
+const serverLogFile = path.join(__dirname, "../logging/server.log");
 /**
  * import js-files
  *
@@ -46,6 +47,8 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(bodyParser.json());
+
+console.log(__dirname);
 
 /**
  * write db error to log file
@@ -223,6 +226,7 @@ app.get('/config/',  async function (req, res) {
  */
 
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, "../views"));
 
 /**
  * static data url

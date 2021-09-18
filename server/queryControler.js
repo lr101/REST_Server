@@ -1,5 +1,7 @@
-const sqlLogFile ="./logging/sql.log";
+
 const fs = require('fs');
+const path = require('path');
+const sqlLogFile =  path.join(__dirname, "../logging/sql.log");
 
 let stream = fs.createWriteStream(sqlLogFile, {flags : 'a'});
 
