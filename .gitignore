@@ -6,3 +6,4 @@ views1/*
 /.idea/*
 /server/package-lock.json
 /server/package.json
+/logging/*
