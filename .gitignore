@@ -4,6 +4,5 @@ node_modules/*
 token.txt
 views1/*
 /.idea/*
-/logging/*
 /server/package-lock.json
 /server/package.json
