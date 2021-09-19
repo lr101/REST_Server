@@ -14,7 +14,7 @@ const util = require('util');
 const fs = require('fs');
 require('ejs')
 const path = require('path');
-require('dotenv').config();
+require('dotenv').config({path: path.join(__dirname, "../.env")});
 
 let app;
 
