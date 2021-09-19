@@ -110,9 +110,9 @@ app.put("/sensors/id/:sensorID/", async function (req, res) {
     try {
         let success = false;
         const sensorID = validate.validateSensorID(req.params.sensorID);
-        if (req.body.sensorType !== undefined) {
-            const sensorType = validate.validateSensorType(req.body.sensorType);
-            await REST_API.PUT_id_sensorID_sensorType(con, sensorID, sensorType).then(function (result) {
+        if (req.body.sensorTypeID !== undefined) {
+            const sensorTypeID = validate.validateSensorType(req.body.sensorTypeID);
+            await REST_API.PUT_id_sensorID_sensorTypeID(con, sensorID, sensorTypeID).then(function (result) {
                 success = result;
             });
         } else {
@@ -127,7 +127,7 @@ app.put("/sensors/id/:sensorID/", async function (req, res) {
             });
         }
         if (success === true) {
-            res.status(200).send("SENSOR SUCCESSFULLY ADDED");
+            res.status(200).send("SENSOR SUCCESSFULLY UPDATED");
         } else {
             res.status(500).send("SERVER/DATABASE ERROR: " + success);
         }
@@ -219,6 +219,26 @@ app.delete("/sensors/:sensorID", function (req, res) {
     }
 });
 
+app.get("/sensors/types/", function (req, res) {
+    try {
+        REST_API.GET_types(con).then(function (result) {
+            res.json(result);
+        });
+    } catch (e) {
+        res.status(400).send(e);
+    }
+
+});
+
+app.get('/display/graph', async function (req, res) {
+    const sensorID = validate.validateSensorID(req.query.sensorID);
+    let date1 = validate.validateDate(req.query.date1);
+    let date2 = validate.validateDate(req.query.date2);
+    let values = await REST_API.GET_sensorID(con, sensorID, date1, date2);
+    values = webpageParser.formatForGraph(values);
+    res.json(values);
+});
+
 /**
  * Web-page routes:
  *
@@ -236,18 +256,14 @@ app.get('/display/',  async function (req, res) {
     res.render('display.ejs', {sensor : values});
 });
 
-app.get('/display/graph', async function (req, res) {
-    const sensorID = validate.validateSensorID(req.query.sensorID);
-    let date1 = validate.validateDate(req.query.date1);
-    let date2 = validate.validateDate(req.query.date2);
-    let values = await REST_API.GET_sensorID(con, sensorID, date1, date2);
-    values = webpageParser.formatForGraph(values);
-    res.json(values);
+app.get('/config/',  async function (req, res) {
+    res.redirect(req.path + "/local-sensors");
 });
 
-app.get('/config/',  async function (req, res) {
+app.get('/config/local-sensors/',  async function (req, res) {
+    const sensorID = validate.validateSensorID(req.query.sensorID);
     const sensors = await REST_API.GET_id(con);
-    res.render('config.ejs', {sensors : sensors});
+    res.render('config-local-sensors.ejs', {sensors : sensors, sensorID : sensorID});
 });
 
 

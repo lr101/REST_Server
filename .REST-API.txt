@@ -5,6 +5,11 @@ Table -> id:
 --------------------
 1. sensorID --- primary key
 2. sensorNick
+3. sensorTypeID
+
+Table -> types:
+--------------------
+1. sensorTypeID --- primary key
 3. sensorType
 
 Table -> {sensorID}
@@ -16,22 +21,26 @@ Table -> {sensorID}
 
 ***********************************
 REST-API:
-host adress: {host-IP}:{host-port}/sensors/
+host address: {host-IP}:{host-port}/sensors/
 
 Table -> id:
 ---------------------
-GET /id/     					//returns the complete Table -> id 
-GET /id/{sensorID}				//returns row with of the given sensorID
-GET /id/{sensorID}/sensorType			//returns sensorType of specific sensorID
-GET /id/{sensorID}/sensorNick			//returns sensorType of specific sensorID
-POST /id/					//add new Sensor to Table -> id and create Table -> {sensorID} body: {"sensorID":"{sensorID}", "sensorNick":"{sensorNick}", "sensorType":"{sensorType}"}
-DELETE /id/{sensorID}/				//delete Table -> {sensorID} and entry in Table -> id *restricted access
+GET /id/     					                //returns the complete Table -> id (and types.sensorType)
+GET /id/{sensorID}				                //returns row with of the given sensorID
+GET /id/{sensorID}/sensorTypeID			        //returns sensorTypeID of specific sensorID
+GET /id/{sensorID}/sensorType			        //returns types.sensorType of specific sensorID
+GET /id/{sensorID}/sensorNick			        //returns sensorType of specific sensorID
+PUT /id/{sensorID}                              //updates sensorNick or/and sensorTypeID json format: {"sensorTypeID": "v1", "sensorNick" : "v2"}
+POST /id/					                    //add new Sensor to Table -> id and create Table -> {sensorID} body: {"sensorID":"{sensorID}", "sensorNick":"{sensorNick}", "sensorType":"{sensorType}"}
+DELETE /id/{sensorID}/				            //delete Table -> {sensorID} and entry in Table -> id *restricted access
 
 Table -> {sensorID}
 ----------------------
-GET /{sensorID}/				//returns the complete Table -> {sensorID}
-GET /{sensorID}?start={date1}&end={date2}	//returns the table from date1 until date2
-POST /{sensorID}/				//adds a new table entry with body as JSON: {"date":"{date1}", "value":"{value1}"} 
+GET /{sensorID}/				                //returns the complete Table -> {sensorID}
+GET /{sensorID}?start={date1}&end={date2}	    //returns the table from date1 until date2
+POST /{sensorID}/				                //adds a new table entry with body as JSON: {"date":"{date1}", "value":"{value1}"}
 DELETE /{sensorID}?start={date1}&end={date2}	//delete entries from date1 to date2. If no dates are given, all entries are deleted
+
+
 
 

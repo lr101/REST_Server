@@ -49,8 +49,8 @@
 }
 
 .button:hover {
-    background-color: #2EE59D;
-    box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+    background-color: rgba(223,26,56,1);
+    box-shadow: 0px 15px 20px rgba(223,26,56,0.4);
     color: #fff;
     transform: translateY(-7px);
 }
@@ -61,5 +61,15 @@ input {
 
 .wrapper {
     margin-right: 20px;
+}
+
+#config_name {
+    text-transform: uppercase;
+    letter-spacing: 4px;
+}
+
+.active {
+    background-color:  rgba(223,26,56,1) !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
 }
 

@@ -11,13 +11,13 @@ function logDB(e) {
 
 module.exports  = {
     GET_id : async function (con) {
-        const sql = "SELECT * FROM id;";
+        const sql = "SELECT * FROM id INNER JOIN types ON id.sensorTypeID=types.sensorTypeID;";
         logDB(sql);
         return await con.query(sql);
     },
 
     GET_id_sensorID : async function (con, sensorID) {
-        const sql = "SELECT * FROM id WHERE sensorID='" + sensorID + "';";
+        const sql = "SELECT * FROM id INNER JOIN types ON id.sensorTypeID=types.sensorTypeID WHERE sensorID='" + sensorID + "';";
         logDB(sql);
         return await con.query(sql);
         },
@@ -29,13 +29,19 @@ module.exports  = {
     },
 
     GET_id_sensorID_sensorType :async function (con, sensorID) {
-        const sql = "SELECT sensorType FROM id WHERE sensorID='" + sensorID + "';";
+        const sql = "SELECT types.sensorType FROM id INNER JOIN types ON id.sensorTypeID=types.sensorTypeID WHERE sensorID='" + sensorID + "' ;";
         logDB(sql);
         return await con.query(sql);
     },
 
-    POST_id : async function (con, sensorID, sensorType, sensorNick) {
-        let sql = "INSERT INTO id (sensorID, sensorType, sensorNick) VALUES ('"+sensorID+"','"+sensorType+"','"+sensorNick+"');";
+    GET_id_sensorID_sensorTypeID :async function (con, sensorID) {
+        const sql = "SELECT sensorTypeID FROM id WHERE sensorID='" + sensorID + "' ;";
+        logDB(sql);
+        return await con.query(sql);
+    },
+
+    POST_id : async function (con, sensorID, sensorTypeID, sensorNick) {
+        let sql = "INSERT INTO id (sensorID, sensorTypeID, sensorNick) VALUES ('"+sensorID+"','"+sensorTypeID+"','"+sensorNick+"');";
         logDB(sql);
         try {
             await con.query(sql).then(async function (){
@@ -63,8 +69,8 @@ module.exports  = {
         }
     },
 
-    PUT_id_sensorID_sensorType : async function (con, sensorID, sensorType) {
-        let sql = "UPDATE id SET sensorType='"+ sensorType +"' WHERE sensorID='" + sensorID +"'";
+    PUT_id_sensorID_sensorTypeID : async function (con, sensorID, sensorTypeID) {
+        let sql = "UPDATE id SET sensorTypeID="+ sensorTypeID +" WHERE sensorID='" + sensorID +"'";
         logDB(sql);
         try {
             await con.query(sql);
@@ -136,6 +142,12 @@ module.exports  = {
             logDB(e);
             return e;
         }
+    },
+
+    GET_types : async function (con) {
+        const sql = "SELECT * FROM types";
+        logDB(sql);
+        return await con.query(sql);
     }
 
 }

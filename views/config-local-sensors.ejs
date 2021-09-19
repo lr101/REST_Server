@@ -2,10 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel='stylesheet' href='./stylesheets/bootstrap.css'>
-    <link rel='stylesheet' href='./stylesheets/template.css'>
-    <link rel='stylesheet' href='./stylesheets/config.css'>
-
+    <link rel='stylesheet' href='../stylesheets/config-local-sensors.css'>
+    <link rel='stylesheet' href='../stylesheets/bootstrap.css'>
+    <link rel='stylesheet' href='../stylesheets/template.css'>
     <title>Configuration</title>
 </head>
 <body>
@@ -27,12 +26,12 @@
                 <button class="dropdown-toggle darkgrey button" type="button" data-toggle="dropdown">Local Sensors<span class="caret"></span></button>
                 <ul class="dropdown-menu" id="menu2">
                     <%for (let count = 0; count < len; count++) { %>
-                    <li><a class="data dropdown-item" data-id="<%=sensors[count].sensorID%>" id="sensor_<%=count%>"><%=sensors[count].sensorNick%></a></li>
+                    <li><button class="data dropdown-item" onclick="dropdown('<%=sensors[count].sensorID%>')" id="sensor_<%=sensors[count].sensorID%>"><%=sensors[count].sensorNick%></button></li>
                     <%}%>
                 </ul>
             </div>
             <div class="wrapper">
-                <button class="nav-link darkgrey button" type="button">Edit Sensor Types</button>
+                <button class="darkgrey button" type="button">Edit Sensor Types</button>
             </div>
         </nav>
     </div>
@@ -40,36 +39,37 @@
     <div class="row" id="sensor_config">
         <section class="col-2 config" id="config_left">
             <div class="content">
-                <h2>Information</h2>
+                <h2>Selection</h2>
+                <div class="list-group" id="list">
+                    <%for (let count = 0; count < len; count++) { %>
+                    <button id="list_<%=sensors[count].sensorID%>" data-id="<%=sensors[count].sensorID%>" type="button" data-toggle="list" onclick="dropdown('<%=sensors[count].sensorID%>')" class="list-group-item list-group-item-action"><%=sensors[count].sensorNick%></button>
+                    <%}%>
+                </div>
             </div>
         </section>
         <section class="col-8 config" id="config_middle">
             <div class="content">
-                <h1>NAME</h1>
+                <h1 id="config_name">NAME</h1>
                 <form id="form">
                     <label  class="form-label" for="nickname">Nick Name:</label>
                     <div class="input-group mb-3">
-                        <input class="form-control" type="text" id="nickname" name="sensorNick" disabled>
-                        <button class="btn btn-outline-secondary" type="button" id="button-addon2">Edit</button>
+                        <input maxlength="16" minlength="1" autocomplete="off" class="form-control" type="text" id="nickname" name="sensorNick" disabled required>
+                        <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="editButton('nickname')">Edit</button>
                     </div>
 
                     <label  class="form-label" for="type">Sensor Type:</label>
                     <div class="input-group mb-3">
-                        <select class="form-select" id="inputGroupSelect04" aria-label="Select Sensor Type" disabled>
-                            <option selected>Choose...</option>
-                            <option value="1">Thermometer</option>
-                            <option value="2">SensorType1</option>
-                            <option value="3">SensorType2</option>
+                        <select class="form-select" id="selectType" aria-label="Select Sensor Type" disabled>
+                            <option >Choose...</option>
                         </select>
-                        <button class="btn btn-outline-secondary" type="button">Edit</button>
+                        <button class="btn btn-outline-secondary" type="button" onclick="editButton('selectType')">Edit</button>
                     </div>
-<!--                    <input class="form-control" type="text" id="type" name="sensorType"><br><br>-->
                     <label   class="form-label" for="id">Sensor ID:</label>
                     <div class="input-group mb-3">
-                        <input class="form-control" type="text" id="id" name="sensorID" value="xx-xxxxxxxxxxxx" readonly disabled>
+                        <input autocomplete="off" class="form-control" type="text" id="id" name="sensorID" value="xx-xxxxxxxxxxxx" readonly disabled>
                     </div><br>
                     <div class="input-group mb-3">
-                        <input class="button" type="submit" value="Submit">
+                        <input id="submit" class="button"  value="Submit">
                     </div>
                 </form>
             </div>
@@ -86,10 +86,9 @@
 <footer>
 
 </footer>
-<script src="./javascript/jquery-3.6.0.min.js"></script>
-<script src="./javascript/bootstrap.bundle.js"></script>
-<script src="./javascript/config.js"></script>
-
-
+<script src="../javascript/jquery-3.6.0.min.js"></script>
+<script src="../javascript/bootstrap.bundle.js"></script>
+<script src="../javascript/config-local-sensors.js"></script>
+<script> dropdown('<%=sensorID%>'); </script>
 </body>
 </html>
