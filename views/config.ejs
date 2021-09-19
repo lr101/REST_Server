@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel='stylesheet' href='./stylesheets/bootstrap.css'>
+    <link rel='stylesheet' href='./stylesheets/template.css'>
+    <link rel='stylesheet' href='./stylesheets/config.css'>
+
+    <title>Configuration</title>
+</head>
+<body>
+<header class="text-center">
+    <h1 id="title">Configuration</h1>
+</header>
+<%
+    let len = sensors.length;
+%>
+<main id="main" data-length="<%=len %>">
+    <div class="row">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light lightgrey">
+            <a class="navbar-brand darkgrey" href="#">Configuration</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="wrapper">
+                <button class="dropdown-toggle darkgrey button" type="button" data-toggle="dropdown">Local Sensors<span class="caret"></span></button>
+                <ul class="dropdown-menu" id="menu2">
+                    <%for (let count = 0; count < len; count++) { %>
+                    <li><a class="data dropdown-item" data-id="<%=sensors[count].sensorID%>" id="sensor_<%=count%>"><%=sensors[count].sensorNick%></a></li>
+                    <%}%>
+                </ul>
+            </div>
+            <div class="wrapper">
+                <button class="nav-link darkgrey button" type="button">Edit Sensor Types</button>
+            </div>
+        </nav>
+    </div>
+
+    <div class="row" id="sensor_config">
+        <section class="col-2 config" id="config_left">
+            <div class="content">
+                <h2>Information</h2>
+            </div>
+        </section>
+        <section class="col-8 config" id="config_middle">
+            <div class="content">
+                <h1>NAME</h1>
+                <form id="form">
+                    <label  class="form-label" for="nickname">Nick Name:</label>
+                    <div class="input-group mb-3">
+                        <input class="form-control" type="text" id="nickname" name="sensorNick" disabled>
+                        <button class="btn btn-outline-secondary" type="button" id="button-addon2">Edit</button>
+                    </div>
+
+                    <label  class="form-label" for="type">Sensor Type:</label>
+                    <div class="input-group mb-3">
+                        <select class="form-select" id="inputGroupSelect04" aria-label="Select Sensor Type" disabled>
+                            <option selected>Choose...</option>
+                            <option value="1">Thermometer</option>
+                            <option value="2">SensorType1</option>
+                            <option value="3">SensorType2</option>
+                        </select>
+                        <button class="btn btn-outline-secondary" type="button">Edit</button>
+                    </div>
+<!--                    <input class="form-control" type="text" id="type" name="sensorType"><br><br>-->
+                    <label   class="form-label" for="id">Sensor ID:</label>
+                    <div class="input-group mb-3">
+                        <input class="form-control" type="text" id="id" name="sensorID" value="xx-xxxxxxxxxxxx" readonly disabled>
+                    </div><br>
+                    <div class="input-group mb-3">
+                        <input class="button" type="submit" value="Submit">
+                    </div>
+                </form>
+            </div>
+        </section>
+        <section class="col-2 config" id="config_right">
+            <div class="content">
+                <h2>Sensor</h2>
+                <p id="status">ACTIVE</p>
+            </div>
+        </section>
+    </div>
+</main>
+
+<footer>
+
+</footer>
+<script src="./javascript/jquery-3.6.0.min.js"></script>
+<script src="./javascript/bootstrap.bundle.js"></script>
+<script src="./javascript/config.js"></script>
+
+
+</body>
+</html>

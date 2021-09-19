@@ -217,7 +217,7 @@ app.get('/display/graph', async function (req, res) {
 
 app.get('/config/',  async function (req, res) {
     const sensors = await REST_API.GET_id(con);
-    res.render('index.ejs', {sensors : sensors});
+    res.render('config.ejs', {sensors : sensors});
 });
 
 
