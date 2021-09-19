@@ -106,6 +106,36 @@ app.get("/sensors/id/:sensorID/sensorType/", function (req, res) {
     }
 });
 
+app.post("/sensors/id/:sensorID/", function (req, res) {
+    let success = false;
+    try {
+        const sensorID = validate.validateSensorID(req.body.sensorID);
+        if (req.body.sensorType !== undefined) {
+            const sensorType = validate.validateSensorType(req.body.sensorType);
+            REST_API.POST_id_sensorID_sensorType(con, sensorID, sensorType).then(function (result) {
+                success = result;
+            });
+        } else {
+            success = true;
+        }
+        if (req.body.sensorNick !== undefined) {
+            const sensorNick = validate.validateSensorNick(req.body.sensorNick);
+            REST_API.POST_id_sensorID_sensorNick(con, sensorID, sensorNick).then(function (result) {
+                if (result === true && success) {
+                    success = result;
+                }
+            });
+        }
+        if (success === true) {
+            res.status(201).send("SENSOR SUCCESSFULLY ADDED");
+        } else {
+            res.status(500).send("SERVER/DATABASE ERROR: " + success);
+        }
+    } catch (e) {
+        res.status(500).send(e);
+    }
+});
+
 app.post("/sensors/id/", function (req, res) {
     try {
         const sensorID = validate.validateSensorID(req.body.sensorID);

@@ -51,6 +51,30 @@ module.exports  = {
 
     },
 
+    POST_id_sensorID_sensorNick : async function (con, sensorID, sensorNick) {
+        let sql = "UPDATE id SET sensorNick='"+ sensorNick +"' WHERE sensorID='" + sensorID +"'";
+        logDB(sql);
+        try {
+            await con.query(sql);
+            return true;
+        } catch (e) {
+            logDB(e);
+            return e;
+        }
+    },
+
+    POST_id_sensorID_sensorType : async function (con, sensorID, sensorType) {
+        let sql = "UPDATE id SET sensorType='"+ sensorType +"' WHERE sensorID='" + sensorID +"'";
+        logDB(sql);
+        try {
+            await con.query(sql);
+            return true;
+        } catch (e) {
+            logDB(e);
+            return e;
+        }
+    },
+
     DELETE_id_sensorID : async function (con, sensorID) {
         let sql = "DELETE FROM id WHERE sensorID='" + sensorID +"';";
         logDB(sql);
