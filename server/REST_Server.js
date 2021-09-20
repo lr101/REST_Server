@@ -252,8 +252,9 @@ app.get('/',  async function (req, res) {
 app.get('/display/',  async function (req, res) {
     const sensorID = validate.validateSensorID(req.query.sensorID);
     let values = (await REST_API.GET_id_sensorID_sensorNick(con, sensorID))[0];
+    const sensors = await REST_API.GET_id(con);
     values["sensorID"] = sensorID;
-    res.render('display.ejs', {sensor : values});
+    res.render('display.ejs', {sensor : values, sensors : sensors});
 });
 
 app.get('/config/',  async function (req, res) {

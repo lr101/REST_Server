@@ -18,6 +18,34 @@ if (sensors !== undefined) {
     len++;
 %>
 <main id="main" data-length="<%=len %>">
+    <div class="row">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light lightgrey">
+            <a class="navbar-brand darkgrey" href="#">Navigation</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <form  method="get" action="/" class="wrapper">
+                <input id="active_Page" class="button"  type="button" value="home">
+            </form>
+            <div class="dropdown wrapper">
+                <button class="button">Display Sensors</button>
+                <div class="dropdown-content">
+                    <%for (let count = 0; count < len - 1; count++) { %>
+                    <form class="content" action="/display" method="get" >
+                        <input hidden name="sensorID" value="<%=sensors[count].sensorID%>">
+                        <input class="dropdown-item" id="dropdown_<%=sensors[count].sensorID%>" type="submit" value="<%=sensors[count].sensorNick%>">
+                    </form>
+                    <%}%>
+                </div>
+            </div>
+            <form class="wrapper" action="/config/local-sensors" method="get">
+                <input  class="button" type="submit"  value="Local Sensors">
+            </form>
+            <div class="wrapper">
+                <button class="button" type="button">Edit Sensor Types</button>
+            </div>
+        </nav>
+    </div>
 
     <%for (let count = 0; count < len;) { %>
     <div class="row" >

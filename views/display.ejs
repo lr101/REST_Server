@@ -12,6 +12,35 @@
         <h1 id="title" data-id="<%=sensor.sensorID%>"><%=sensor.sensorNick%></h1>
     </header>
     <main id="main">
+        <div class="row">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light lightgrey">
+                <a class="navbar-brand darkgrey" href="#">Navigation</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <form  method="get" action="/" class="wrapper">
+                    <input class="button"  type="submit" value="home">
+                </form>
+                <div class="dropdown wrapper">
+                    <button class="button" id="active_Page">Display Sensors</button>
+                    <div class="dropdown-content">
+                        <%for (let count = 0; count < sensors.length; count++) { %>
+                        <form class="content" action="/display" method="get" >
+                            <input hidden name="sensorID" value="<%=sensors[count].sensorID%>">
+                            <input class="dropdown-item" <%if (sensors[count].sensorID === sensor.sensorID) {%> type="button"<%} else {%> type="submit"<%}%> value="<%=sensors[count].sensorNick%>">
+                        </form>
+                        <%}%>
+                    </div>
+                </div>
+                <form class="wrapper" action="/config/local-sensors" method="get">
+                    <input  class="button" type="submit"  value="Local Sensors">
+                </form>
+                <div class="wrapper">
+                    <button class="button" type="button">Edit Sensor Types</button>
+                </div>
+            </nav>
+        </div>
+
         <div class="row" >
             <section class="col-12" id="display">
                 <h1 id="current">Current Value: LOADING...</h1>
@@ -24,22 +53,22 @@
         </div>
         <div class="row">
             <section class="col-2" >
-                <button class="button" onclick="getDataGraph(60);">1 hour</button>
+                <button class="button buttonBig" onclick="getDataGraph(60);">1 hour</button>
             </section>
             <section class="col-2" >
-                <button class="button" onclick="getDataGraph(360);">6 hour</button>
+                <button class="button buttonBig" onclick="getDataGraph(360);">6 hour</button>
             </section>
             <section class="col-2" >
-                <button class="button" onclick="getDataGraph(720);">12 hour</button>
+                <button class="button buttonBig" onclick="getDataGraph(720);">12 hour</button>
             </section>
             <section class="col-2" >
-                <button class="button" onclick="getDataGraph(1440);">1 day</button>
+                <button class="button buttonBig" onclick="getDataGraph(1440);">1 day</button>
             </section>
             <section class="col-2" >
-                <button class="button" onclick="getDataGraph(10080);">7 days</button>
+                <button class=" button buttonBig" onclick="getDataGraph(10080);">7 days</button>
             </section>
             <section class="col-2" >
-                <button class="button" onclick="getDataGraph(20160);">14 days</button>
+                <button class="button buttonBig" onclick="getDataGraph(20160);">14 days</button>
             </section>
         </div>
     </main>

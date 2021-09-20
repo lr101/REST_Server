@@ -17,28 +17,36 @@
 <main id="main" data-length="<%=len %>">
     <div class="row">
         <nav class="navbar navbar-expand-lg navbar-light bg-light lightgrey">
-            <a class="navbar-brand darkgrey" href="#">Configuration</a>
+            <a class="navbar-brand darkgrey" href="#">Navigation</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
-            <div class="wrapper">
-                <button class="dropdown-toggle darkgrey button" type="button" data-toggle="dropdown">Local Sensors<span class="caret"></span></button>
-                <ul class="dropdown-menu" id="menu2">
+            <form method="get" action="/" class="wrapper">
+                <input  class="button"  type="submit" value="home">
+            </form>
+            <div class="dropdown wrapper">
+                <button class="button">Display Sensors</button>
+                <div class="dropdown-content">
                     <%for (let count = 0; count < len; count++) { %>
-                    <li><button class="data dropdown-item" onclick="dropdown('<%=sensors[count].sensorID%>')" id="sensor_<%=sensors[count].sensorID%>"><%=sensors[count].sensorNick%></button></li>
+                    <form class="content" action="/display" method="get" >
+                        <input hidden name="sensorID" value="<%=sensors[count].sensorID%>">
+                        <input class="dropdown-item" id="dropdown_<%=sensors[count].sensorID%>" type="submit" value="<%=sensors[count].sensorNick%>">
+                    </form>
                     <%}%>
-                </ul>
+                </div>
             </div>
+            <form class="wrapper" action="/config/local-sensors" method="get">
+                <input id="active_Page" class="button" type="button"  value="Local Sensors">
+            </form>
             <div class="wrapper">
-                <button class="darkgrey button" type="button">Edit Sensor Types</button>
+                <button class="button" type="button">Edit Sensor Types</button>
             </div>
         </nav>
     </div>
 
     <div class="row" id="sensor_config">
         <section class="col-2 config" id="config_left">
-            <div class="content">
+            <div class="content p-2">
                 <h2>Selection</h2>
                 <div class="list-group" id="list">
                     <%for (let count = 0; count < len; count++) { %>
@@ -66,7 +74,7 @@
                     </div>
                     <label   class="form-label" for="id">Sensor ID:</label>
                     <div class="input-group mb-3">
-                        <input autocomplete="off" class="form-control" type="text" id="id" name="sensorID" value="xx-xxxxxxxxxxxx" readonly disabled>
+                        <input autocomplete="off" class="form-control" type="text" id="id" name="sensorID" value="" readonly disabled>
                     </div><br>
                     <div class="input-group mb-3">
                         <input id="submit" class="button"  value="Submit">
@@ -75,9 +83,8 @@
             </div>
         </section>
         <section class="col-2 config" id="config_right">
-            <div class="content">
-                <h2>Sensor</h2>
-                <p id="status">ACTIVE</p>
+            <div class="content" id="active_content">
+                <h2 id="active">ACTIVE</h2>
             </div>
         </section>
     </div>
@@ -89,6 +96,5 @@
 <script src="../javascript/jquery-3.6.0.min.js"></script>
 <script src="../javascript/bootstrap.bundle.js"></script>
 <script src="../javascript/config-local-sensors.js"></script>
-<script> dropdown('<%=sensorID%>'); </script>
 </body>
 </html>

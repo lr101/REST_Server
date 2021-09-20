@@ -40,6 +40,7 @@ footer {
 
 .row {
     padding: 0;
+    margin-bottom: 10px;
 }
 
 button {
@@ -57,5 +58,82 @@ button {
 }
 
 .darkgrey {
-    color : rgba(108, 122, 137, 1);
+    color : rgba(108, 122, 137, 1) !important;
+}
+.button {
+    text-align: center;
+    width: auto;
+    height: 45px;
+    padding-left: 15px;
+    padding-right: 15px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: 500;
+    color: #000;
+    background-color: #fff;
+    border: none;
+    border-radius: 45px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
+    outline: none;
+}
+
+#active_Page {
+    background-color: rgba(223,26,56,1);
+    color: #fff;
+    box-shadow: 0 15px 20px rgba(223,26,56,0.4);
+    width: max-content;
+}
+
+.button:hover {
+    background-color: rgba(223,26,56,1);
+    box-shadow: 0 15px 20px rgba(223,26,56,0.4);
+    color: #fff;
+    transform: translateY(-7px);
+}
+
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-item {
+    flex-grow: 1;
+    width: 100%;
+    min-height: 40px;
+}
+.content {
+    flex-grow: 1;
+    border-radius: 10px;
+    background-color: #f5f5f5;
+}
+
+.dropdown:hover .button {
+    background-color: rgba(223,26,56,1);
+    color: white;
+}
+
+.wrapper {
+    position:relative;
+    margin-right: 20px;
 }

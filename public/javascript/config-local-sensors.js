@@ -1,32 +1,4 @@
 /**
- * Dropdown menu
- */
-
-$(document).ready(function() {
-    $(".dropdown-toggle").dropdown();
-});
-
-//context menu for orders table
-$(document).on("contextmenu", "body", function (event) {
-
-    $('#menu').dropdown('toggle')
-
-    //showing it close to our cursor
-    $('#menu').dropdown('toggle').css({
-        top: (event.pageY) + "px",
-        left: (event.pageX) + "px"
-    });
-});
-$(document).mousedown(function (e) {
-    var container = $("#menu");
-
-    if (!container.is(e.target) && container.has(e.target).length === 0 && container.parent().hasClass('open')) {
-        container.dropdown('toggle')
-        container.parent().removeClass('open');
-    }
-});
-
-/**
  * logic
  */
 
@@ -49,16 +21,11 @@ function dropdown(id) {
                             document.getElementById("selectType").selectedIndex = i.toString();
                         }
                     }
-                    nodes = document.getElementById("list").children;
-                    for (let i = 0; i < nodes.length; i++) {
-                        nodes[i].classList.remove("active");
-                        if (nodes[i].getAttribute("data-id").toString() === id.toString()) {
-                            nodes[i].classList.add("active");
-                        }
-                    }
                 }
             }
         };
+        console.log(id);
+        checkActive(id);
     }
 }
 
@@ -89,7 +56,7 @@ function submitData() {
     const sensorID = document.getElementById("id").value;
     const sensorType = document.getElementById("selectType").selectedIndex;
     const sensorNick = document.getElementById("nickname").value;
-    if (sensorNick.length > 0 && sensorNick.length < 17 && sensorType !== "") {
+    if (sensorNick.length > 0 && sensorNick.length < 17 && sensorType !== "" && sensorID !== "") {
         const ajax = new XMLHttpRequest();
         ajax.open("PUT", "/sensors/id/" + sensorID, true);
         ajax.setRequestHeader("Content-Type", "application/json");
@@ -100,12 +67,33 @@ function submitData() {
                 alert(ajax.responseText);
                 if(ajax.status === 200) {
                     document.getElementById("list_" +sensorID).innerHTML = sensorNick;
-                    document.getElementById("sensor_" + sensorID).innerHTML = sensorNick;
+                    document.getElementById("dropdown_" + sensorID).value = sensorNick;
                 }
             }
         };
     }
+}
 
+function checkActive(id) {
+    let date = new Date(new Date().getTime() + 2 * 3600 * 1000);
+    date.setMinutes(date.getMinutes() - 2);
+    date = date.toISOString().slice(0, 19).replace('T', ' ');
+    const ajax = new XMLHttpRequest();
+    ajax.open("GET", "/sensors/" + id + "?date2=" + date , true);
+    ajax.send(null);
+    ajax.onreadystatechange = function() {
+        if (ajax.readyState === 4) {
+            document.getElementById("active_content").style.color = "white";
+            if(JSON.parse(ajax.responseText).length > 0) {
+                document.getElementById("active").innerHTML = "ACTIVE";
+                document.getElementById("active_content").style.backgroundColor = "#35fb74";
+            } else {
+                document.getElementById("active").innerHTML = "INACTIVE";
+                document.getElementById("active_content").style.backgroundColor = "rgba(223,26,56,1)";
+
+            }
+        }
+    };
 }
 
 updateSensorTypes();
