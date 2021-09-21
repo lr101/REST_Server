@@ -41,6 +41,9 @@ module.exports  = {
     },
 
     POST_id : async function (con, sensorID, sensorTypeID, sensorNick) {
+        if ((await this.GET_types_sensorTypeID(con, sensorTypeID)).length === 0) {
+            sensorTypeID = 0;
+        }
         let sql = "INSERT INTO id (sensorID, sensorTypeID, sensorNick) VALUES ('"+sensorID+"','"+sensorTypeID+"','"+sensorNick+"');";
         logDB(sql);
         try {
@@ -70,6 +73,10 @@ module.exports  = {
     },
 
     PUT_id_sensorID_sensorTypeID : async function (con, sensorID, sensorTypeID) {
+        if ((await this.GET_types_sensorTypeID(con, sensorTypeID)).length === 0) {
+            logDB("SensorTypeID doesn't exist");
+            return "SensorTypeID doesn't exist";
+        }
         let sql = "UPDATE id SET sensorTypeID="+ sensorTypeID +" WHERE sensorID='" + sensorID +"'";
         logDB(sql);
         try {
@@ -148,6 +155,56 @@ module.exports  = {
         const sql = "SELECT * FROM types";
         logDB(sql);
         return await con.query(sql);
-    }
+    },
+
+    GET_types_sensorTypeID : async function (con, sensorTypeID) {
+        const sql = "SELECT * FROM types WHERE sensorTypeID=" + sensorTypeID + ";";
+        logDB(sql);
+        return await con.query(sql);
+    },
+
+    POST_types : async function(con, sensorType) {
+       const sql = "INSERT INTO types (sensorType) VALUES ('" + sensorType +"');";
+        logDB(sql);
+        try {
+            await con.query(sql);
+            return true;
+        } catch (e) {
+            logDB(e);
+            return e;
+        }
+    },
+
+    PUT_types : async function(con, sensorType, sensorTypeID) {
+        const sql = "UPDATE types SET sensorType='"+ sensorType +"' WHERE sensorTypeID='" + sensorTypeID +"'";
+        logDB(sql);
+        try {
+            await con.query(sql);
+            return true;
+        } catch (e) {
+            logDB(e);
+            return e;
+        }
+    },
+
+    DELETE_sensorTypeID : async function (con,sensorTypeID) {
+        try {
+            if (sensorTypeID.toString() !== "0") {
+                let sql = "DELETE FROM types WHERE sensorTypeID='" + sensorTypeID + "';";
+                logDB(sql);
+                await con.query(sql).then(function () {
+                    sql = "UPDATE id SET sensorTypeID=0 WHERE sensorTypeID=" +sensorTypeID + ";";
+                    con.query(sql);
+                });
+                return true;
+            } else {
+                logDB("CAN'T DELETE DEFAULT VALUE");
+                return "CAN'T DELETE DEFAULT VALUE";
+            }
+        } catch (e) {
+            logDB(e);
+            return e;
+        }
+    },
 
 }

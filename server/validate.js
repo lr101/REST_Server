@@ -29,6 +29,12 @@ module.exports  = {
         return sensorType;
     },
 
+    validateSensorTypeID : function (sensorTypeID) {
+       sensorTypeID = escape(sensorTypeID);
+       //TODO
+        return sensorTypeID;
+    },
+
     validateDate : function (date) {
         if (date !== undefined) {
             if (!moment(date, 'YYYY-MM-DD HH:mm:ss', true).isValid()) {

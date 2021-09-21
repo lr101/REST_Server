@@ -41,9 +41,9 @@ if (sensors !== undefined) {
             <form class="wrapper" action="/config/local-sensors" method="get">
                 <input  class="button" type="submit"  value="Local Sensors">
             </form>
-            <div class="wrapper">
-                <button class="button" type="button">Edit Sensor Types</button>
-            </div>
+            <form class="wrapper" action="/config/sensor-types" method="get">
+                <input class="button" type="submit" value="Edit Sensor Types">
+            </form>
         </nav>
     </div>
 
@@ -68,7 +68,7 @@ if (sensors !== undefined) {
 </main>
 
 <footer>
-    <h1>Sensor display page by Lukas Reim</h1>
+    <h1>https://github.com/lr101/REST_Server</h1>
 </footer>
 <script src="./javascript/jquery-3.6.0.min.js"></script>
 <script src="./javascript/index.js"></script>
