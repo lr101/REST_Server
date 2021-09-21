@@ -24,7 +24,6 @@ function dropdown(id) {
                 }
             }
         };
-        console.log(id);
         checkActive(id);
     }
 }
@@ -54,20 +53,25 @@ function editButton(input_id) {
 
 function submitData() {
     const sensorID = document.getElementById("id").value;
-    const sensorType = document.getElementById("selectType").selectedIndex;
+    const select = document.getElementById("selectType");
+    const sensorTypeID = select.options[select.selectedIndex].value;
     const sensorNick = document.getElementById("nickname").value;
-    if (sensorNick.length > 0 && sensorNick.length < 17 && sensorType !== "" && sensorID !== "") {
+    if (sensorNick.length > 0 && sensorNick.length < 17 && sensorTypeID !== "" && sensorID !== "") {
         const ajax = new XMLHttpRequest();
         ajax.open("PUT", "/sensors/id/" + sensorID, true);
         ajax.setRequestHeader("Content-Type", "application/json");
-        let json = {sensorID : sensorID, sensorType :sensorType, sensorNick: sensorNick}
+        let json = {sensorID : sensorID, sensorTypeID :sensorTypeID, sensorNick: sensorNick}
         ajax.send(JSON.stringify(json));
         ajax.onreadystatechange = function() {
             if (ajax.readyState === 4) {
-                alert(ajax.responseText);
                 if(ajax.status === 200) {
                     document.getElementById("list_" +sensorID).innerHTML = sensorNick;
                     document.getElementById("dropdown_" + sensorID).value = sensorNick;
+                    document.getElementById("nickname").disabled = true;
+                    document.getElementById("selectType").disabled = true;
+
+                } else {
+                    alert(ajax.responseText);
                 }
             }
         };
@@ -100,4 +104,24 @@ updateSensorTypes();
 
 document.getElementById("submit").addEventListener("click", function () {
     submitData();
-})
+});
+
+document.getElementById("delete").addEventListener("click", function () {
+
+    const id = document.getElementById("id").value;
+    if (id !== "") {
+        const ajax = new XMLHttpRequest();
+        ajax.open("DELETE", "/sensors/id/" + id , true);
+        ajax.send(null);
+        ajax.onreadystatechange = function() {
+            if (ajax.readyState === 4) {
+                if  (ajax.status === 201) {
+                    document.getElementById("list").removeChild(document.getElementById("list_" + id));
+                    document.getElementById("dropdown").removeChild(document.getElementById("dropdown_" + id));
+                } else {
+                    alert(ajax.responseText);
+                }
+            }
+        }
+    }
+});
