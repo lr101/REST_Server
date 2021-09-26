@@ -35,7 +35,7 @@ $ CREATE TABLE types (sensorType int NOT NULL AUTO_INCREMENT, sensorTypeNick cha
 
 ## Setup Sever:
 
-###Install Server
+### Install Server
 
 - install [npm and node](https://www.makersupplies.sg/blogs/tutorials/how-to-install-node-js-and-npm-on-the-raspberry-pi) for Raspberry Pi:
 - fork and pull or copy gitHub repo
@@ -84,10 +84,10 @@ Click on one of the square sensors or on the 'display sensors' button to view th
 ## Setup Thermometers:
 
 
-###Microcontroller NodeMCU V.3:
+### Microcontroller NodeMCU V.3:
 
 //TODO
-###Raspberry Pi
+### Raspberry Pi
 
 ![grafik](https://user-images.githubusercontent.com/48615489/121551311-d1510480-ca0f-11eb-9d45-4a948329845c.png)
 - solder as shown with r1 being a **4.7K Ohm resistor**
