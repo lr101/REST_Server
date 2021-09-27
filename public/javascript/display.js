@@ -6,7 +6,6 @@ const id = document.getElementById("title").getAttribute("data-id");
 function chartIt(values, dates) {
     let ctx = document.getElementById('myChart').getContext('2d');
 
-
     chart = new Chart(ctx, {
         type: 'line',
         data: {
@@ -22,6 +21,7 @@ function chartIt(values, dates) {
             }]
         },
         options: {
+
             transition: {
                 duration: 1000,
                 easing: 'easeInOutElastic'
@@ -33,7 +33,7 @@ function chartIt(values, dates) {
                 yAxes: [{
                     scaleLabel: {
                         display: true,
-                        labelString: 'Temperatur in °C'
+                        labelString: 'Value in the given unit'
                     },
                     gridLines: {
                         color: 'rgba(0, 0, 0, 0.5)'
@@ -44,15 +44,17 @@ function chartIt(values, dates) {
                     }
                 }],
                 xAxes: [{
+                    showXLabels: 10,
                     scaleLabel: {
                         display: true,
-                        labelString: 'Uhrzeit in Stunden und Minuten'
+                        labelString: 'Time in hours and minutes'
                     },
                     gridLines: {
                         color: 'rgba(0, 0, 0, 0.5)'
                     },
                     ticks: {
                         fontColor: "black",
+                        autoSkip: true,
                         maxTicksLimit: 20
                     },
 
@@ -78,7 +80,7 @@ function getDataGraph(offset, date1, date2) {
     ajax.onreadystatechange = function () {
         if (ajax.readyState === 4) {
             let values = JSON.parse(ajax.responseText);
-            let dates = values.dates;
+            let dates = values.dates.map(date => (new Date(date)).toLocaleTimeString().substring(0,5));
             chart.data.datasets[0].data = values.values;
             chart.data.labels = dates;
             chart.update();
