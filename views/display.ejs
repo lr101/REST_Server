@@ -13,11 +13,8 @@
     </header>
     <main id="main">
         <div class="row">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light lightgrey">
-                <a class="navbar-brand darkgrey" href="#">Navigation</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+            <nav class="navbar lightgrey">
+                <a class="navbar-brand darkgrey">Navigation</a>
                 <form  method="get" action="/" class="wrapper">
                     <input class="button"  type="submit" value="home">
                 </form>
@@ -42,7 +39,7 @@
         </div>
 
         <div class="row" >
-            <section class="col-12" id="display">
+            <section class="col-12 displayRowContainer">
                 <h1 id="current" class="displayRow" data-unit="<%=sensors[index].unit%>">Current Value: LOADING...</h1>
             </section>
         </div>
@@ -72,7 +69,7 @@
             </section>
         </div>
         <div class="row">
-            <section class="col-12" id="sensorType">
+            <section class="col-12 displayRowContainer">
                 <h1 class="displayRow">Sensor Type: <%=sensors[index].sensorType%></h1>
             </section>
         </div>

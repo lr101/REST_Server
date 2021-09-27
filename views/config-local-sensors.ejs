@@ -16,11 +16,8 @@
 %>
 <main id="main" data-length="<%=len %>">
     <div class="row">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light lightgrey">
-            <a class="navbar-brand darkgrey" href="#">Navigation</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <nav class="navbar lightgrey">
+            <a class="navbar-brand darkgrey">Navigation</a>
             <form method="get" action="/" class="wrapper">
                 <input  class="button"  type="submit" value="home">
             </form>
@@ -45,7 +42,7 @@
     </div>
 
     <div class="row" id="sensor_config">
-        <section class="col-2 config" id="config_left">
+        <section class="col-lg-2 config" id="config_left">
             <div class="content p-2">
                 <h2>Selection</h2>
                 <div class="list-group" id="list">
@@ -55,7 +52,7 @@
                 </div>
             </div>
         </section>
-        <section class="col-8 config" id="config_middle">
+        <section class="col-lg-8 config" id="config_middle">
             <div class="content">
                 <h1 id="config_name">NAME</h1>
                 <form id="form">
@@ -83,15 +80,14 @@
                 </form>
             </div>
         </section>
-        <section class="col-2 config" id="config_right">
+        <section class="col-lg-2 config" id="config_right">
             <div class="content" id="active_content">
                 <h2 id="active">ACTIVE</h2>
             </div>
         </section>
     </div>
     <div class="row requestData content">
-        <section class="col-3"></section>
-        <section class="col-6">
+        <section class="col-12">
             <form>
                 <label for="date2_date">From (older):</label>
                 <div class="mb-3">
@@ -103,14 +99,19 @@
                     <input type="date" id="date1_date" name="date1_date">
                     <input type="time" id="date1_time" name="date1_time">
                 </div>
-                <div class="mb-3">
-                    <input id="getTempData"  type="button" class="button" value="Request">
-                    <input id="getDeleteTempData"  type="button" class="button" value="Request & Delete">
-                    <input id="deleteTempData"  type="button" class="button" value="Delete">
+                <div class="mb-3 row justify-content-lg-center">
+                    <section class="col col-lg-auto">
+                        <input id="getTempData"  type="button" class="button" value="Request">
+                    </section>
+                    <section class="col col-lg-auto">
+                        <input id="getDeleteTempData"  type="button" class="button" value="Request & Delete">
+                    </section>
+                    <section class="col col-lg-auto">
+                        <input id="deleteTempData"  type="button" class="button" value="Delete">
+                    </section>
                 </div>
             </form>
         </section>
-        <section class="col-3"></section>
     </div>
 </main>
 
