@@ -21,10 +21,10 @@ function submitData() {
     const ajax = new XMLHttpRequest();
 
     let json;
-    if (sensorType.length > 0 && sensorType.length < 17 && sensorTypeID !== "" ) {
+    if (unit.length > 0 && unit.length < 6 && sensorType.length > 0 && sensorType.length < 17 && sensorTypeID !== "" ) {
         ajax.open("PUT", "/sensors/types/", true);
         json = {sensorType : sensorType, sensorTypeID :sensorTypeID, unit: unit}
-    } else if (sensorType.length > 0 && sensorType.length < 17 && sensorTypeID === "") {
+    } else if (unit.length > 0 && unit.length < 6 && sensorType.length > 0 && sensorType.length < 17 && sensorTypeID === "") {
         ajax.open("POST", "/sensors/types/", true);
         json = {sensorType : sensorType, unit : unit}
     }
@@ -35,6 +35,9 @@ function submitData() {
             if (ajax.readyState === 4) {
                 if (ajax.status === 200) {
                     updateTypes();
+                    document.getElementById("typeName").disabled = true;
+                    document.getElementById("typeUnit").disabled = true;
+                    document.getElementById("typeUnit").value = "";
                 } else {
                     alert(ajax.responseText);
                 }
@@ -60,7 +63,7 @@ function updateTypes() {
                     btn.id = "list_" + (i === data.length ? "new" : data[i].sensorTypeID);
                     btn.setAttribute("type", "button");
                     btn.setAttribute("data-toggle", "list");
-                    btn.setAttribute("onclick", (i === data.length ? "select('','')" : "select('" + data[i].sensorType + "','" + data[i].sensorTypeID + "','" + data[i].unit +"')"));
+                    btn.setAttribute("onclick", (i === data.length ? "select('','','')" : "select('" + data[i].sensorType + "','" + data[i].sensorTypeID + "','" + data[i].unit +"')"));
                     btn.innerHTML = (i === data.length ? "+" : data[i].sensorType);
                     listElement.appendChild(btn);
                 }

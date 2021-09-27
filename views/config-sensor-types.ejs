@@ -46,7 +46,7 @@
                     <%for (let count = 0; count < types.length; count++) { %>
                     <button id="list_<%=types[count].sensorTypeID%>" type="button" data-toggle="list" onclick="select('<%=types[count].sensorType%>', '<%=types[count].sensorTypeID%>', '<%=types[count].unit%>')" class="list-group-item list-group-item-action"><%=types[count].sensorType%></button>
                     <%}%>
-                    <button id="list_new"  type="button" data-toggle="list" onclick="select('', '')" class="list-group-item list-group-item-action active">+</button>
+                    <button id="list_new"  type="button" data-toggle="list" onclick="select('', '', '')" class="list-group-item list-group-item-action active">+</button>
                 </div>
 
             </div>
