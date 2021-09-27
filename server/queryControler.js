@@ -42,12 +42,8 @@ module.exports  = {
         return await con.query(sql);
     },
 
-    POST_id : async function (sensorID, sensorTypeID, sensorNick) {
-        if ((await this.GET_types_sensorTypeID(sensorTypeID)).length === 0) {
-            sensorTypeID = 0;
-        }
-
-        let sql = "INSERT INTO id (sensorID, sensorTypeID, sensorNick) VALUES ('"+sensorID+"','"+sensorTypeID+"','"+sensorNick+"');";
+    POST_id : async function (sensorID, sensorNick) {
+        let sql = "INSERT INTO id (sensorID, sensorTypeID, sensorNick) VALUES ('"+sensorID+"',0,'"+sensorNick+"');";
         logDB(sql);
         try {
             await con.query(sql).then(async function (){
