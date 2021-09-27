@@ -43,9 +43,10 @@ module.exports  = {
     },
 
     POST_id : async function (sensorID, sensorTypeID, sensorNick) {
-        if ((await this.GET_types_sensorTypeID(con, sensorTypeID)).length === 0) {
+        if ((await this.GET_types_sensorTypeID(sensorTypeID)).length === 0) {
             sensorTypeID = 0;
         }
+
         let sql = "INSERT INTO id (sensorID, sensorTypeID, sensorNick) VALUES ('"+sensorID+"','"+sensorTypeID+"','"+sensorNick+"');";
         logDB(sql);
         try {
@@ -75,7 +76,7 @@ module.exports  = {
     },
 
     PUT_id_sensorID_sensorTypeID : async function (sensorID, sensorTypeID) {
-        if ((await this.GET_types_sensorTypeID(con, sensorTypeID)).length === 0) {
+        if ((await this.GET_types_sensorTypeID(sensorTypeID)).length === 0) {
             logDB("SensorTypeID doesn't exist");
             return "SensorTypeID doesn't exist";
         }
@@ -165,8 +166,8 @@ module.exports  = {
         return await con.query(sql);
     },
 
-    POST_types : async function(sensorType) {
-       const sql = "INSERT INTO types (sensorType) VALUES ('" + sensorType +"');";
+    POST_types : async function(sensorType, unit) {
+       const sql = "INSERT INTO types (sensorType, unit) VALUES ('" + sensorType +"', '" + unit +"');";
         logDB(sql);
         try {
             await con.query(sql);
@@ -177,8 +178,8 @@ module.exports  = {
         }
     },
 
-    PUT_types : async function(sensorType, sensorTypeID) {
-        const sql = "UPDATE types SET sensorType='"+ sensorType +"' WHERE sensorTypeID='" + sensorTypeID +"'";
+    PUT_types : async function(sensorType, sensorTypeID, unit) {
+        const sql = "UPDATE types SET sensorType='"+ sensorType +"', unit='" + unit +"' WHERE sensorTypeID='" + sensorTypeID +"'";
         logDB(sql);
         try {
             await con.query(sql);

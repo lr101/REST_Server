@@ -158,7 +158,7 @@ app.delete("/sensors/id/:sensorID/", function (req, res) {
 });
 app.get("/sensors/types/", function (req, res) {
     try {
-        REST_API.GET_types(con).then(function (result) {
+        REST_API.GET_types().then(function (result) {
             res.json(result);
         });
     } catch (e) {
@@ -167,7 +167,7 @@ app.get("/sensors/types/", function (req, res) {
 
 });
 
-app.get('/display/graph', async function (req, res) {
+app.get('/display/graph/', async function (req, res) {
     const sensorID = validate.validateSensorID(req.query.sensorID);
     let date1 = validate.validateDate(req.query.date1);
     let date2 = validate.validateDate(req.query.date2);
@@ -179,7 +179,8 @@ app.get('/display/graph', async function (req, res) {
 app.post("/sensors/types/", async function (req, res) {
     try{
         const sensorType = validate.validateSensorType(req.body.sensorType);
-        REST_API.POST_types( sensorType).then(function (result) {
+        const unit = validate.validateUnit(req.body.unit);
+        REST_API.POST_types( sensorType, unit).then(function (result) {
             if (result === true) {
                 res.status(200).send("ROW ADDED TO TABLE");
             } else {
@@ -237,7 +238,7 @@ app.post("/sensors/:sensorID/", function (req, res) {
     }
 });
 
-app.delete("/sensors/:sensorID", function (req, res) {
+app.delete("/sensors/:sensorID/", function (req, res) {
     try {
         let sensorID = validate.validateSensorID(req.params.sensorID);
         let date1 = validate.validateDate(req.query.date1);
@@ -259,8 +260,9 @@ app.delete("/sensors/:sensorID", function (req, res) {
 app.put("/sensors/types/", async function (req, res) {
     try{
         const sensorType = validate.validateSensorType(req.body.sensorType);
+        const unit = validate.validateUnit(req.body.unit);
         const sensorTypeID = validate.validateSensorTypeID(req.body.sensorTypeID);
-        REST_API.PUT_types( sensorType, sensorTypeID).then(function (result) {
+        REST_API.PUT_types( sensorType, sensorTypeID, unit).then(function (result) {
             if (result === true) {
                 res.status(200).send("ROW ADDED TO TABLE");
             } else {
@@ -284,11 +286,14 @@ app.get('/',  async function (req, res) {
 
 app.get('/display/',  async function (req, res) {
     const sensorID = validate.validateSensorID(req.query.sensorID);
-    let values = (await REST_API.GET_id_sensorID_sensorNick( sensorID))[0];
     const sensors = await REST_API.GET_id();
-    values["sensorID"] = sensorID;
-    values["sensorType"] = (await REST_API.GET_id_sensorID_sensorType( sensorID))[0].sensorType;
-    res.render('display.ejs', {sensor : values, sensors : sensors});
+    let index = 0;
+    for (let i = 0; i < sensors.length; i++ ) {
+        if (sensors[i].sensorID === sensorID) {
+            index = i;
+        }
+    }
+    res.render('display.ejs', {index: index, sensors : sensors});
 });
 
 app.get('/config/',  async function (req, res) {

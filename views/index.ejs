@@ -56,7 +56,7 @@ if (sensors !== undefined) {
                     <p class="data" data-id="config" id="config">+</p>
                 <%} else {%>
                     <p class="data" data-id="<%=sensors[count].sensorID%>" id="sensor_<%=count%>"><%=sensors[count].sensorNick%></p>
-                    <p id="value_<%=count%>">LOADING...</p>
+                    <p data-unit="<%=sensors[count].unit%>" id="value_<%=count%>">LOADING...</p>
                     <input name="sensorID" hidden>
                 <%}%>
 

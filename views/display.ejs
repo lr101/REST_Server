@@ -9,7 +9,7 @@
 </head>
 <body>
     <header class="text-center">
-        <h1 id="title" data-id="<%=sensor.sensorID%>"><%=sensor.sensorNick%></h1>
+        <h1 id="title" data-id="<%=sensors[index].sensorID%>"><%=sensors[index].sensorNick%></h1>
     </header>
     <main id="main">
         <div class="row">
@@ -24,10 +24,10 @@
                 <div class="dropdown wrapper">
                     <button class="button" id="active_Page">Display Sensors</button>
                     <div class="dropdown-content">
-                        <%for (let count = 0; count < sensors.length; count++) { %>
+                        <%for (let count = 0; count < sensors.length; count++) {%>
                         <form class="content" action="/display" method="get" >
                             <input hidden name="sensorID" value="<%=sensors[count].sensorID%>">
-                            <input class="dropdown-item" <%if (sensors[count].sensorID === sensor.sensorID) {%> type="button"<%} else {%> type="submit"<%}%> value="<%=sensors[count].sensorNick%>">
+                            <input class="dropdown-item" <%if (count === index) {%> type="button"<%} else {%> type="submit"<%}%> value="<%=sensors[count].sensorNick%>">
                         </form>
                         <%}%>
                     </div>
@@ -43,7 +43,7 @@
 
         <div class="row" >
             <section class="col-12" id="display">
-                <h1 id="current" class="displayRow">Current Value: LOADING...</h1>
+                <h1 id="current" class="displayRow" data-unit="<%=sensors[index].unit%>">Current Value: LOADING...</h1>
             </section>
         </div>
         <div class="row">
@@ -73,7 +73,7 @@
         </div>
         <div class="row">
             <section class="col-12" id="sensorType">
-                <h1 class="displayRow">Sensor Type: <%=sensor.sensorType%></h1>
+                <h1 class="displayRow">Sensor Type: <%=sensors[index].sensorType%></h1>
             </section>
         </div>
     </main>

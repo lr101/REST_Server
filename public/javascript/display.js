@@ -12,7 +12,7 @@ function chartIt(values, dates) {
         data: {
             labels: dates,
             datasets: [{
-                label: 'Temperaturen in °C im angegeben Zeitraum',
+                label: 'Values in ' + document.getElementById("current").getAttribute("data-unit") + ' in the given time interval',
                 data: values,
                 pointRadius: 1,
                 borderWidth: 1,
@@ -103,7 +103,8 @@ function getDataCurrent() {
             if (list.length === 0) {
                 document.getElementById("current").innerHTML = "No Data available";
             } else {
-                document.getElementById("current").innerHTML = "Current Value: " + list[list.length - 1].value + "°C";
+                let unit = document.getElementById("current").getAttribute("data-unit");
+                document.getElementById("current").innerHTML = "Current Value: " + list[list.length - 1].value + unit;
             }
         }
     };
