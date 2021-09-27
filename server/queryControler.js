@@ -1,6 +1,8 @@
-
 const fs = require('fs');
 const path = require('path');
+const mysql = require('mysql');
+const util = require('util');
+require('dotenv').config({path: path.join(__dirname, "../.env")});
 const sqlLogFile =  path.join(__dirname, "../logging/sql.log");
 
 let stream = fs.createWriteStream(sqlLogFile, {flags : 'a'});
@@ -10,37 +12,37 @@ function logDB(e) {
 }
 
 module.exports  = {
-    GET_id : async function (con) {
+    GET_id : async function () {
         const sql = "SELECT * FROM id INNER JOIN types ON id.sensorTypeID=types.sensorTypeID;";
         logDB(sql);
         return await con.query(sql);
     },
 
-    GET_id_sensorID : async function (con, sensorID) {
+    GET_id_sensorID : async function (sensorID) {
         const sql = "SELECT * FROM id INNER JOIN types ON id.sensorTypeID=types.sensorTypeID WHERE sensorID='" + sensorID + "';";
         logDB(sql);
         return await con.query(sql);
         },
 
-    GET_id_sensorID_sensorNick : async function (con, sensorID) {
+    GET_id_sensorID_sensorNick : async function (sensorID) {
         const sql = "SELECT sensorNick FROM id WHERE sensorID='" + sensorID + "';";
         logDB(sql);
         return await con.query(sql);
     },
 
-    GET_id_sensorID_sensorType :async function (con, sensorID) {
+    GET_id_sensorID_sensorType :async function (sensorID) {
         const sql = "SELECT types.sensorType FROM id INNER JOIN types ON id.sensorTypeID=types.sensorTypeID WHERE sensorID='" + sensorID + "' ;";
         logDB(sql);
         return await con.query(sql);
     },
 
-    GET_id_sensorID_sensorTypeID :async function (con, sensorID) {
+    GET_id_sensorID_sensorTypeID :async function (sensorID) {
         const sql = "SELECT sensorTypeID FROM id WHERE sensorID='" + sensorID + "' ;";
         logDB(sql);
         return await con.query(sql);
     },
 
-    POST_id : async function (con, sensorID, sensorTypeID, sensorNick) {
+    POST_id : async function (sensorID, sensorTypeID, sensorNick) {
         if ((await this.GET_types_sensorTypeID(con, sensorTypeID)).length === 0) {
             sensorTypeID = 0;
         }
@@ -60,7 +62,7 @@ module.exports  = {
 
     },
 
-    PUT_id_sensorID_sensorNick : async function (con, sensorID, sensorNick) {
+    PUT_id_sensorID_sensorNick : async function (sensorID, sensorNick) {
         let sql = "UPDATE id SET sensorNick='"+ sensorNick +"' WHERE sensorID='" + sensorID +"'";
         logDB(sql);
         try {
@@ -72,7 +74,7 @@ module.exports  = {
         }
     },
 
-    PUT_id_sensorID_sensorTypeID : async function (con, sensorID, sensorTypeID) {
+    PUT_id_sensorID_sensorTypeID : async function (sensorID, sensorTypeID) {
         if ((await this.GET_types_sensorTypeID(con, sensorTypeID)).length === 0) {
             logDB("SensorTypeID doesn't exist");
             return "SensorTypeID doesn't exist";
@@ -88,7 +90,7 @@ module.exports  = {
         }
     },
 
-    DELETE_id_sensorID : async function (con, sensorID) {
+    DELETE_id_sensorID : async function (sensorID) {
         let sql = "DELETE FROM id WHERE sensorID='" + sensorID +"';";
         logDB(sql);
         try {
@@ -105,7 +107,7 @@ module.exports  = {
         }
     },
 
-    GET_sensorID : async function (con, sensorID, date1, date2) {
+    GET_sensorID : async function (sensorID, date1, date2) {
         let sql = "SELECT * FROM " + sensorID;
         if (date1 !== undefined && date2 !== undefined) {
             sql += " WHERE date <= '" + date1 + "' AND date >='" + date2 + "'";
@@ -119,7 +121,7 @@ module.exports  = {
         return await con.query(sql);
     },
 
-    POST_sensorID : async function (con, sensorID, date, value) {
+    POST_sensorID : async function (sensorID, date, value) {
         try {
             let sql = "INSERT INTO "+ sensorID +" (date, value) VALUES ('"+date+"','"+value+"');";
             logDB(sql);
@@ -131,7 +133,7 @@ module.exports  = {
         }
     },
 
-    DELETE_sensorID : async function (con, sensorID, date1, date2) {
+    DELETE_sensorID : async function (sensorID, date1, date2) {
         try {
             let sql = "DELETE FROM " + sensorID;
             if (date1 !== undefined && date2 !== undefined) {
@@ -151,19 +153,19 @@ module.exports  = {
         }
     },
 
-    GET_types : async function (con) {
+    GET_types : async function () {
         const sql = "SELECT * FROM types;";
         logDB(sql);
         return await con.query(sql);
     },
 
-    GET_types_sensorTypeID : async function (con, sensorTypeID) {
+    GET_types_sensorTypeID : async function (sensorTypeID) {
         const sql = "SELECT * FROM types WHERE sensorTypeID=" + sensorTypeID + ";";
         logDB(sql);
         return await con.query(sql);
     },
 
-    POST_types : async function(con, sensorType) {
+    POST_types : async function(sensorType) {
        const sql = "INSERT INTO types (sensorType) VALUES ('" + sensorType +"');";
         logDB(sql);
         try {
@@ -175,7 +177,7 @@ module.exports  = {
         }
     },
 
-    PUT_types : async function(con, sensorType, sensorTypeID) {
+    PUT_types : async function(sensorType, sensorTypeID) {
         const sql = "UPDATE types SET sensorType='"+ sensorType +"' WHERE sensorTypeID='" + sensorTypeID +"'";
         logDB(sql);
         try {
@@ -187,7 +189,7 @@ module.exports  = {
         }
     },
 
-    DELETE_sensorTypeID : async function (con,sensorTypeID) {
+    DELETE_sensorTypeID : async function (sensorTypeID) {
         try {
             if (sensorTypeID.toString() !== "0") {
                 let sql = "DELETE FROM types WHERE sensorTypeID='" + sensorTypeID + "';";
@@ -207,4 +209,37 @@ module.exports  = {
         }
     },
 
+}
+
+/**
+ * MYSQL Database login data from .env
+ */
+
+const dbLogin = {
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME
+};
+
+function makeDb() {
+    const connection = mysql.createConnection(dbLogin);
+    return {
+        query(sql, args) {
+            return util.promisify(connection.query)
+                .call(connection, sql, args);
+        },
+    };
+}
+
+/**
+ * try to establish db connection
+ */
+
+let con;
+
+try {
+    con = makeDb();
+} catch (e) {
+    logDB(e);
 }
