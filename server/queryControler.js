@@ -152,7 +152,7 @@ module.exports  = {
     },
 
     GET_types : async function (con) {
-        const sql = "SELECT * FROM types";
+        const sql = "SELECT * FROM types;";
         logDB(sql);
         return await con.query(sql);
     },

@@ -89,6 +89,29 @@
             </div>
         </section>
     </div>
+    <div class="row requestData content">
+        <section class="col-3"></section>
+        <section class="col-6">
+            <form>
+                <label for="date2_date">From (older):</label>
+                <div class="mb-3">
+                    <input type="date" id="date2_date" name="date2_date" >
+                    <input type="time" id="date2_time" name="date2_time" >
+                </div>
+                <label for="date1_date">To (now/newer):</label>
+                <div class="mb-3">
+                    <input type="date" id="date1_date" name="date1_date">
+                    <input type="time" id="date1_time" name="date1_time">
+                </div>
+                <div class="mb-3">
+                    <input id="getTempData"  type="button" class="button" value="Request">
+                    <input id="getDeleteTempData"  type="button" class="button" value="Request & Delete">
+                    <input id="deleteTempData"  type="button" class="button" value="Delete">
+                </div>
+            </form>
+        </section>
+        <section class="col-3"></section>
+    </div>
 </main>
 
 <footer>

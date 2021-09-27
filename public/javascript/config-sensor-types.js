@@ -75,16 +75,18 @@ document.getElementById("submit").addEventListener("click", function () {
 });
 
 document.getElementById("delete").addEventListener("click", function () {
-    const sensorTypeID = document.getElementById("typeName").getAttribute("data-id");
-    const ajax = new XMLHttpRequest();
-    ajax.open("DELETE", "/sensors/types/" + sensorTypeID, true);
-    ajax.send();
-    ajax.onreadystatechange = function() {
-        if (ajax.readyState === 4) {
-            if (ajax.status === 201) {
-                updateTypes();
-            }else {
-                alert(ajax.responseText);
+    if (confirm("Are you sure to delete?")) {
+        const sensorTypeID = document.getElementById("typeName").getAttribute("data-id");
+        const ajax = new XMLHttpRequest();
+        ajax.open("DELETE", "/sensors/types/" + sensorTypeID, true);
+        ajax.send();
+        ajax.onreadystatechange = function () {
+            if (ajax.readyState === 4) {
+                if (ajax.status === 201) {
+                    updateTypes();
+                } else {
+                    alert(ajax.responseText);
+                }
             }
         }
     }
