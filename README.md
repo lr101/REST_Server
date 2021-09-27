@@ -39,7 +39,14 @@ $ INSERT INTO types (sensorType, unit) VALUES ('default', 'dUnit');
 ### Install Server
 
 - install [npm and node](https://www.makersupplies.sg/blogs/tutorials/how-to-install-node-js-and-npm-on-the-raspberry-pi) for Raspberry Pi:
-- fork and pull or copy gitHub repo
+- install git:
+```
+ $ sudo apt install git
+```
+- clone or copy gitHub repo:
+```
+ $ sudo git clone https://github.com/lr101/REST_Server.git
+```
 - install packages in the root folder of the Project:
 ```
  $ cd ./REST_Server/
@@ -51,7 +58,7 @@ $ sudo mv .env_sample .env
 $ sudo nano .env
 ```
 
-Test if everything is working correctly by running the server (Cancel with Str+C):
+Test if everything is working correctly by running the server (Cancel with Strg+C):
 ```
 $ sudo node ./server/REST_Server.js
 > webapp under: [your_ip]:3000/
@@ -75,11 +82,17 @@ $ pm2 save
 
 ## Using the web-page
 
-Sensors connected should automatically add their ID with a default name to the database. 
-The webpage displays every saved sensor. Navigate to Local Sensors or click the '+' button to edit the displayed name and type.
+Sensors connected are supposed to add their ID with a default name to the database automatically. THis is done by sending a
+http POST request to the webserver on the following address: **http://[ip]:3000/sensors/id/**. Further documentation on the implemented
+REST-API and how to use it can be found under .REST-API.txt\
+\
+The webpage displays every saved sensor. Navigate to /config/local-sensors or click the big '+' button to edit the displayed name and type.
 \
 \
-Click on one of the square sensors or on the 'display sensors' button to view the current value as well as a graph ranging from 
+To edit the name of a sensorType and its unit. Navigate to /config/sensor-types and.
+\
+\
+Click on one of the square sensors or on the 'display sensors' button to view the current value as well as a graph with ranging values from 
 1 hour to 14 days.
 
 ## Setup Thermometers:

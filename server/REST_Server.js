@@ -128,9 +128,8 @@ app.put("/sensors/id/:sensorID/", async function (req, res) {
 app.post("/sensors/id/", function (req, res) {
     try {
         const sensorID = validate.validateSensorID(req.body.sensorID);
-        const sensorType = validate.validateSensorType(req.body.sensorType);
         const sensorNick = validate.validateSensorNick(req.body.sensorNick);
-        REST_API.POST_id( sensorID, sensorType, sensorNick).then(function (result) {
+        REST_API.POST_id( sensorID, sensorNick).then(function (result) {
             if (result === true) {
                 res.status(201).send("SENSOR SUCCESSFULLY ADDED");
             } else {
