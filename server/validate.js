@@ -51,5 +51,11 @@ module.exports  = {
         value = escape(value);
         //TODO
         return value;
+    },
+
+    validateUnit : function (value) {
+        value = escape(value);
+        //TODO
+        return value;
     }
 }

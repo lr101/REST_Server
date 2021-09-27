@@ -107,21 +107,122 @@ document.getElementById("submit").addEventListener("click", function () {
 });
 
 document.getElementById("delete").addEventListener("click", function () {
-
-    const id = document.getElementById("id").value;
-    if (id !== "") {
-        const ajax = new XMLHttpRequest();
-        ajax.open("DELETE", "/sensors/id/" + id , true);
-        ajax.send(null);
-        ajax.onreadystatechange = function() {
-            if (ajax.readyState === 4) {
-                if  (ajax.status === 201) {
-                    document.getElementById("list").removeChild(document.getElementById("list_" + id));
-                    document.getElementById("dropdown").removeChild(document.getElementById("dropdown_" + id));
-                } else {
-                    alert(ajax.responseText);
+    if (confirm("Are you sure to delete?")) {
+        const id = document.getElementById("id").value;
+        if (id !== "") {
+            const ajax = new XMLHttpRequest();
+            ajax.open("DELETE", "/sensors/id/" + id, true);
+            ajax.send(null);
+            ajax.onreadystatechange = function () {
+                if (ajax.readyState === 4) {
+                    if (ajax.status === 201) {
+                        document.getElementById("list").removeChild(document.getElementById("list_" + id));
+                        document.getElementById("list").removeChild(document.getElementById("list_" + id));
+                        document.getElementById("dropdown").removeChild(document.getElementById("dropdown_" + id));
+                    } else {
+                        alert(ajax.responseText);
+                    }
                 }
             }
         }
     }
 });
+
+window.addEventListener('load', () => {
+    let now = new Date();
+    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+    let currentDate = now.toISOString().substring(0,10);
+    let currentTime = now.toISOString().substring(11,16);
+    document.getElementById('date1_date').value = currentDate;
+    document.getElementById("date1_time").value = currentTime;
+});
+
+function getTime(elementID) {
+    let date = new Date(document.getElementById(elementID + "_date").valueAsDate);
+    let time  = document.getElementById( elementID+ "_time").value;
+    date.setMinutes(time.split(':')[1]);
+    date.setHours(time.split(':')[0]);
+    return date;
+}
+
+function alterTempData (method) {
+    const id = document.getElementById("id").value;
+    if (id !== "") {
+        let date1 = getTime("date1");
+        let date2 = getTime("date2");
+        if (date1 > date2) {
+            const ajax = new XMLHttpRequest();
+            ajax.open(method, "/sensors/" + id + "?date1=" + date1.toISOString().slice(0, 19).replace('T', ' ') + "&date2=" + date2.toISOString().slice(0, 19).replace('T', ' '), true);
+            ajax.send(null);
+            ajax.onreadystatechange = function () {
+                if (ajax.readyState === 4 && ajax.status === 200 && method === "GET") {
+                    let items = JSON.parse(ajax.responseText);
+                    exportCSVFile(Object.keys(items), items, "export_" + id);
+                }
+            };
+        }
+    } else {
+        alert("Select Sensor first!")
+    }
+}
+
+
+document.getElementById("getTempData").addEventListener("click", function () {
+    alterTempData("GET");
+});
+
+document.getElementById("deleteTempData").addEventListener("click", function () {
+    if (confirm("Are you sure to delete?")) {
+        alterTempData("DELETE");
+    }
+});
+
+document.getElementById("getDeleteTempData").addEventListener("click", function () {
+    alterTempData("GET");
+    if (confirm("Are you sure to delete?")) {
+        alterTempData("DELETE");
+    }
+});
+
+function convertToCSV(array) {
+    let str = '';
+
+    for (let i = 0; i < array.length; i++) {
+        let line = '';
+        for (let index in array[i]) {
+            if (line !== '') line += ','
+            line += array[i][index];
+        }
+        str += line + '\r\n';
+    }
+    return str;
+}
+
+function exportCSVFile(headers, jsonObject, fileTitle) {
+    if (jsonObject.length !== 0) {
+        let csv = this.convertToCSV(jsonObject);
+
+        let exportedFilename = fileTitle + '.csv' || 'export.csv';
+
+        let blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
+        if (navigator.msSaveBlob) { // IE 10+
+            navigator.msSaveBlob(blob, exportedFilename);
+        } else {
+            let link = document.createElement("a");
+            if (link.download !== undefined) { // feature detection
+                // Browsers that support HTML5 download attribute
+                let url = URL.createObjectURL(blob);
+                link.setAttribute("href", url);
+                link.setAttribute("download", exportedFilename);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+    } else {
+        alert("No Data available");
+    }
+}
+
+

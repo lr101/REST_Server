@@ -37,9 +37,9 @@ DELETE /id/{sensorID}/				            //delete Table -> {sensorID} and entry in 
 Table -> {sensorID}
 ----------------------
 GET /{sensorID}/				                //returns the complete Table -> {sensorID}
-GET /{sensorID}?start={date1}&end={date2}	    //returns the table from date1 until date2
+GET /{sensorID}?date1={date1}&date2={date2}	    //returns the table from date1 until date2
 POST /{sensorID}/				                //adds a new table entry with body as JSON: {"date":"{date1}", "value":"{value1}"}
-DELETE /{sensorID}?start={date1}&end={date2}	//delete entries from date1 to date2. If no dates are given, all entries are deleted
+DELETE /{sensorID}?date1={date1}&date2={date2}	//delete entries from date1 to date2. If no dates are given, all entries are deleted
 
 
 

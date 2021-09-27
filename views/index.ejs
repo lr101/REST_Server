@@ -19,11 +19,8 @@ if (sensors !== undefined) {
 %>
 <main id="main" data-length="<%=len %>">
     <div class="row">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light lightgrey">
-            <a class="navbar-brand darkgrey" href="#">Navigation</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <nav class="navbar lightgrey">
+            <a class="navbar-brand darkgrey">Navigation</a>
             <form  method="get" action="/" class="wrapper">
                 <input id="active_Page" class="button"  type="button" value="home">
             </form>
@@ -56,7 +53,7 @@ if (sensors !== undefined) {
                     <p class="data" data-id="config" id="config">+</p>
                 <%} else {%>
                     <p class="data" data-id="<%=sensors[count].sensorID%>" id="sensor_<%=count%>"><%=sensors[count].sensorNick%></p>
-                    <p id="value_<%=count%>">LOADING...</p>
+                    <p data-unit="<%=sensors[count].unit%>" id="value_<%=count%>">LOADING...</p>
                     <input name="sensorID" hidden>
                 <%}%>
 

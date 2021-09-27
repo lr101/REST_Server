@@ -14,7 +14,8 @@ function getData() {
                 if (list.length === 0) {
                     document.getElementById("value_" + i).innerHTML = "No Data available";
                 } else {
-                    document.getElementById("value_" + i).innerHTML = "Current: " + list[list.length - 1].value + "°C";
+                    let unit = document.getElementById("value_" + i).getAttribute("data-unit");
+                    document.getElementById("value_" + i).innerHTML = "Current: " + list[list.length - 1].value + unit;
                 }
             }
         };

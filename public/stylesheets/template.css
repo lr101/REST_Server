@@ -24,7 +24,7 @@ footer {
     background-color: #dbdbdb;
     background-attachment: fixed;
     text-align: center;
-    padding-top: 20px;
+    padding-top: 10px;
     color : rgba(108, 122, 137, 1);
 }
 
@@ -54,7 +54,7 @@ button {
 }
 
 .lightgrey {
-    background-color: #f5f5f5;
+    background-color: #f5f5f5 !important;
 }
 
 .darkgrey {
@@ -135,5 +135,13 @@ button {
 
 .wrapper {
     position:relative;
-    margin-right: 20px;
+    margin: 5px 10px 5px 10px;
+}
+
+.navbar {
+    justify-content: left;
+}
+
+[class^="col"] {
+    padding-bottom: 10px;
 }

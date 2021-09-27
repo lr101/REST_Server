@@ -2,10 +2,11 @@
  * logic
  */
 
-function select(sensorType, sensorTypeID) {
+function select(sensorType, sensorTypeID, unit) {
     const editElement = document.getElementById("typeName");
     editElement.value = sensorType;
     editElement.setAttribute("data-id", sensorTypeID);
+    document.getElementById("typeUnit").value = unit;
 }
 
 function editButton(input_id) {
@@ -16,15 +17,16 @@ function editButton(input_id) {
 function submitData() {
     const sensorType = document.getElementById("typeName").value;
     const sensorTypeID = document.getElementById("typeName").getAttribute("data-id");
+    const unit = document.getElementById("typeUnit").value;
     const ajax = new XMLHttpRequest();
 
     let json;
-    if (sensorType.length > 0 && sensorType.length < 17 && sensorTypeID !== "" ) {
+    if (unit.length > 0 && unit.length < 6 && sensorType.length > 0 && sensorType.length < 17 && sensorTypeID !== "" ) {
         ajax.open("PUT", "/sensors/types/", true);
-        json = {sensorType : sensorType, sensorTypeID :sensorTypeID}
-    } else if (sensorType.length > 0 && sensorType.length < 17 && sensorTypeID === "") {
+        json = {sensorType : sensorType, sensorTypeID :sensorTypeID, unit: unit}
+    } else if (unit.length > 0 && unit.length < 6 && sensorType.length > 0 && sensorType.length < 17 && sensorTypeID === "") {
         ajax.open("POST", "/sensors/types/", true);
-        json = {sensorType : sensorType}
+        json = {sensorType : sensorType, unit : unit}
     }
     if (json !== undefined) {
         ajax.setRequestHeader("Content-Type", "application/json");
@@ -33,6 +35,9 @@ function submitData() {
             if (ajax.readyState === 4) {
                 if (ajax.status === 200) {
                     updateTypes();
+                    document.getElementById("typeName").disabled = true;
+                    document.getElementById("typeUnit").disabled = true;
+                    document.getElementById("typeUnit").value = "";
                 } else {
                     alert(ajax.responseText);
                 }
@@ -58,7 +63,7 @@ function updateTypes() {
                     btn.id = "list_" + (i === data.length ? "new" : data[i].sensorTypeID);
                     btn.setAttribute("type", "button");
                     btn.setAttribute("data-toggle", "list");
-                    btn.setAttribute("onclick", (i === data.length ? "select('','')" : "select('" + data[i].sensorType + "','" + data[i].sensorTypeID + "')"));
+                    btn.setAttribute("onclick", (i === data.length ? "select('','','')" : "select('" + data[i].sensorType + "','" + data[i].sensorTypeID + "','" + data[i].unit +"')"));
                     btn.innerHTML = (i === data.length ? "+" : data[i].sensorType);
                     listElement.appendChild(btn);
                 }
@@ -75,16 +80,18 @@ document.getElementById("submit").addEventListener("click", function () {
 });
 
 document.getElementById("delete").addEventListener("click", function () {
-    const sensorTypeID = document.getElementById("typeName").getAttribute("data-id");
-    const ajax = new XMLHttpRequest();
-    ajax.open("DELETE", "/sensors/types/" + sensorTypeID, true);
-    ajax.send();
-    ajax.onreadystatechange = function() {
-        if (ajax.readyState === 4) {
-            if (ajax.status === 201) {
-                updateTypes();
-            }else {
-                alert(ajax.responseText);
+    if (confirm("Are you sure to delete?")) {
+        const sensorTypeID = document.getElementById("typeName").getAttribute("data-id");
+        const ajax = new XMLHttpRequest();
+        ajax.open("DELETE", "/sensors/types/" + sensorTypeID, true);
+        ajax.send();
+        ajax.onreadystatechange = function () {
+            if (ajax.readyState === 4) {
+                if (ajax.status === 201) {
+                    updateTypes();
+                } else {
+                    alert(ajax.responseText);
+                }
             }
         }
     }

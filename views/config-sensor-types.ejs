@@ -13,11 +13,8 @@
 </header>
 <main id="main">
     <div class="row">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light lightgrey">
-            <a class="navbar-brand darkgrey" href="#">Navigation</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <nav class="navbar lightgrey">
+            <a class="navbar-brand darkgrey">Navigation</a>
             <form method="get" action="/" class="wrapper">
                 <input  class="button"  type="submit" value="home">
             </form>
@@ -42,19 +39,19 @@
     </div>
 
     <div class="row" id="sensor_config">
-        <section class="col-2 config" id="config_left">
+        <section class="col-lg-2 config" id="config_left">
             <div class="content p-2">
                 <h2>Selection</h2>
                 <div class="list-group" id="list">
                     <%for (let count = 0; count < types.length; count++) { %>
-                    <button id="list_<%=types[count].sensorTypeID%>" type="button" data-toggle="list" onclick="select('<%=types[count].sensorType%>', '<%=types[count].sensorTypeID%>')" class="list-group-item list-group-item-action"><%=types[count].sensorType%></button>
+                    <button id="list_<%=types[count].sensorTypeID%>" type="button" data-toggle="list" onclick="select('<%=types[count].sensorType%>', '<%=types[count].sensorTypeID%>', '<%=types[count].unit%>')" class="list-group-item list-group-item-action"><%=types[count].sensorType%></button>
                     <%}%>
-                    <button id="list_new"  type="button" data-toggle="list" onclick="select('', '')" class="list-group-item list-group-item-action active">+</button>
+                    <button id="list_new"  type="button" data-toggle="list" onclick="select('', '', '')" class="list-group-item list-group-item-action active">+</button>
                 </div>
 
             </div>
         </section>
-        <section class="col-10 config" id="config_middle">
+        <section class="col-lg-10 config" id="config_middle">
             <div class="content">
                 <h1 id="config_name">Sensor Type</h1>
                 <form id="form">
@@ -62,6 +59,11 @@
                     <div class="input-group mb-3">
                         <input data-id="" maxlength="16" minlength="1" autocomplete="off" class="form-control" type="text" id="typeName" name="sensorType" disabled required>
                         <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="editButton('typeName')">Edit</button>
+                    </div>
+                    <label class="form-label"  for="typeUnit">Sensor Unit:</label>
+                    <div class="input-group mb-3">
+                        <input maxlength="5" minlength="1" autocomplete="off" class="form-control" type="text" id="typeUnit" name="unit" disabled required>
+                        <button class="btn btn-outline-secondary" type="button" id="button-unit" onclick="editButton('typeUnit')">Edit</button>
                     </div>
                     <div class="input-group mb-3">
                         <input id="submit" class="button"  value="Submit">
