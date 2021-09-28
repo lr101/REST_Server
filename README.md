@@ -52,7 +52,7 @@ $ INSERT INTO types (sensorType, unit) VALUES ('default', 'dUnit');
  $ cd ./REST_Server/
  $ sudo npm install http fs ejs body-parser moment morgan express mysql util path dotenv 
 ```
-- rename file .env_sample to .env and fill in your username and psw of your db:
+- rename the file .env_sample to .env and fill in your username and psw of your db:
 ```
 $ sudo mv .env_sample .env
 $ sudo nano .env
@@ -98,9 +98,25 @@ Click on one of the square sensors or on the 'display sensors' button to view th
 ## Setup Thermometers:
 
 
-### Microcontroller NodeMCU V.3:
+### [Microcontroller NodeMCU V.3](https://www.amazon.de/AZDelivery-NodeMCU-Lolin-WiFi-Parent/dp/B07Z5C3KQF):
 
-//TODO
+- based on [this](https://randomnerdtutorials.com/esp8266-ds18b20-temperature-sensor-web-server-with-arduino-ide/) and [this](https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/) tutorial
+
+![grafik](https://i2.wp.com/randomnerdtutorials.com/wp-content/uploads/2019/07/ds18b20_esp8266_multiple_bb.png?w=1020&quality=100&strip=all&ssl=1)
+- solder ds18b20 temperatur sensors to pins (blue = data, red = power, black = ground) with a **4.7K Ohm resistor**
+- install drivers by checking the back of your Microcontroller. A driver install page should be printed there.
+- install [Arduino IDE](https://www.arduino.cc/en/software)
+- to add this bord as supported bord go to: File &#8594; Preferences
+- enter in **Additional Board Manager URLs**; https://dl.espressif.com/dl/package_esp32_index.json
+- go to Tools &#8594; Board &#8594; Board Manager and search for ESP32 and install
+- go to Tools &#8594; Board &#8594; NodeMCU V1 (ESP-12E) and select
+- to interface with the ds18b20 sensors the **One wire Library by Paul Stoffregen** and **Dallas Temperature library** are needed. Install under Sketch &#8594; Include Library &#8594; Manage Library
+- open the file uploadESP8266_sample.ino in the Arduino IDE
+- connect your NodeMCU V3 via USB Cable to your PC
+- select the correct COM-Port under Tools &#8594; Port
+- fill in the TODO spots with your own data
+- press Upload to flash your Microcontroller
+
 ### Raspberry Pi
 
 ![grafik](https://user-images.githubusercontent.com/48615489/121551311-d1510480-ca0f-11eb-9d45-4a948329845c.png)
@@ -109,7 +125,7 @@ Click on one of the square sensors or on the 'display sensors' button to view th
 ```
 sudo nano /boot/config.txt
 ```
-- exit file reboot raspi
+- exit file reboot raspberry pi
 ```
 sudo reboot
 ```
