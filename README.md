@@ -32,7 +32,7 @@ Now we create two empty tables. Everything else can be managed later on with the
 $ USE sensors;
 $ CREATE TABLE id(sensorID char(16) NOT NULL, sensorNick char(16), sensorType int, CONSTRAINT PRIMARY KEY (sensorID));
 $ CREATE TABLE types (sensorType int NOT NULL AUTO_INCREMENT, sensorTypeNick char(16), unit char(5), CONSTRAINT PRIMARY KEY (sensorType));
-$ INSERT INTO types (sensorType, unit) VALUES ('default', 'dUnit');
+$ INSERT INTO types (sensorType, unit) VALUES (0, 'dUnit');
 ```
 
 ## Setup Sever:
