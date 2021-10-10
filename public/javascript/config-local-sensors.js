@@ -150,8 +150,8 @@ function alterTempData (method) {
     if (id !== "") {
         let date1 = getTime("date1");
         let date2 = getTime("date2");
-        date1.setMinutes(date1.getMinutes() + date1.getTimezoneOffset());
-        date2.setMinutes(date2.getMinutes() + date2.getTimezoneOffset());
+        date1.setMinutes(date1.getMinutes() - date1.getTimezoneOffset());
+        date2.setMinutes(date2.getMinutes() - date2.getTimezoneOffset());
         if (date1 > date2) {
             const ajax = new XMLHttpRequest();
             ajax.open(method, "/sensors/" + id + "?date1=" + date1.toISOString().slice(0, 19).replace('T', ' ') + "&date2=" + date2.toISOString().slice(0, 19).replace('T', ' '), true);
