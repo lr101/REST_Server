@@ -4,7 +4,7 @@ import sys
 import time
 from datetime import datetime
 
-host = "192.168.0.27:3000"
+host = "[HOST_IP]:3000"
 numberMeasurements = 10
 tempSensorBezeichnung = []  # Array mit Sensorname
 tempSensorAnzahl = 0  # Anzahl sensoren
@@ -57,11 +57,12 @@ try:
 
         while True:
             ds1820auslesen()  # auslesen wird eingeleitet
+            id = 0
             for sensorID in tempSensorBezeichnung:
                     ergebnis = 0
-                    for value in tempSensorWert:  # Bilden des Durchschnitts der gemessenen Werte
+                    for value in tempSensorWert[id]:  # Bilden des Durchschnitts der gemessenen Werte
                         ergebnis += float(value)
-                    ergebnis /= len()
+                    ergebnis /= len(tempSensorWert[id])
                     print(ergebnis)
                     requests.post("http://" + host + "/sensors/" + sensorID.split("-")[0]+sensorID.split("-")[1],json={"value": ergebnis, "date": "no_date"}, timeout=2.50)
             time.sleep(20)
