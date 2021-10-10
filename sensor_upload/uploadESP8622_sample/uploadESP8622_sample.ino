@@ -21,11 +21,11 @@ int numberOfDevices;
 DeviceAddress tempDeviceAddress; 
 
 //Wifi Name and Psw
-const char* ssid = "WIFI_NAME"; //TODO
-const char* password = "WIFI_PSW"; //TODO
+const char* ssid = "Thuisnet"; //TODO
+const char* password = "PingPong987"; //TODO
 
 //Server IP Address
-String host = "[HOST_IP]:3000"; //TODO
+String host = "192.168.0.27:3000"; //TODO
 
 void setup() {
   /*
