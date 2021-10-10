@@ -16,7 +16,7 @@ def ds1820einlesen():
     try:
         for x in os.listdir("/sys/bus/w1/devices"):
             if (x.split("-")[0] == "28") or (x.split("-")[0] == "10"):  # Pruefung ob name ein sensor sein kann
-                tempSensorBezeichnung.append((x.split("-")[0]+x.split("-")[1]))
+                tempSensorBezeichnung.append(x)
                 tempSensorAnzahl = tempSensorAnzahl + 1
     except:
         print("Der Verzeichnisinhalt konnte nicht ausgelesen werden.")
@@ -53,7 +53,7 @@ try:
     if tempSensorBezeichnung is not []:
         ds1820einlesen()  # Vorhandene Sensoren einmalig abfragen
         for sensorID in tempSensorBezeichnung:
-            requests.post("http://" + host + "/sensors/id/", json={"sensorID": sensorID, "sensorNick": "newSensor"},timeout=2.50)
+            requests.post("http://" + host + "/sensors/id/", json={"sensorID": sensorID.split("-")[0]+sensorID.split[1], "sensorNick": "newSensor"},timeout=2.50)
 
         while True:
             ds1820auslesen()  # auslesen wird eingeleitet
@@ -62,7 +62,7 @@ try:
                     for value in tempSensorWert:  # Bilden des Durchschnitts der gemessenen Werte
                         ergebnis += float(value)
                     ergebnis /= len()
-                    requests.post("http://" + host + "/sensors/" + sensorID,json={"value": ergebnis, "date": "no_date"}, timeout=2.50)
+                    requests.post("http://" + host + "/sensors/" + sensorID.split("-")[0]+sensorID.split[1],json={"value": ergebnis, "date": "no_date"}, timeout=2.50)
             db.commit()  # Daten werden nach einem durchlauf in DB gespeichert
             time.sleep(20)
             print("cycle complete")
