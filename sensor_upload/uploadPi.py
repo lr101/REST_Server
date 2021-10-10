@@ -62,8 +62,8 @@ try:
                     for value in tempSensorWert:  # Bilden des Durchschnitts der gemessenen Werte
                         ergebnis += float(value)
                     ergebnis /= len()
+                    print(ergebnis)
                     requests.post("http://" + host + "/sensors/" + sensorID.split("-")[0]+sensorID.split[1],json={"value": ergebnis, "date": "no_date"}, timeout=2.50)
-            db.commit()  # Daten werden nach einem durchlauf in DB gespeichert
             time.sleep(20)
             print("cycle complete")
 except:
