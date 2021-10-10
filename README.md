@@ -30,9 +30,10 @@ $ FLUSH PRIVILEGES;
 Now we create two empty tables. Everything else can be managed later on with the web-interface:
 ```
 $ USE sensors;
-$ CREATE TABLE id(sensorID char(16) NOT NULL, sensorNick char(16), sensorType int, CONSTRAINT PRIMARY KEY (sensorID));
-$ CREATE TABLE types (sensorType int NOT NULL AUTO_INCREMENT, sensorTypeNick char(16), unit char(5), CONSTRAINT PRIMARY KEY (sensorType));
-$ INSERT INTO types (sensorTypeNick, unit) VALUES ('default', 'dUnit');
+$ CREATE TABLE id(sensorID char(16) NOT NULL, sensorNick char(16), sensorTypeID int, CONSTRAINT PRIMARY KEY (sensorID));
+$ CREATE TABLE types (sensorTypeID int NOT NULL AUTO_INCREMENT, sensorType char(16), unit char(5), CONSTRAINT PRIMARY KEY (sensorTypeID));
+$ INSERT INTO types (sensorType, unit) VALUES ('default', 'dUnit');
+$ UPDATE TABLE types SET sensorTypeID=0 WHERE sensorType='default';
 ```
 
 ## Setup Sever:
@@ -136,7 +137,15 @@ sudo reboot
 ```
 sudo modprobe w1-therm
 ```
-
+- copy or move the file uploadPi.py to your home directory
+```
+sudo mv uploadPi.py ~/
+```
+- insert your own data in the given TODOs
+- add file to your pm2 start list with
+```
+sudo pm2 start uploadPi.py
+```
 
 
 
