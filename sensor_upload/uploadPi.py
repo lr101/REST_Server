@@ -15,7 +15,7 @@ def ds1820einlesen():
     global tempSensorBezeichnung, tempSensorAnzahl, programmStatus
     try:
         for x in os.listdir("/sys/bus/w1/devices"):
-            if (x.split("-")[0] == "28") or (x.split("-")[0] == "10"):  # Prüfung ob name ein sensor sein kann
+            if (x.split("-")[0] == "28") or (x.split("-")[0] == "10"):  # Pruefung ob name ein sensor sein kann
                 tempSensorBezeichnung.append(x)
                 tempSensorAnzahl = tempSensorAnzahl + 1
     except:
@@ -41,7 +41,7 @@ def ds1820auslesen():
                 stringvalue = filecontent.split("\n")[1].split(" ")[9]
                 sensorwert = float(stringvalue[2:]) / 1000
                 temperatur = '%6.2f' % sensorwert  # Sensor- bzw. Temperaturwert auf 2 Dezimalstellen formatiert
-                tempSensorWert[x].append(temperatur)  # Wert in Liste hinzufügen
+                tempSensorWert[x].append(temperatur)  # Wert in Liste hinzufuegen
                 x = x + 1
             x = 0
     except:
