@@ -53,7 +53,7 @@ try:
     if tempSensorBezeichnung is not []:
         ds1820einlesen()  # Vorhandene Sensoren einmalig abfragen
         for sensorID in tempSensorBezeichnung:
-            requests.post("http://" + host + "/sensors/id/", json={"sensorID": sensorID.split("-")[0]+sensorID.split[1], "sensorNick": "newSensor"},timeout=2.50)
+            requests.post("http://" + host + "/sensors/id/", json={"sensorID": sensorID.split("-")[0]+sensorID.split("-")[1], "sensorNick": "newSensor"},timeout=2.50)
 
         while True:
             ds1820auslesen()  # auslesen wird eingeleitet
@@ -63,7 +63,7 @@ try:
                         ergebnis += float(value)
                     ergebnis /= len()
                     print(ergebnis)
-                    requests.post("http://" + host + "/sensors/" + sensorID.split("-")[0]+sensorID.split[1],json={"value": ergebnis, "date": "no_date"}, timeout=2.50)
+                    requests.post("http://" + host + "/sensors/" + sensorID.split("-")[0]+sensorID.split("-")[1],json={"value": ergebnis, "date": "no_date"}, timeout=2.50)
             time.sleep(20)
             print("cycle complete")
 except:
