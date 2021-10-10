@@ -5,12 +5,13 @@ Table -> id:
 --------------------
 1. sensorID --- primary key
 2. sensorNick
-3. sensorTypeID
+3. sensorTypeID --- foreign key
 
 Table -> types:
 --------------------
 1. sensorTypeID --- primary key
-3. sensorType
+2. sensorType
+3. unit
 
 Table -> {sensorID}
 --------------------
@@ -21,26 +22,43 @@ Table -> {sensorID}
 
 ***********************************
 REST-API:
-host address: {host-IP}:{host-port}/sensors/
+host address: {host-IP}:{host-port}/
 
 Table -> id:
 ---------------------
-GET /id/     					                //returns the complete Table -> id (and types.sensorType)
-GET /id/{sensorID}				                //returns row with of the given sensorID
-GET /id/{sensorID}/sensorTypeID			        //returns sensorTypeID of specific sensorID
-GET /id/{sensorID}/sensorType			        //returns types.sensorType of specific sensorID
-GET /id/{sensorID}/sensorNick			        //returns sensorType of specific sensorID
-PUT /id/{sensorID}                              //updates sensorNick or/and sensorTypeID json format: {"sensorTypeID": "v1", "sensorNick" : "v2"}
-POST /id/					                    //add new Sensor to Table -> id and create Table -> {sensorID} body: {"sensorID":"{sensorID}", "sensorNick":"{sensorNick}", "sensorType":"{sensorType}"}
-DELETE /id/{sensorID}/				            //delete Table -> {sensorID} and entry in Table -> id *restricted access
+GET /sensors/id/     					                //returns the complete Table -> id + types; result : [{
+                                                                                                          "sensorID": "SENSOR_ID",
+                                                                                                          "sensorNick": "SENSOR_NICK",
+                                                                                                          "sensorTypeID": ID,
+                                                                                                          "sensorType": "SENSOR_TYPE",
+                                                                                                          "unit": "UNIT"
+                                                                                                        }, {...}]
+GET /sensors/id/{sensorID}				                //returns row with of the given sensorID; result: [{
+                                                                                                        "sensorID": "SENSOR_ID",
+                                                                                                        "sensorNick": "SENSOR_NICK",
+                                                                                                        "sensorTypeID": ID,
+                                                                                                        "sensorType": "SENSOR_TYPE",
+                                                                                                        "unit": "UNIT"
+                                                                                                      }]
+GET /sensors/id/{sensorID}/sensorType			        //returns types.sensorType of specific sensorID; result: [{ "sensorType" : "SENSOR_TYPE"}]
+GET /sensors/id/{sensorID}/sensorNick			        //returns sensorType of specific sensorID; result: [{ "sensorNick" : "SENSOR_NICK"}]
+PUT /sensors/id/{sensorID}                              //updates sensorNick or/and sensorTypeID; body: {"sensorTypeID": NUMBER, "sensorNick" : "SENSOR_NICK"}
+POST /sensors/id/					                    //add new Sensor to Table -> id and create Table -> {sensorID}; body: {"sensorID":"SENSOR_ID", "sensorNick":"SENSOR_NICK"}
+DELETE /sensors/id/{sensorID}/				            //delete Table -> {sensorID} and entry in Table -> id
 
 Table -> {sensorID}
 ----------------------
-GET /{sensorID}/				                //returns the complete Table -> {sensorID}
-GET /{sensorID}?date1={date1}&date2={date2}	    //returns the table from date1 until date2
-POST /{sensorID}/				                //adds a new table entry with body as JSON: {"date":"{date1}", "value":"{value1}"}
-DELETE /{sensorID}?date1={date1}&date2={date2}	//delete entries from date1 to date2. If no dates are given, all entries are deleted
+GET /sensors/{sensorID}?date1={date1}&date2={date2}		//returns the table from date1 until date2. If no dates are given, all entries are returned -> {sensorID}; result: [{ "rowID" : NUMBER, "date": "DATETIME_STRING", "value" : NUMBER},{...},...]
+POST /sensors/{sensorID}/				                //adds a new table entry in Table -> {sensorID}; body: {"date":"DATETIME_STRING", "value":NUMBER}
+DELETE /sensors/{sensorID}?date1={date1}&date2={date2}	//delete entries from date1 to date2. If no dates are given, all entries are deleted
 
+Table -> types
+----------------------
+GET /sensors/types                              //returns all values from table types; result: [{ "sensorTypeID" : NUMBER, "sensorType" : "SENSOR_TYPE", "unit": "UNIT"}, {...},...]
+POST /sensors/types                             //adds a new sensor Type to table -> types; body: {"sensorType" :  "SENSOR_TYPE", "unit" :  "UNIT"}
+PUT /sensors/types                              //updates a sensorType or/and unit; body: {"sensorType": "SENSOR_TYPE", "unit": "UNIT"}
+DELETE /sensors/types/{sensorTypeID}            //deletes a row from types with this sensorTypeID. If in use by a sensor, it gets the default sensorTypeID = 0. sensorTypeID=0 can not be deleted;
 
-
-
+other
+----------------------
+GET /display/graph?sensorID={id}&date1={date1}&date2={date2}        //returns a maximum of 250 date, value (both arrays have the same length) Values averaged in between the given date range to display as graph; result: {"values" :[0,1,..], "dates": ["date1", "date2", ...]}

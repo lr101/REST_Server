@@ -7,3 +7,4 @@ views1/*
 /server/package-lock.json
 /server/package.json
 /logging/
+/sensor_upload/uploadESP8622/
