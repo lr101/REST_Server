@@ -70,8 +70,8 @@ $ sudo node ./server/REST_Server.js
 install [PM2](https://dev.to/bogdaaamn/run-your-nodejs-application-on-a-headless-raspberry-pi-4jnn) to auto run script in background:
 ```
  $ sudo npm install -g pm2
- $ pm2 start ./server/REST_server.js
- $ pm2 startup systemd
+ $ sudo pm2 start ./server/REST_server.js
+ $ sudo pm2 startup systemd
 ```
 
 - copy generated command and execute
@@ -79,7 +79,7 @@ install [PM2](https://dev.to/bogdaaamn/run-your-nodejs-application-on-a-headless
 ** different for everybody: 
 $ sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u pi --hp /home/p
 ** save setting:
-$ pm2 save
+$ sudo pm2 save
 ```
 
 ## Using the web-page
@@ -142,9 +142,10 @@ sudo modprobe w1-therm
 sudo mv uploadPi.py ~/
 ```
 - insert your own data in the given TODOs
-- add file to your pm2 start list with
+- add file to your pm2 start list and save:
 ```
 sudo pm2 start uploadPi.py
+sudo pm2 save
 ```
 
 
