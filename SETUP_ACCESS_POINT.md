@@ -77,6 +77,8 @@ source-directory /etc/network/interfaces.d
 ```
 - update dhcpcd.conf file, open and add at the bottom:
 ```
+sudo nano /etc/dhcpcd.conf
+
 nohook wpa_supplicant
 interface wlan0
 static ip_address=192.168.50.10/24 #your IP Adress of the Raspberry 
