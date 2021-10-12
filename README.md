@@ -41,7 +41,18 @@ $ UPDATE types SET sensorTypeID=0 WHERE sensorType='default';
 ### Install Server
 
 - install [npm and node](https://www.makersupplies.sg/blogs/tutorials/how-to-install-node-js-and-npm-on-the-raspberry-pi) for Raspberry Pi:
-- current for nano: https://nodejs.org/dist/latest-v11.x/node-v11.15.0-linux-armv6l.tar.xz
+``` 
+- ONLY FOR RASPBERRY NANO: wget https://nodejs.org/dist/latest-v11.x/node-v11.15.0-linux-armv6l.tar.gz
+- ONLY FOR RASPBERRY 3B+ : //TODO
+tar -xzf node-v11.15.0-linux-armv6l.tar.gz
+cd node-v11.15.0-linux-armv6l/
+sudo cp -R * /usr/local/
+```
+- check if the instalitation worked correctly:
+```
+node -v
+node -v
+```
 - install git:
 ```
  $ sudo apt install git
