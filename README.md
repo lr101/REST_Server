@@ -33,7 +33,7 @@ $ USE sensors;
 $ CREATE TABLE id(sensorID char(16) NOT NULL, sensorNick char(16), sensorTypeID int, CONSTRAINT PRIMARY KEY (sensorID));
 $ CREATE TABLE types (sensorTypeID int NOT NULL AUTO_INCREMENT, sensorType char(16), unit char(5), CONSTRAINT PRIMARY KEY (sensorTypeID));
 $ INSERT INTO types (sensorType, unit) VALUES ('default', 'dUnit');
-$ UPDATE TABLE types SET sensorTypeID=0 WHERE sensorType='default';
+$ UPDATE types SET sensorTypeID=0 WHERE sensorType='default';
 ```
 
 ## Setup Sever:
