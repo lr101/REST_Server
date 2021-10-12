@@ -71,7 +71,7 @@ $ sudo node ./server/REST_Server.js
 install [PM2](https://dev.to/bogdaaamn/run-your-nodejs-application-on-a-headless-raspberry-pi-4jnn) to auto run script in background:
 ```
  $ sudo npm install -g pm2
- $ sudo pm2 start ./server/REST_server.js
+ $ sudo pm2 start ./server/REST_Server.js
  $ sudo pm2 startup systemd
 ```
 
