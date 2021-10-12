@@ -30,9 +30,10 @@ $ FLUSH PRIVILEGES;
 Now we create two empty tables. Everything else can be managed later on with the web-interface:
 ```
 $ USE sensors;
-$ CREATE TABLE id(sensorID char(16) NOT NULL, sensorNick char(16), sensorType int, CONSTRAINT PRIMARY KEY (sensorID));
-$ CREATE TABLE types (sensorType int NOT NULL AUTO_INCREMENT, sensorTypeNick char(16), unit char(5), CONSTRAINT PRIMARY KEY (sensorType));
-$ INSERT INTO types (sensorTypeNick, unit) VALUES ('default', 'dUnit');
+$ CREATE TABLE id(sensorID char(16) NOT NULL, sensorNick char(16), sensorTypeID int, CONSTRAINT PRIMARY KEY (sensorID));
+$ CREATE TABLE types (sensorTypeID int NOT NULL AUTO_INCREMENT, sensorType char(16), unit char(5), CONSTRAINT PRIMARY KEY (sensorTypeID));
+$ INSERT INTO types (sensorType, unit) VALUES ('default', 'dUnit');
+$ UPDATE types SET sensorTypeID=0 WHERE sensorType='default';
 ```
 
 ## Setup Sever:
@@ -40,6 +41,18 @@ $ INSERT INTO types (sensorTypeNick, unit) VALUES ('default', 'dUnit');
 ### Install Server
 
 - install [npm and node](https://www.makersupplies.sg/blogs/tutorials/how-to-install-node-js-and-npm-on-the-raspberry-pi) for Raspberry Pi:
+``` 
+- ONLY FOR RASPBERRY NANO: wget https://nodejs.org/dist/latest-v11.x/node-v11.15.0-linux-armv6l.tar.gz
+- ONLY FOR RASPBERRY 3B+ : //TODO
+tar -xzf node-v11.15.0-linux-armv6l.tar.gz
+cd node-v11.15.0-linux-armv6l/
+sudo cp -R * /usr/local/
+```
+- check if the instalitation worked correctly:
+```
+node -v
+node -v
+```
 - install git:
 ```
  $ sudo apt install git
@@ -69,8 +82,8 @@ $ sudo node ./server/REST_Server.js
 install [PM2](https://dev.to/bogdaaamn/run-your-nodejs-application-on-a-headless-raspberry-pi-4jnn) to auto run script in background:
 ```
  $ sudo npm install -g pm2
- $ pm2 start ./server/REST_server.js
- $ pm2 startup systemd
+ $ sudo pm2 start ./server/REST_Server.js
+ $ sudo pm2 startup systemd
 ```
 
 - copy generated command and execute
@@ -78,7 +91,7 @@ install [PM2](https://dev.to/bogdaaamn/run-your-nodejs-application-on-a-headless
 ** different for everybody: 
 $ sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u pi --hp /home/p
 ** save setting:
-$ pm2 save
+$ sudo pm2 save
 ```
 
 ## Using the web-page
@@ -136,7 +149,16 @@ sudo reboot
 ```
 sudo modprobe w1-therm
 ```
-
+- copy or move the file uploadPi.py to your home directory
+```
+sudo mv uploadPi.py ~/
+```
+- insert your own data in the given TODOs
+- add file to your pm2 start list and save:
+```
+sudo pm2 start uploadPi.py
+sudo pm2 save
+```
 
 
 
