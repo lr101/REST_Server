@@ -179,7 +179,10 @@ app.post("/sensors/types/", async function (req, res) {
     try{
         const sensorType = validate.validateSensorType(req.body.sensorType);
         const unit = validate.validateUnit(req.body.unit);
-        REST_API.POST_types( sensorType, unit).then(function (result) {
+        const repetitions = validate.validateRepetitions(req.body.repetitions);
+        const brakeTime = validate.validateBrakeTime(req.body.brakeTime);
+        const sleepTime = validate.validateSleepTime(req.body.sleepTime);
+        REST_API.POST_types( sensorType, unit, repetitions, brakeTime, sleepTime).then(function (result) {
             if (result === true) {
                 res.status(200).send("ROW ADDED TO TABLE");
             } else {
@@ -261,7 +264,11 @@ app.put("/sensors/types/", async function (req, res) {
         const sensorType = validate.validateSensorType(req.body.sensorType);
         const unit = validate.validateUnit(req.body.unit);
         const sensorTypeID = validate.validateSensorTypeID(req.body.sensorTypeID);
-        REST_API.PUT_types( sensorType, sensorTypeID, unit).then(function (result) {
+        const repetitions = validate.validateRepetitions(req.body.repetitions);
+        const brakeTime = validate.validateBrakeTime(req.body.brakeTime);
+        const sleepTime = validate.validateSleepTime(req.body.sleepTime);
+        console.log(repetitions);
+        REST_API.PUT_types( sensorType, sensorTypeID, unit, repetitions, brakeTime, sleepTime).then(function (result) {
             if (result === true) {
                 res.status(200).send("ROW ADDED TO TABLE");
             } else {
