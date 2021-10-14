@@ -162,15 +162,13 @@ module.exports  = {
         return await con.query(sql);
     },
 
-    POST_types : async function(sensorType, unit, repetitions, brakeTime, sleepTime) {
+    POST_types : async function(sensorType, unit, repetitions, sleepTime) {
        const sql = "INSERT INTO types (sensorType, unit" +
            (repetitions ? ",repetitions" : "" )+
-           (brakeTime ? ",brakeTime" : "" )+
            (sleepTime ? ",sleepTime" : "" )+
            ") VALUES ('" +
            sensorType +"', '" + unit +"'" +
            (repetitions ? "," + repetitions : "")+
-           (brakeTime ? "," + brakeTime : "" )+
            (sleepTime ? "," + sleepTime : "" )+
            ");";
         logDB(sql);
@@ -183,10 +181,9 @@ module.exports  = {
         }
     },
 
-    PUT_types : async function(sensorType, sensorTypeID, unit, repetitions, brakeTime, sleepTime) {
+    PUT_types : async function(sensorType, sensorTypeID, unit, repetitions, sleepTime) {
         const sql = "UPDATE types SET sensorType='"+ sensorType +"', unit='" + unit +"'" +
             (repetitions ? ", repetitions=" + repetitions : "")+
-            (brakeTime ? ", brakeTime=" + brakeTime : "") +
             (sleepTime ? ", sleepTime=" + sleepTime : "") +
             " WHERE sensorTypeID='" + sensorTypeID +"'";
         logDB(sql);

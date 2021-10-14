@@ -35,7 +35,7 @@ Now we create two empty tables. Everything else can be managed later on with the
 ```
 $ USE sensors;
 $ CREATE TABLE id(sensorID varchar(16) NOT NULL, sensorNick varchar(16), sensorTypeID int DEFAULT 0, CONSTRAINT PRIMARY KEY (sensorID));
-$ CREATE TABLE types (sensorTypeID int NOT NULL AUTO_INCREMENT, sensorType varchar(16), unit varchar(5) DEFAULT 'dUnit', repetitions INT DEFAULT 10, brakeTime INT DEFAULT 10, sleepTime INT DEFAULT 200, CONSTRAINT PRIMARY KEY (sensorTypeID));
+$ CREATE TABLE types (sensorTypeID int NOT NULL AUTO_INCREMENT, sensorType varchar(16), unit varchar(5) DEFAULT 'dUnit', repetitions INT DEFAULT 10, sleepTime INT DEFAULT 200, CONSTRAINT PRIMARY KEY (sensorTypeID));
 $ INSERT INTO types (sensorType, unit) VALUES ('default', 'dUnit');
 $ UPDATE types SET sensorTypeID=0 WHERE sensorType='default';
 ```

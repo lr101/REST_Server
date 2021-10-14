@@ -36,7 +36,6 @@ GET /sensors/id/     					                //returns the complete Table -> id + t
                                                                                                           "sensorType": "SENSOR_TYPE",
                                                                                                           "unit": "UNIT",
                                                                                                           "repetitions": NUMBER,
-                                                                                                          "brakeTime": NUMBER,
                                                                                                           "sleepTime": NUMBER
                                                                                                         }, {...}]
 GET /sensors/id/{sensorID}				                //returns row with of the given sensorID; result: [{
@@ -46,7 +45,6 @@ GET /sensors/id/{sensorID}				                //returns row with of the given se
                                                                                                         "sensorType": "SENSOR_TYPE",
                                                                                                         "unit": "UNIT"
                                                                                                         "repetitions": NUMBER,
-                                                                                                        "brakeTime": NUMBER,
                                                                                                         "sleepTime": NUMBER
                                                                                                       }]
 GET /sensors/id/{sensorID}/sensorType			        //returns types.sensorType of specific sensorID; result: [{ "sensorType" : "SENSOR_TYPE"}]
@@ -63,8 +61,8 @@ DELETE /sensors/{sensorID}?date1={date1}&date2={date2}	//delete entries from dat
 
 Table -> types
 ----------------------
-GET /sensors/types                                      //returns all values from table types; result: [{ "sensorTypeID" : NUMBER, "sensorType" : "SENSOR_TYPE", "unit": "UNIT", "repetitions": NUMBER, "brakeTime": NUMBER, "sleepTime": NUMBER}, {...},...]
-POST /sensors/types                                     //adds a new sensor Type to table -> types; body: {"sensorType" :  "SENSOR_TYPE", "unit" :  "UNIT", "repetitions": NUMBER, "brakeTime": NUMBER, "sleepTime": NUMBER}
+GET /sensors/types                                      //returns all values from table types; result: [{ "sensorTypeID" : NUMBER, "sensorType" : "SENSOR_TYPE", "unit": "UNIT", "repetitions": NUMBER, "sleepTime": NUMBER}, {...},...]
+POST /sensors/types                                     //adds a new sensor Type to table -> types; body: {"sensorType" :  "SENSOR_TYPE", "unit" :  "UNIT", "repetitions": NUMBER, "sleepTime": NUMBER}
 PUT /sensors/types                                      //updates a sensorType or/and unit; body: {"sensorType": "SENSOR_TYPE", "unit": "UNIT", "repetitions": NUMBER, "brakeTime": NUMBER, "sleepTime": NUMBER}
 DELETE /sensors/types/{sensorTypeID}                    //deletes a row from types with this sensorTypeID. If in use by a sensor, it gets the default sensorTypeID = 0. sensorTypeID=0 can not be deleted;
 

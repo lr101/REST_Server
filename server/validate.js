@@ -71,13 +71,6 @@ module.exports  = {
         return repetitions;
     },
 
-    validateBrakeTime  : function (brakeTime) {
-        if (brakeTime === undefined) return undefined;
-        brakeTime = escape(brakeTime);
-        //TODO
-        return brakeTime;
-    },
-
     validateSleepTime  : function (sleepTime) {
         if (sleepTime === undefined) return undefined;
         sleepTime = escape(sleepTime);
