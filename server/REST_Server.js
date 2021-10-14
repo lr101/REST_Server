@@ -267,7 +267,6 @@ app.put("/sensors/types/", async function (req, res) {
         const repetitions = validate.validateRepetitions(req.body.repetitions);
         const brakeTime = validate.validateBrakeTime(req.body.brakeTime);
         const sleepTime = validate.validateSleepTime(req.body.sleepTime);
-        console.log(repetitions);
         REST_API.PUT_types( sensorType, sensorTypeID, unit, repetitions, brakeTime, sleepTime).then(function (result) {
             if (result === true) {
                 res.status(200).send("ROW ADDED TO TABLE");

@@ -184,7 +184,6 @@ module.exports  = {
     },
 
     PUT_types : async function(sensorType, sensorTypeID, unit, repetitions, brakeTime, sleepTime) {
-        console.log(repetitions);
         const sql = "UPDATE types SET sensorType='"+ sensorType +"', unit='" + unit +"'" +
             (repetitions ? ", repetitions=" + repetitions : "")+
             (brakeTime ? ", brakeTime=" + brakeTime : "") +
