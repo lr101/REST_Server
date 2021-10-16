@@ -21,6 +21,10 @@ $ FLUSH PRIVILEGES;
 ```
 >Note: This works only for users on the same device > Webserver must run on same device.
 > Only way to change it, is to [enable networking](https://stackoverflow.com/questions/18733802/how-do-i-open-up-my-mysql-on-my-raspberry-pi-for-outside-remote-connections) and Grant all devices access:
+> On my raspberry pi nano: comment '# bind-address = 127.0.0.1' out in the file :
+> ```
+> $ sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf
+> ```
 > ``` 
 > $ CREATE USER 'USER_NAME'@'*' IDENTIFIED BY 'PASSWORD';
 > $ GRANT ALL PRIVILEGES ON sensors.* TO 'USER_NAME'@'*';
@@ -30,8 +34,8 @@ $ FLUSH PRIVILEGES;
 Now we create two empty tables. Everything else can be managed later on with the web-interface:
 ```
 $ USE sensors;
-$ CREATE TABLE id(sensorID char(16) NOT NULL, sensorNick char(16), sensorTypeID int, CONSTRAINT PRIMARY KEY (sensorID));
-$ CREATE TABLE types (sensorTypeID int NOT NULL AUTO_INCREMENT, sensorType char(16), unit char(5), CONSTRAINT PRIMARY KEY (sensorTypeID));
+$ CREATE TABLE id(sensorID varchar(16) NOT NULL, sensorNick varchar(16), sensorTypeID int DEFAULT 0, CONSTRAINT PRIMARY KEY (sensorID));
+$ CREATE TABLE types (sensorTypeID int NOT NULL AUTO_INCREMENT, sensorType varchar(16), unit varchar(5) DEFAULT 'dUnit', repetitions INT DEFAULT 10, sleepTime INT DEFAULT 200, CONSTRAINT PRIMARY KEY (sensorTypeID));
 $ INSERT INTO types (sensorType, unit) VALUES ('default', 'dUnit');
 $ UPDATE types SET sensorTypeID=0 WHERE sensorType='default';
 ```
@@ -48,7 +52,7 @@ tar -xzf node-v11.15.0-linux-armv6l.tar.gz
 cd node-v11.15.0-linux-armv6l/
 sudo cp -R * /usr/local/
 ```
-- check if the instalitation worked correctly:
+- check if the installation worked correctly:
 ```
 node -v
 node -v
@@ -154,7 +158,7 @@ sudo modprobe w1-therm
 sudo mv uploadPi.py ~/
 ```
 - insert your own data in the given TODOs
-- add file to your pm2 start list and save:
+- add the file to your pm2 start list and save:
 ```
 sudo pm2 start uploadPi.py
 sudo pm2 save

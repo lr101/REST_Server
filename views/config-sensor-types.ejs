@@ -44,7 +44,7 @@
                 <h2>Selection</h2>
                 <div class="list-group" id="list">
                     <%for (let count = 0; count < types.length; count++) { %>
-                    <button id="list_<%=types[count].sensorTypeID%>" type="button" data-toggle="list" onclick="select('<%=types[count].sensorType%>', '<%=types[count].sensorTypeID%>', '<%=types[count].unit%>')" class="list-group-item list-group-item-action"><%=types[count].sensorType%></button>
+                    <button id="list_<%=types[count].sensorTypeID%>" type="button" data-toggle="list" onclick="select('<%=types[count].sensorType%>', '<%=types[count].sensorTypeID%>', '<%=types[count].unit%>' , '<%=types[count].repetitions%>', '<%=types[count].brakeTime%>', '<%=types[count].sleepTime%>')" class="list-group-item list-group-item-action"><%=types[count].sensorType%></button>
                     <%}%>
                     <button id="list_new"  type="button" data-toggle="list" onclick="select('', '', '')" class="list-group-item list-group-item-action active">+</button>
                 </div>
@@ -64,6 +64,16 @@
                     <div class="input-group mb-3">
                         <input maxlength="5" minlength="1" autocomplete="off" class="form-control" type="text" id="typeUnit" name="unit" disabled required>
                         <button class="btn btn-outline-secondary" type="button" id="button-unit" onclick="editButton('typeUnit')">Edit</button>
+                    </div>
+                    <label  class="form-label" for="repetitions">Number of Repetitions before calculating average value:</label>
+                    <div class="input-group mb-3">
+                        <input data-id="" min="1" autocomplete="off" class="form-control" type="number" id="repetitions" name="repetitions" disabled required>
+                        <button class="btn btn-outline-secondary" type="button" id="button-rep" onclick="editButton('repetitions')">Edit</button>
+                    </div>
+                    <label  class="form-label" for="sleepTime">Time between two sets of measurements in ms:</label>
+                    <div class="input-group mb-3">
+                        <input data-id="" min="1" autocomplete="off" class="form-control" type="number" id="sleepTime" name="sleepTime" disabled required>
+                        <button class="btn btn-outline-secondary" type="button" id="button-sleep" onclick="editButton('sleepTime')">Edit</button>
                     </div>
                     <div class="input-group mb-3">
                         <input id="submit" class="button"  value="Submit">
