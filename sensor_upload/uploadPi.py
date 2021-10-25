@@ -1,77 +1,89 @@
 # IMPORTANT: this file has to be in your devices home directory to work (~/)
 
-import requests
 import os
-import sys
 import time
-from datetime import datetime
+import requests
 
-host = "[HOST_IP]:3000" #TODO: add the ip Address of your web Server (often just localhost)
-numberMeasurements = 10
-tempSensorBezeichnung = []  # Array with sensorID names
-tempSensorAnzahl = 0  # number of sensors
-tempSensorWert = []  # array of measured temperatures
+host = "localhost:3000"
+sleep = 0
 
 
-def ds1820einlesen():
-    global tempSensorBezeichnung, tempSensorAnzahl, programmStatus
+def post_http(url, body):
+    requests.post(url, json=body, timeout=2.50)
+
+
+def get_http(url):
+    return ((requests.get(url, timeout=2.50)).json())[0]
+
+
+class Sensor:
+
+    def __init__(self, _id, _repetitions):
+        self.id = _id
+        self.sensor_id = _id.split("")[0] + _id.split("-")[1]
+        self.repetitions = _repetitions
+        self.values = []
+
+    def get_avg(self):
+        if len(self.values) == self.repetitions:
+            return sum(self.values) / len(self.values)
+        return -1
+
+    def set_value(self, value):
+        self.values.append(value)
+        print(self.values)
+        if len(self.values) == self.repetitions:
+            url = str("http://") + host + str("/sensors/") + str(self.sensor_id)
+            json = {"value": self.get_avg(), "date": "no_date"}
+            post_http(url, json)
+            self.values = []
+
+
+def get_sensors():
+    global sleep
+    sleep = 0
+    sensor_list = []
     try:
         for x in os.listdir("/sys/bus/w1/devices"):
             if (x.split("-")[0] == "28") or (x.split("-")[0] == "10"):  # check if name matches sensorID criteria
-                tempSensorBezeichnung.append(x)
-                tempSensorAnzahl = tempSensorAnzahl + 1
-    except:
-        print("Could not read directory")
+                sensor_id = x.split("")[0] + x.split("-")[1]
+                # POST
+                url = "http://" + host + "/sensors/id/"
+                json = {"sensorID": sensor_id, "sensorNick": "newSensor"}
+                post_http(url, json)
+                # GET
+                url = "http://" + host + "/sensors/id/" + sensor_id
+                json = get_http(url)
+                sensor = Sensor(json["sensorID"], json["repetitions"])
+                sensor_list.append(sensor)
+                sleep += int(json["sleepTime"])
+    except Exception as e:
+        print("Could not read directory: %s" % str(e))
+        return []
+
+    sleep = sleep / len(sensor_list) / 1000
+    return sensor_list
 
 
-def ds1820auslesen():
-    global tempSensorBezeichnung, tempSensorAnzahl, tempSensorWert, programmStatus
-    x = 0
-    tempSensorWert = []
+def get_value(filename):
     try:
-        while x < tempSensorAnzahl:  # make array two dimensional with the amount of sensors connected
-            tempSensorWert.append([])
-            x = x + 1
-        x = 0
-        for m in range(numberMeasurements):  # take amount of predefined measurements
-            while x < tempSensorAnzahl:
-                dateiName = "/sys/bus/w1/devices/" + tempSensorBezeichnung[x] + "/w1_slave"
-                file = open(dateiName)
-                filecontent = file.read()
-                file.close()
-                stringvalue = filecontent.split("\n")[1].split(" ")[9]
-                sensorwert = float(stringvalue[2:]) / 1000
-                temperatur = '%6.2f' % sensorwert  # format to have two decimal digits
-                tempSensorWert[x].append(temperatur)  # add value to array
-                x = x + 1
-            x = 0
-    except:
-        # Couldn't read directory
-        print("ERROR")
+        file = open("/sys/bus/w1/devices/" + filename + "/w1_slave")
+        content = file.read()
+        file.close()
+        return '%6.2f' % (float((content.split("\n")[1].split(" ")[9])[2:]) / 1000)
+    except Exception as e:
+        print("Error while reading value: %s" % str(e))
+        return -1
 
 
-try:
-    if tempSensorBezeichnung is not []:
-        ds1820einlesen()  # get sensors
-        for sensorID in tempSensorBezeichnung:
-            # POST sensorID's to web Server
-            requests.post("http://" + host + "/sensors/id/", json={"sensorID": sensorID.split("-")[0]+sensorID.split("-")[1], "sensorNick": "newSensor"},timeout=2.50)
-
+def loop():
+    global sleep
+    sensor_list = get_sensors()
+    if len(sensor_list) > 0:
         while True:
-            ds1820auslesen()  # get a measurement
-            id = 0
-            for sensorID in tempSensorBezeichnung:
-                    ergebnis = 0
-                    for value in tempSensorWert[id]:  # calculate average
-                        ergebnis += float(value)
-                    ergebnis /= len(tempSensorWert[id])
+            for sensor in sensor_list:
+                sensor.set_value(get_value(sensor.id))
+            time.sleep(sleep)
 
-                    # POST measurement to web server
-                    requests.post("http://" + host + "/sensors/" + sensorID.split("-")[0]+sensorID.split("-")[1],json={"value": ergebnis, "date": "no_date"}, timeout=2.50)
-            # pause for 20 sec.
-            time.sleep(20)
-            print("cycle complete")
-except:
-    #Couldn reach web server
-    time.sleep(20)
 
+loop()
