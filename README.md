@@ -68,7 +68,7 @@ node -v
 - install packages in the root folder of the Project:
 ```
  $ cd ./REST_Server/
- $ sudo npm install http fs ejs body-parser moment morgan express mysql util path dotenv 
+ $ sudo npm install http fs ejs body-parser moment morgan express mysql util path dotenv escape-html
 ```
 - rename the file .env_sample to .env and fill in your username and psw of your db:
 ```
