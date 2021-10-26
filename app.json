@@ -1,8 +1,10 @@
 {
   "name": "Start on Heroku: Node.js",
-  "description": "A barebones Node.js app using Express 4",
+  "description": "REST based web Server for displaying sensor values",
   "repository": "https://github.com/lr101/REST_Server",
-  "logo": "https://cdn.rawgit.com/heroku/node-js-getting-started/main/public/node.svg",
-  "keywords": ["node", "express", "heroku"],
-  "image": "heroku/nodejs"
+  "image": "heroku/nodejs",
+  "version": "1.0.0",
+  "engines": {
+    "node": "14.x"
+  }
 }
