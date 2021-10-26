@@ -1,0 +1,1 @@
+web: ./server/REST_Server.js npm start
