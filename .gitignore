@@ -8,3 +8,4 @@ views1/*
 /server/package.json
 /logging/
 /sensor_upload/uploadESP8622/
+/private-key.txt

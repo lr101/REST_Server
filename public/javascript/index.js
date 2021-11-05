@@ -6,7 +6,7 @@ function getData() {
     for (let i = 0; i < length; i++) {
         let id = document.getElementById("sensor_" + i).getAttribute("data-id");
         const ajax = new XMLHttpRequest();
-        ajax.open("GET", "/sensors/" + id + "?date2=" + date , true);
+        ajax.open("GET", "/sensors/" + id + "?date2=" + date + "&limit=1" , true);
         ajax.send(null);
         ajax.onreadystatechange = function() {
             if (ajax.readyState === 4) {
@@ -28,7 +28,7 @@ function setListeners(classSelector) {
         const element = sensorPlaceDOM[i];
         let id = element.firstElementChild.firstElementChild.getAttribute("data-id");
         element.firstElementChild.lastElementChild.setAttribute("value", id);
-        element.action = id === "config" ? "/config" : "/display?sensorID=" + id;
+        element.action = id === "config" ? "/config" : "/display?sensor_id=" + id;
         element.addEventListener("click", function () {
             element.submit();
         });

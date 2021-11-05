@@ -4,6 +4,7 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #include <Arduino_JSON.h>
+#include <WiFiClientSecure.h>
 
 //Define GPIO pin D2 as Data-pin
 #define ONE_WIRE_BUS 4
@@ -16,11 +17,11 @@ const char* ssid = "WIFI"; //TODO
 const char* password = "WIFI_PSW"; //TODO
 
 //Server IP Address
-String host = "[HOST_IP]:3000"; //TODO
+String host = "https://[APP_URL].com"; //TODO
 
 struct sensorStruct {
     int repetitions;
-    String sensorID;
+    String sensor_id;
     float* values;
     int numValue = 0;
     float* curValue;
@@ -70,6 +71,10 @@ void setup() {
   Serial.print(WiFi.localIP());
   Serial.println("/");
 
+  WiFiClient client;
+  HTTPClient http;
+
+
   /*
    * Setup Thermometers
    * Send Thermometer serial number to server to setup db
@@ -87,28 +92,33 @@ void setup() {
    for(int i=0;i<numberOfDevices; i++){
 
     if(sensors.getAddress(tempDeviceAddress, i)){
-      String sensorID = convertSensorID(tempDeviceAddress);
+      String sensor_id = convertSensorID(tempDeviceAddress);
+      sensor_id = "s" + sensor_id;
       /**
        * POST sensor serial numbers to webServer
        **/
-      WiFiClient client;
+      WiFiClientSecure client;
+      client.setInsecure();
+      client.connect(host.c_str(), 80);
       HTTPClient http;
 
       //Connect to WebServer:
-      if (http.begin(client, "http://" + host + "/sensors/id/")){
+      if(http.begin(client, (host + "/sensors/id/").c_str())){
         // we are connected to the host!
         http.addHeader("Content-Type", "application/json");
-        int httpCode = http.POST("{\"sensorID\":\"" + sensorID + "\",\"sensorNick\":\"newSensor\"}");                                  //Send the request
+        Serial.println(sensor_id);//Send the request
+        int httpCode = http.POST("{\"sensor_id\":\"" + sensor_id + "\",\"sensor_nick\":\"newSensor\"}");
+
         if (httpCode > 0) { //Check the returning code
            http.end();
            //get Information of Sensor
-           http.begin(client, "http://" + host + "/sensors/id/" + sensorID);
+           http.begin(client, (host + "/sensors/id/" + sensor_id).c_str());
            int httpCode = http.GET();
            if (httpCode == HTTP_CODE_OK) {
               JSONVar myObject = JSON.parse(http.getString());
               infos[i].repetitions = (int) myObject[0]["repetitions"];
               avgSleepTime += (int) myObject[0]["sleepTime"];
-              infos[i].sensorID = sensorID;
+              infos[i].sensor_id = sensor_id;
               infos[i].values = new float[infos[i].repetitions];
               infos[i].curValue = infos[i].values;
             }
@@ -135,8 +145,6 @@ void loop() {
     // Search the wire for address
     if(sensors.getAddress(tempDeviceAddress, i)){
       *(infos[i].curValue) = sensors.getTempC(tempDeviceAddress);
-      Serial.println(*(infos[i].curValue));
-      Serial.println((infos[i].numValue));
       (infos[i].curValue)++;
       (infos[i].numValue)++;
       /*
@@ -145,13 +153,14 @@ void loop() {
       if(infos[i].numValue == infos[i].repetitions) {
         infos[i].numValue = 0;
         infos[i].curValue = infos[i].values;
-        Serial.println((infos[i].sensorID));
 
-        WiFiClient client;
+        WiFiClientSecure client;
+        client.setInsecure();
+        client.connect(host.c_str(), 80);
+         HTTPClient http;
 
-        HTTPClient http;
         //Connect to WebServer:
-        if (http.begin(client, "http://" + host + "/sensors/" + infos[i].sensorID + "/")){
+        if (http.begin(client, host + "/sensors/" + infos[i].sensor_id + "/")){
           // we are connected to the host!
           http.addHeader("Content-Type", "application/json");
           int httpCode = http.POST("{\"value\":\"" + (String)getAvg(infos[i].values, infos[i].repetitions) + "\",\"date\":\"noValue\"}");                                  //Send the request

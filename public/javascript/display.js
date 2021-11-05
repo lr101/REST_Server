@@ -1,5 +1,5 @@
 let chart;
-
+const TIME_ZONE_OFFSET = -60;
 
 const id = document.getElementById("title").getAttribute("data-id");
 
@@ -75,7 +75,7 @@ function getDataGraph(offset, date1, date2) {
     if (date1 === undefined)  date1 = getCurrentDate(0);
     if (date2 === undefined)  date2 = getCurrentDate(offset);
     const ajax = new XMLHttpRequest();
-    ajax.open("GET", "/display/graph?sensorID=" + id + "&date1=" + date1 + "&date2=" + date2, true);
+    ajax.open("GET", "/display/graph?sensor_id=" + id + "&date1=" + date1 + "&date2=" + date2 + "&timezone=" + (new Date(new Date().getTime() + 2 * 3600 * 1000).getTimezoneOffset() + TIME_ZONE_OFFSET), true);
     ajax.send(null);
     ajax.onreadystatechange = function () {
         if (ajax.readyState === 4) {
@@ -97,7 +97,7 @@ function getCurrentDate(offset) {
 
 function getDataCurrent() {
     const ajax = new XMLHttpRequest();
-    ajax.open("GET", "/sensors/" + id + "?date2=" + getCurrentDate(10) , true);
+    ajax.open("GET", "/sensors/" + id + "?date2=" + getCurrentDate(10) + "&limit=1" , true);
     ajax.send(null);
     ajax.onreadystatechange = function() {
         if (ajax.readyState === 4) {

@@ -2,14 +2,16 @@ const MAX_TEMP_DISPLAYED = 250;
 
 
 module.exports = {
-    formatForGraph: function (object) {
+    formatForGraph: function (object, timezone) {
         let value = [];
         let date = [];
         if (object.length > 0) {
 
             object.forEach(function (o) {
                 value.push(o.value);
-                date.push(o.date);
+                let d = new Date(o.date);
+                d.setMinutes(d.getMinutes() + timezone);
+                date.push(d);
             });
             if (date.length > MAX_TEMP_DISPLAYED) {
 

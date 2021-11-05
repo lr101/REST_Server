@@ -2,13 +2,13 @@
  * logic
  */
 
-function select(sensorType, sensorTypeID, unit, repetitions, sleepTime) {
+function select(sensor_type, sensor_type_id, unit, repetitions, sleep_time) {
     const editElement = document.getElementById("typeName");
-    editElement.value = sensorType;
-    editElement.setAttribute("data-id", sensorTypeID);
+    editElement.value = sensor_type;
+    editElement.setAttribute("data-id", sensor_type_id);
     document.getElementById("typeUnit").value = unit;
     document.getElementById("repetitions").value = repetitions;
-    document.getElementById("sleepTime").value = sleepTime;
+    document.getElementById("sleep_time").value = sleep_time;
 }
 
 function editButton(input_id) {
@@ -17,22 +17,22 @@ function editButton(input_id) {
 }
 
 function submitData() {
-    const sensorType = document.getElementById("typeName").value;
-    const sensorTypeID = document.getElementById("typeName").getAttribute("data-id");
+    const sensor_type = document.getElementById("typeName").value;
+    const sensor_type_id = document.getElementById("typeName").getAttribute("data-id");
     const unit = document.getElementById("typeUnit").value;
     const repetitions = document.getElementById("repetitions").value;
-    const sleepTime = document.getElementById("sleepTime").value;
+    const sleep_time = document.getElementById("sleep_time").value;
     const ajax = new XMLHttpRequest();
 
     let json;
-    if (sensorTypeID !== "" ) {
+    if (sensor_type_id !== "" ) {
         ajax.open("PUT", "/sensors/types/", true);
-        json = {sensorType : sensorType, sensorTypeID :sensorTypeID, unit: unit, repetitions: repetitions, sleepTime : sleepTime}
-    } else if (sensorTypeID === "") {
+        json = {sensor_type : sensor_type, sensor_type_id :sensor_type_id, unit: unit, repetitions: repetitions, sleep_time : sleep_time}
+    } else if (sensor_type_id === "") {
         ajax.open("POST", "/sensors/types/", true);
-        json = {sensorType : sensorType, unit : unit, repetitions: repetitions, sleepTime : sleepTime}
+        json = {sensor_type : sensor_type, unit : unit, repetitions: repetitions, sleep_time : sleep_time}
     }
-    if (json !== undefined && !isNaN(repetitions)  && !isNaN(sleepTime) && unit.length > 0 && unit.length < 6 && sensorType.length > 0 && sensorType.length < 17) {
+    if (json !== undefined && !isNaN(repetitions)  && !isNaN(sleep_time) && unit.length > 0 && unit.length < 6 && sensor_type.length > 0 && sensor_type.length < 17) {
         ajax.setRequestHeader("Content-Type", "application/json");
         ajax.send(JSON.stringify(json));
         ajax.onreadystatechange = function () {
@@ -42,10 +42,10 @@ function submitData() {
                     document.getElementById("typeName").disabled = true;
                     document.getElementById("typeUnit").disabled = true;
                     document.getElementById("repetitions").disabled = true;
-                    document.getElementById("sleepTime").disabled = true;
+                    document.getElementById("sleep_time").disabled = true;
                     document.getElementById("typeUnit").value = "";
                     document.getElementById("repetitions").value = "";
-                    document.getElementById("sleepTime").value = "";
+                    document.getElementById("sleep_time").value = "";
                 } else {
                     alert(ajax.responseText);
                 }
@@ -68,13 +68,13 @@ function updateTypes() {
                     let btn = document.createElement("button");
                     btn.classList.add('list-group-item','list-group-item-action');
                     if (i === data.length) btn.classList.add('active');
-                    btn.id = "list_" + (i === data.length ? "new" : data[i].sensorTypeID);
+                    btn.id = "list_" + (i === data.length ? "new" : data[i].sensor_type_id);
                     btn.setAttribute("type", "button");
                     btn.setAttribute("data-toggle", "list");
-                    btn.setAttribute("onclick", (i === data.length ? "select('','','','','')" : "select('" + data[i].sensorType + "','" + data[i].sensorTypeID + "','" + data[i].unit +"','" +
-                        data[i].repetitions +  "','" + data[i].sleepTime
+                    btn.setAttribute("onclick", (i === data.length ? "select('','','','','')" : "select('" + data[i].sensor_type + "','" + data[i].sensor_type_id + "','" + data[i].unit +"','" +
+                        data[i].repetitions +  "','" + data[i].sleep_time
                         +"')"));
-                    btn.innerHTML = (i === data.length ? "+" : data[i].sensorType);
+                    btn.innerHTML = (i === data.length ? "+" : data[i].sensor_type);
                     listElement.appendChild(btn);
                 }
                 document.getElementById("typeName").value = "";
@@ -91,9 +91,9 @@ document.getElementById("submit").addEventListener("click", function () {
 
 document.getElementById("delete").addEventListener("click", function () {
     if (confirm("Are you sure to delete?")) {
-        const sensorTypeID = document.getElementById("typeName").getAttribute("data-id");
+        const sensor_type_id = document.getElementById("typeName").getAttribute("data-id");
         const ajax = new XMLHttpRequest();
-        ajax.open("DELETE", "/sensors/types/" + sensorTypeID, true);
+        ajax.open("DELETE", "/sensors/types/" + sensor_type_id, true);
         ajax.send();
         ajax.onreadystatechange = function () {
             if (ajax.readyState === 4) {

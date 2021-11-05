@@ -23,8 +23,8 @@
                 <div class="dropdown-content">
                     <%for (let count = 0; count < sensors.length; count++) { %>
                     <form class="content" action="/display" method="get" >
-                        <input hidden name="sensorID" value="<%=sensors[count].sensorID%>">
-                        <input class="dropdown-item" id="dropdown_<%=sensors[count].sensorID%>" type="submit" value="<%=sensors[count].sensorNick%>">
+                        <input hidden name="sensor_id" value="<%=sensors[count].sensor_id%>">
+                        <input class="dropdown-item" id="dropdown_<%=sensors[count].sensor_id%>" type="submit" value="<%=sensors[count].sensor_nick%>">
                     </form>
                     <%}%>
                 </div>
@@ -44,7 +44,7 @@
                 <h2>Selection</h2>
                 <div class="list-group" id="list">
                     <%for (let count = 0; count < types.length; count++) { %>
-                    <button id="list_<%=types[count].sensorTypeID%>" type="button" data-toggle="list" onclick="select('<%=types[count].sensorType%>', '<%=types[count].sensorTypeID%>', '<%=types[count].unit%>' , '<%=types[count].repetitions%>', '<%=types[count].brakeTime%>', '<%=types[count].sleepTime%>')" class="list-group-item list-group-item-action"><%=types[count].sensorType%></button>
+                    <button id="list_<%=types[count].sensor_type_id%>" type="button" data-toggle="list" onclick="select('<%=types[count].sensor_type%>', '<%=types[count].sensor_type_id%>', '<%=types[count].unit%>' , '<%=types[count].repetitions%>', '<%=types[count].brakeTime%>', '<%=types[count].sleep_time%>')" class="list-group-item list-group-item-action"><%=types[count].sensor_type%></button>
                     <%}%>
                     <button id="list_new"  type="button" data-toggle="list" onclick="select('', '', '')" class="list-group-item list-group-item-action active">+</button>
                 </div>
@@ -57,7 +57,7 @@
                 <form id="form">
                     <label  class="form-label" for="typeName">Sensor Type Name:</label>
                     <div class="input-group mb-3">
-                        <input data-id="" maxlength="16" minlength="1" autocomplete="off" class="form-control" type="text" id="typeName" name="sensorType" disabled required>
+                        <input data-id="" maxlength="16" minlength="1" autocomplete="off" class="form-control" type="text" id="typeName" name="sensor_type" disabled required>
                         <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="editButton('typeName')">Edit</button>
                     </div>
                     <label class="form-label"  for="typeUnit">Sensor Unit:</label>
@@ -70,10 +70,10 @@
                         <input data-id="" min="1" autocomplete="off" class="form-control" type="number" id="repetitions" name="repetitions" disabled required>
                         <button class="btn btn-outline-secondary" type="button" id="button-rep" onclick="editButton('repetitions')">Edit</button>
                     </div>
-                    <label  class="form-label" for="sleepTime">Time between two sets of measurements in ms:</label>
+                    <label  class="form-label" for="sleep_time">Time between two sets of measurements in ms:</label>
                     <div class="input-group mb-3">
-                        <input data-id="" min="1" autocomplete="off" class="form-control" type="number" id="sleepTime" name="sleepTime" disabled required>
-                        <button class="btn btn-outline-secondary" type="button" id="button-sleep" onclick="editButton('sleepTime')">Edit</button>
+                        <input data-id="" min="1" autocomplete="off" class="form-control" type="number" id="sleep_time" name="sleep_time" disabled required>
+                        <button class="btn btn-outline-secondary" type="button" id="button-sleep" onclick="editButton('sleep_time')">Edit</button>
                     </div>
                     <div class="input-group mb-3">
                         <input id="submit" class="button"  value="Submit">

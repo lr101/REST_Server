@@ -31,13 +31,21 @@ $ FLUSH PRIVILEGES;
 > $ FLUSH PRIVILEGES;
 > ```
 
-Now we create two empty tables. Everything else can be managed later on with the web-interface:
+Now we create two empty tables. Everything else can be managed later on with the web-interface: \
+PostgreSQL:
+```
+$ CREATE TABLE id(sensor_id varchar(17) NOT NULL PRIMARY KEY, sensor_nick varchar(16), sensor_type_id int DEFAULT 0);
+$ CREATE TABLE types (sensor_type_id SERIAL PRIMARY KEY, sensor_type varchar(16), unit varchar(5) DEFAULT 'dUnit', repetitions INT DEFAULT 10, sleep_time INT DEFAULT 200);
+$ INSERT INTO types (sensor_type, unit) VALUES ('default', 'dUnit');
+$ UPDATE types SET sensor_type_id=0 WHERE sensor_type='default';
+```
+MYSQL:
 ```
 $ USE sensors;
-$ CREATE TABLE id(sensorID varchar(16) NOT NULL, sensorNick varchar(16), sensorTypeID int DEFAULT 0, CONSTRAINT PRIMARY KEY (sensorID));
-$ CREATE TABLE types (sensorTypeID int NOT NULL AUTO_INCREMENT, sensorType varchar(16), unit varchar(5) DEFAULT 'dUnit', repetitions INT DEFAULT 10, sleepTime INT DEFAULT 200, CONSTRAINT PRIMARY KEY (sensorTypeID));
-$ INSERT INTO types (sensorType, unit) VALUES ('default', 'dUnit');
-$ UPDATE types SET sensorTypeID=0 WHERE sensorType='default';
+$ CREATE TABLE id(sensor_id varchar(17) NOT NULL, sensor_nick varchar(16), sensor_type_id int DEFAULT 0, CONSTRAINT PRIMARY KEY (sensor_id));
+$ CREATE TABLE types (sensor_type_id int NOT NULL AUTO_INCREMENT, sensor_type varchar(16), unit varchar(5) DEFAULT 'dUnit', repetitions INT DEFAULT 10, sleep_time INT DEFAULT 200, CONSTRAINT PRIMARY KEY (sensor_type_id));
+$ INSERT INTO types (sensor_type, unit) VALUES ('default', 'dUnit');
+$ UPDATE types SET sensor_type_id=0 WHERE sensorType='default';
 ```
 
 ## Setup Sever:

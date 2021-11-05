@@ -3,7 +3,7 @@ const moment = require('moment');
 const escapes = require('escape-html');
 moment().format();
 
-const MAX_CHAR = 16;
+const MAX_CHAR = 17;
 
 function escape (statement) {
     statement = mysql.escape(statement);
@@ -14,36 +14,36 @@ function escape (statement) {
 }
 
 module.exports  = {
-    validateSensorID : function (sensorID) {
-        if (sensorID === undefined) return undefined;
-        sensorID = escape(sensorID);
-        if (sensorID.length === 0) return undefined;
-        if (sensorID.length > MAX_CHAR) return undefined;
-        return sensorID;
+    validatesensor_id : function (sensor_id) {
+        if (sensor_id === undefined) return undefined;
+        sensor_id = escape(sensor_id);
+        if (sensor_id.length === 0) return undefined;
+        if (sensor_id.length > MAX_CHAR) return undefined;
+        return sensor_id;
     },
 
-    validateSensorNick : function (sensorNick) {
-        if (sensorNick === undefined) return undefined;
-        sensorNick = escape(sensorNick);
-        if (sensorNick.length === 0) return undefined;
-        if (sensorNick.length > MAX_CHAR) return undefined;
-        return sensorNick;
+    validatesensor_nick : function (sensor_nick) {
+        if (sensor_nick === undefined) return undefined;
+        sensor_nick = escape(sensor_nick);
+        if (sensor_nick.length === 0) return undefined;
+        if (sensor_nick.length > MAX_CHAR) return undefined;
+        return sensor_nick;
     },
 
-    validateSensorType : function (sensorType) {
-        if (sensorType === undefined) return undefined;
-        sensorType = escape(sensorType);
-        if (sensorType.length === 0) return undefined;
-        if (sensorType.length > MAX_CHAR) return undefined;
-        return sensorType;
+    validatesensor_type : function (sensor_type) {
+        if (sensor_type === undefined) return undefined;
+        sensor_type = escape(sensor_type);
+        if (sensor_type.length === 0) return undefined;
+        if (sensor_type.length > MAX_CHAR) return undefined;
+        return sensor_type;
     },
 
-    validateSensorTypeID : function (sensorTypeID) {
-        if (sensorTypeID === undefined) return undefined;
-        sensorTypeID = escape(sensorTypeID);
-        if (isNaN(sensorTypeID)) return undefined;
-        if (sensorTypeID < 0) return undefined;
-        return sensorTypeID;
+    validatesensor_type_id : function (sensor_type_id) {
+        if (sensor_type_id === undefined) return undefined;
+        sensor_type_id = escape(sensor_type_id);
+        if (isNaN(sensor_type_id)) return undefined;
+        if (sensor_type_id < 0) return undefined;
+        return sensor_type_id;
     },
 
     validateDate : function (date) {
@@ -79,11 +79,29 @@ module.exports  = {
         return repetitions;
     },
 
-    validateSleepTime  : function (sleepTime) {
-        if (sleepTime === undefined) return undefined;
-        sleepTime = escape(sleepTime);
-        if (isNaN(sleepTime)) return undefined;
-        if (sleepTime < 0) return undefined;
-        return sleepTime;
+    validatesleep_time  : function (sleep_time) {
+        if (sleep_time === undefined) return undefined;
+        sleep_time = escape(sleep_time);
+        if (isNaN(sleep_time)) return undefined;
+        if (sleep_time < 0) return undefined;
+        return sleep_time;
+    },
+
+    validate_limit  : function (limit) {
+        if (limit === undefined) return undefined;
+        limit = escape(limit);
+        if (isNaN(limit)) return undefined;
+        if (limit <= 0) return undefined;
+        return limit;
+    },
+
+    validate_timezone: function (timezone) {
+        if (timezone === undefined) return undefined;
+        timezone = escape(timezone);
+        if (isNaN(timezone)) return undefined;
+        if (timezone < -720 && timezone > 840) return undefined;
+        return parseInt(timezone);
     }
+
+
 }

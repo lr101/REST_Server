@@ -29,8 +29,8 @@ if (sensors !== undefined) {
                 <div class="dropdown-content">
                     <%for (let count = 0; count < len - 1; count++) { %>
                     <form class="content" action="/display" method="get" >
-                        <input hidden name="sensorID" value="<%=sensors[count].sensorID%>">
-                        <input class="dropdown-item" id="dropdown_<%=sensors[count].sensorID%>" type="submit" value="<%=sensors[count].sensorNick%>">
+                        <input hidden name="sensor_id" value="<%=sensors[count].sensor_id%>">
+                        <input class="dropdown-item" id="dropdown_<%=sensors[count].sensor_id%>" type="submit" value="<%=sensors[count].sensor_nick%>">
                     </form>
                     <%}%>
                 </div>
@@ -52,9 +52,9 @@ if (sensors !== undefined) {
                 <%if(count + 1 === len) {%>
                     <p class="data" data-id="config" id="config">+</p>
                 <%} else {%>
-                    <p class="data" data-id="<%=sensors[count].sensorID%>" id="sensor_<%=count%>"><%=sensors[count].sensorNick%></p>
-                    <p data-unit="<%=sensors[count].unit%>" id="value_<%=count%>">LOADING...</p>
-                    <input name="sensorID" hidden>
+                <p class="data" data-id="<%=sensors[count].sensor_id%>" id="sensor_<%=count%>"><%=sensors[count].sensor_nick%></p>
+                <p data-unit="<%=sensors[count].unit%>" id="value_<%=count%>">LOADING...</p>
+                <input name="sensor_id" hidden>
                 <%}%>
 
             </div>

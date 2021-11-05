@@ -11,13 +11,13 @@ function dropdown(id) {
             if (ajax.readyState === 4) {
                 let values = JSON.parse(ajax.responseText)[0];
                 if (values) {
-                    document.getElementById("config_name").innerHTML = values.sensorNick;
-                    document.getElementById("nickname").value = values.sensorNick;
-                    document.getElementById("id").value = values.sensorID;
+                    document.getElementById("config_name").innerHTML = values.sensor_nick;
+                    document.getElementById("nickname").value = values.sensor_nick;
+                    document.getElementById("id").value = values.sensor_id;
                     let nodes = document.getElementById("selectType").children;
                     for (let i = 0; i < nodes.length; i++) {
                         let value = nodes[i].getAttribute("value");
-                        if (value && value.toString() === values.sensorTypeID.toString()) {
+                        if (value && value.toString() === values.sensor_type_id.toString()) {
                             document.getElementById("selectType").selectedIndex = i.toString();
                         }
                     }
@@ -28,7 +28,7 @@ function dropdown(id) {
     }
 }
 
-function updateSensorTypes() {
+function updatesensor_types() {
     const ajax = new XMLHttpRequest();
     ajax.open("GET", "/sensors/types/", true);
     ajax.send(null);
@@ -38,8 +38,8 @@ function updateSensorTypes() {
             let select = document.getElementById("selectType");
             for(let i = 0; i < values.length; i++) {
                 let node = document.createElement("option");
-                node.setAttribute("value", values[i].sensorTypeID);
-                node.innerHTML = values[i].sensorType;
+                node.setAttribute("value", values[i].sensor_type_id);
+                node.innerHTML = values[i].sensor_type;
                 select.appendChild(node);
             }
         }
@@ -52,21 +52,21 @@ function editButton(input_id) {
 }
 
 function submitData() {
-    const sensorID = document.getElementById("id").value;
+    const sensor_id = document.getElementById("id").value;
     const select = document.getElementById("selectType");
-    const sensorTypeID = select.options[select.selectedIndex].value;
-    const sensorNick = document.getElementById("nickname").value;
-    if (sensorNick.length > 0 && sensorNick.length < 17 && sensorTypeID !== "" && sensorID !== "") {
+    const sensor_type_id = select.options[select.selectedIndex].value;
+    const sensor_nick = document.getElementById("nickname").value;
+    if (sensor_nick.length > 0 && sensor_nick.length < 17 && sensor_type_id !== "" && sensor_id !== "") {
         const ajax = new XMLHttpRequest();
-        ajax.open("PUT", "/sensors/id/" + sensorID, true);
+        ajax.open("PUT", "/sensors/id/" + sensor_id, true);
         ajax.setRequestHeader("Content-Type", "application/json");
-        let json = {sensorID : sensorID, sensorTypeID :sensorTypeID, sensorNick: sensorNick}
+        let json = {sensor_id : sensor_id, sensor_type_id :sensor_type_id, sensor_nick: sensor_nick}
         ajax.send(JSON.stringify(json));
         ajax.onreadystatechange = function() {
             if (ajax.readyState === 4) {
                 if(ajax.status === 200) {
-                    document.getElementById("list_" +sensorID).innerHTML = sensorNick;
-                    document.getElementById("dropdown_" + sensorID).value = sensorNick;
+                    document.getElementById("list_" +sensor_id).innerHTML = sensor_nick;
+                    document.getElementById("dropdown_" + sensor_id).value = sensor_nick;
                     document.getElementById("nickname").disabled = true;
                     document.getElementById("selectType").disabled = true;
 
@@ -100,7 +100,7 @@ function checkActive(id) {
     };
 }
 
-updateSensorTypes();
+updatesensor_types();
 
 document.getElementById("submit").addEventListener("click", function () {
     submitData();
@@ -116,7 +116,6 @@ document.getElementById("delete").addEventListener("click", function () {
             ajax.onreadystatechange = function () {
                 if (ajax.readyState === 4) {
                     if (ajax.status === 201) {
-                        document.getElementById("list").removeChild(document.getElementById("list_" + id));
                         document.getElementById("list").removeChild(document.getElementById("list_" + id));
                         document.getElementById("dropdown").removeChild(document.getElementById("dropdown_" + id));
                     } else {

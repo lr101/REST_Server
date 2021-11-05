@@ -13,43 +13,43 @@ function logDB(e) {
 
 module.exports  = {
     GET_id : async function () {
-        const sql = "SELECT * FROM id INNER JOIN types ON id.sensorTypeID=types.sensorTypeID;";
+        const sql = "SELECT * FROM id INNER JOIN types ON id.sensor_type_id=types.sensor_type_id;";
         logDB(sql);
         return await con.query(sql);
     },
 
-    GET_id_sensorID : async function (sensorID) {
-        const sql = "SELECT * FROM id INNER JOIN types ON id.sensorTypeID=types.sensorTypeID WHERE sensorID='" + sensorID + "';";
-        logDB(sql);
-        return await con.query(sql);
-        },
-
-    GET_id_sensorID_sensorNick : async function (sensorID) {
-        const sql = "SELECT sensorNick FROM id WHERE sensorID='" + sensorID + "';";
+    GET_id_sensor_id : async function (sensor_id) {
+        const sql = "SELECT * FROM id INNER JOIN types ON id.sensor_type_id=types.sensor_type_id WHERE sensor_id='" + sensor_id + "';";
         logDB(sql);
         return await con.query(sql);
     },
 
-    GET_id_sensorID_sensorType :async function (sensorID) {
-        const sql = "SELECT types.sensorType FROM id INNER JOIN types ON id.sensorTypeID=types.sensorTypeID WHERE sensorID='" + sensorID + "' ;";
+    GET_id_sensor_id_sensor_nick : async function (sensor_id) {
+        const sql = "SELECT sensor_nick FROM id WHERE sensor_id='" + sensor_id + "';";
         logDB(sql);
         return await con.query(sql);
     },
 
-    GET_id_sensorID_sensorTypeID :async function (sensorID) {
-        const sql = "SELECT sensorTypeID FROM id WHERE sensorID='" + sensorID + "' ;";
+    GET_id_sensor_id_sensor_type :async function (sensor_id) {
+        const sql = "SELECT types.sensor_type FROM id INNER JOIN types ON id.sensor_type_id=types.sensor_type_id WHERE sensor_id='" + sensor_id + "' ;";
         logDB(sql);
         return await con.query(sql);
     },
 
-    POST_id : async function (sensorID, sensorNick) {
-        let sql = "INSERT INTO id (sensorID, sensorTypeID, sensorNick) VALUES ('"+sensorID+"',0,'"+sensorNick+"');";
+    GET_id_sensor_id_sensor_type_id :async function (sensor_id) {
+        const sql = "SELECT sensor_type_id FROM id WHERE sensor_id='" + sensor_id + "' ;";
+        logDB(sql);
+        return await con.query(sql);
+    },
+
+    POST_id : async function (sensor_id, sensor_nick) {
+        let sql = "INSERT INTO id (sensor_id, sensor_type_id, sensor_nick) VALUES ('"+sensor_id+"',0,'"+sensor_nick+"');";
         logDB(sql);
         try {
             await con.query(sql).then(async function (){
-                sql = "CREATE TABLE "+ sensorID +" (rowID BIGINT NOT NULL AUTO_INCREMENT, date datetime, value float(10,2), CONSTRAINT PRIMARY KEY (rowID));"
+                sql = "CREATE TABLE "+ sensor_id +" (row_id BIGINT NOT NULL AUTO_INCREMENT, date datetime, value float(10,2), CONSTRAINT PRIMARY KEY (row_id));"
                 logDB(sql);
-                await con.query(sql, [sensorID]);
+                await con.query(sql);
             });
             return true;
         } catch (e) {
@@ -59,8 +59,8 @@ module.exports  = {
 
     },
 
-    PUT_id_sensorID_sensorNick : async function (sensorID, sensorNick) {
-        let sql = "UPDATE id SET sensorNick='"+ sensorNick +"' WHERE sensorID='" + sensorID +"'";
+    PUT_id_sensor_id_sensor_nick : async function (sensor_id, sensor_nick) {
+        let sql = "UPDATE id SET sensor_nick='"+ sensor_nick +"' WHERE sensor_id='" + sensor_id +"'";
         logDB(sql);
         try {
             await con.query(sql);
@@ -71,12 +71,12 @@ module.exports  = {
         }
     },
 
-    PUT_id_sensorID_sensorTypeID : async function (sensorID, sensorTypeID) {
-        if ((await this.GET_types_sensorTypeID(sensorTypeID)).length === 0) {
-            logDB("SensorTypeID doesn't exist");
-            return "SensorTypeID doesn't exist";
+    PUT_id_sensor_id_sensor_type_id : async function (sensor_id, sensor_type_id) {
+        if ((await this.GET_types_sensor_type_id(sensor_type_id)).length === 0) {
+            logDB("sensor_type_id doesn't exist");
+            return "sensor_type_id doesn't exist";
         }
-        let sql = "UPDATE id SET sensorTypeID="+ sensorTypeID +" WHERE sensorID='" + sensorID +"'";
+        let sql = "UPDATE id SET sensor_type_id="+ sensor_type_id +" WHERE sensor_id='" + sensor_id +"'";
         logDB(sql);
         try {
             await con.query(sql);
@@ -87,14 +87,14 @@ module.exports  = {
         }
     },
 
-    DELETE_id_sensorID : async function (sensorID) {
-        let sql = "DELETE FROM id WHERE sensorID='" + sensorID +"';";
+    DELETE_id_sensor_id : async function (sensor_id) {
+        let sql = "DELETE FROM id WHERE sensor_id='" + sensor_id +"';";
         logDB(sql);
         try {
             await con.query(sql).then(async function (){
-                sql = "DROP TABLE " + sensorID + ";"
+                sql = "DROP TABLE " + sensor_id + ";"
                 logDB(sql);
-                await con.query(sql, [sensorID]);
+                await con.query(sql, [sensor_id]);
 
             });
             return true;
@@ -104,8 +104,13 @@ module.exports  = {
         }
     },
 
-    GET_sensorID : async function (sensorID, date1, date2) {
-        let sql = "SELECT * FROM " + sensorID;
+    GET_sensor_id_last : async function(sensor_id, date2) {
+        //TODO Optimization for MYSQL
+        return await this.GET_sensor_id(sensor_id, date2, 1);
+    },
+
+    GET_sensor_id : async function (sensor_id, date1, date2, limit) {
+        let sql = "SELECT * FROM " + sensor_id;
         if (date1 !== undefined && date2 !== undefined) {
             sql += " WHERE date <= '" + date1 + "' AND date >='" + date2 + "'";
         } else if (date1 !== undefined) {
@@ -113,14 +118,17 @@ module.exports  = {
         } else if (date2 !== undefined) {
             sql += " WHERE date >= '" + date2 + "'"
         }
+        if (limit !== undefined) {
+            sql += " ORDER BY row_id DESC FETCH FIRST " + limit + " ROWS ONLY";
+        }
         sql += ";";
         logDB(sql);
         return await con.query(sql);
     },
 
-    POST_sensorID : async function (sensorID, date, value) {
+    POST_sensor_id : async function (sensor_id, date, value) {
         try {
-            let sql = "INSERT INTO "+ sensorID +" (date, value) VALUES ('"+date+"','"+value+"');";
+            let sql = "INSERT INTO "+ sensor_id +" (date, value) VALUES ('"+date+"','"+value+"');";
             logDB(sql);
             await con.query(sql);
             return true;
@@ -130,9 +138,9 @@ module.exports  = {
         }
     },
 
-    DELETE_sensorID : async function (sensorID, date1, date2) {
+    DELETE_sensor_id : async function (sensor_id, date1, date2) {
         try {
-            let sql = "DELETE FROM " + sensorID;
+            let sql = "DELETE FROM " + sensor_id;
             if (date1 !== undefined && date2 !== undefined) {
                 sql += " WHERE date <= '" + date1 + "' AND date >='" + date2 + "'";
             } else if (date1 !== undefined) {
@@ -156,21 +164,21 @@ module.exports  = {
         return await con.query(sql);
     },
 
-    GET_types_sensorTypeID : async function (sensorTypeID) {
-        const sql = "SELECT * FROM types WHERE sensorTypeID=" + sensorTypeID + ";";
+    GET_types_sensor_type_id : async function (sensor_type_id) {
+        const sql = "SELECT * FROM types WHERE sensor_type_id=" + sensor_type_id + ";";
         logDB(sql);
         return await con.query(sql);
     },
 
-    POST_types : async function(sensorType, unit, repetitions, sleepTime) {
-       const sql = "INSERT INTO types (sensorType, unit" +
-           (repetitions ? ",repetitions" : "" )+
-           (sleepTime ? ",sleepTime" : "" )+
-           ") VALUES ('" +
-           sensorType +"', '" + unit +"'" +
-           (repetitions ? "," + repetitions : "")+
-           (sleepTime ? "," + sleepTime : "" )+
-           ");";
+    POST_types : async function(sensor_type, unit, repetitions, sleep_time) {
+        const sql = "INSERT INTO types (sensor_type, unit" +
+            (repetitions ? ",repetitions" : "" )+
+            (sleep_time ? ",sleep_time" : "" )+
+            ") VALUES ('" +
+            sensor_type +"', '" + unit +"'" +
+            (repetitions ? "," + repetitions : "")+
+            (sleep_time ? "," + sleep_time : "" )+
+            ");";
         logDB(sql);
         try {
             await con.query(sql);
@@ -181,11 +189,11 @@ module.exports  = {
         }
     },
 
-    PUT_types : async function(sensorType, sensorTypeID, unit, repetitions, sleepTime) {
-        const sql = "UPDATE types SET sensorType='"+ sensorType +"', unit='" + unit +"'" +
+    PUT_types : async function(sensor_type, sensor_type_id, unit, repetitions, sleep_time) {
+        const sql = "UPDATE types SET sensor_type='"+ sensor_type +"', unit='" + unit +"'" +
             (repetitions ? ", repetitions=" + repetitions : "")+
-            (sleepTime ? ", sleepTime=" + sleepTime : "") +
-            " WHERE sensorTypeID='" + sensorTypeID +"'";
+            (sleep_time ? ", sleep_time=" + sleep_time : "") +
+            " WHERE sensor_type_id='" + sensor_type_id +"'";
         logDB(sql);
         try {
             await con.query(sql);
@@ -196,13 +204,13 @@ module.exports  = {
         }
     },
 
-    DELETE_sensorTypeID : async function (sensorTypeID) {
+    DELETE_sensor_type_id : async function (sensor_type_id) {
         try {
-            if (sensorTypeID.toString() !== "0") {
-                let sql = "DELETE FROM types WHERE sensorTypeID='" + sensorTypeID + "';";
+            if (sensor_type_id.toString() !== "0") {
+                let sql = "DELETE FROM types WHERE sensor_type_id='" + sensor_type_id + "';";
                 logDB(sql);
                 await con.query(sql).then(function () {
-                    sql = "UPDATE id SET sensorTypeID=0 WHERE sensorTypeID=" +sensorTypeID + ";";
+                    sql = "UPDATE id SET sensor_type_id=0 WHERE sensor_type_id=" +sensor_type_id + ";";
                     con.query(sql);
                 });
                 return true;

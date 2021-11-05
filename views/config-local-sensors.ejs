@@ -12,7 +12,7 @@
     <h1 id="title">Configuration</h1>
 </header>
 <%
-    let len = sensors.length;
+let len = sensors.length;
 %>
 <main id="main" data-length="<%=len %>">
     <div class="row">
@@ -26,8 +26,8 @@
                 <div class="dropdown-content">
                     <%for (let count = 0; count < len; count++) { %>
                     <form class="content" action="/display" method="get" id="dropdown">
-                        <input hidden name="sensorID" value="<%=sensors[count].sensorID%>">
-                        <input class="dropdown-item" id="dropdown_<%=sensors[count].sensorID%>" type="submit" value="<%=sensors[count].sensorNick%>">
+                        <input hidden name="sensor_id" value="<%=sensors[count].sensor_id%>">
+                        <input class="dropdown-item" id="dropdown_<%=sensors[count].sensor_id%>" type="submit" value="<%=sensors[count].sensor_nick%>">
                     </form>
                     <%}%>
                 </div>
@@ -47,7 +47,7 @@
                 <h2>Selection</h2>
                 <div class="list-group" id="list">
                     <%for (let count = 0; count < len; count++) { %>
-                    <button id="list_<%=sensors[count].sensorID%>" data-id="<%=sensors[count].sensorID%>" type="button" data-toggle="list" onclick="dropdown('<%=sensors[count].sensorID%>')" class="list-group-item list-group-item-action"><%=sensors[count].sensorNick%></button>
+                    <button id="list_<%=sensors[count].sensor_id%>" data-id="<%=sensors[count].sensor_id%>" type="button" data-toggle="list" onclick="dropdown('<%=sensors[count].sensor_id%>')" class="list-group-item list-group-item-action"><%=sensors[count].sensor_nick%></button>
                     <%}%>
                 </div>
             </div>
@@ -58,7 +58,7 @@
                 <form id="form">
                     <label  class="form-label" for="nickname">Nick Name:</label>
                     <div class="input-group mb-3">
-                        <input maxlength="16" minlength="1" autocomplete="off" class="form-control" type="text" id="nickname" name="sensorNick" disabled required>
+                        <input maxlength="16" minlength="1" autocomplete="off" class="form-control" type="text" id="nickname" name="sensor_nick" disabled required>
                         <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="editButton('nickname')">Edit</button>
                     </div>
 
@@ -71,7 +71,7 @@
                     </div>
                     <label   class="form-label" for="id">Sensor ID:</label>
                     <div class="input-group mb-3">
-                        <input autocomplete="off" class="form-control" type="text" id="id" name="sensorID" value="" readonly disabled>
+                        <input autocomplete="off" class="form-control" type="text" id="id" name="sensor_id" value="" readonly disabled>
                     </div><br>
                     <div class="input-group mb-3">
                         <input id="submit" class="button"  value="Submit">

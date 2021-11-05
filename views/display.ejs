@@ -8,79 +8,79 @@
     <title>Data Display</title>
 </head>
 <body>
-    <header class="text-center">
-        <h1 id="title" data-id="<%=sensors[index].sensorID%>"><%=sensors[index].sensorNick%></h1>
-    </header>
-    <main id="main">
-        <div class="row">
-            <nav class="navbar lightgrey">
-                <a class="navbar-brand darkgrey">Navigation</a>
-                <form  method="get" action="/" class="wrapper">
-                    <input class="button"  type="submit" value="home">
-                </form>
-                <div class="dropdown wrapper">
-                    <button class="button" id="active_Page">Display Sensors</button>
-                    <div class="dropdown-content">
-                        <%for (let count = 0; count < sensors.length; count++) {%>
-                        <form class="content" action="/display" method="get" >
-                            <input hidden name="sensorID" value="<%=sensors[count].sensorID%>">
-                            <input class="dropdown-item" <%if (count === index) {%> type="button"<%} else {%> type="submit"<%}%> value="<%=sensors[count].sensorNick%>">
-                        </form>
-                        <%}%>
-                    </div>
+<header class="text-center">
+    <h1 id="title" data-id="<%=sensors[index].sensor_id%>"><%=sensors[index].sensor_nick%></h1>
+</header>
+<main id="main">
+    <div class="row">
+        <nav class="navbar lightgrey">
+            <a class="navbar-brand darkgrey">Navigation</a>
+            <form  method="get" action="/" class="wrapper">
+                <input class="button"  type="submit" value="home">
+            </form>
+            <div class="dropdown wrapper">
+                <button class="button" id="active_Page">Display Sensors</button>
+                <div class="dropdown-content">
+                    <%for (let count = 0; count < sensors.length; count++) {%>
+                    <form class="content" action="/display" method="get" >
+                        <input hidden name="sensor_id" value="<%=sensors[count].sensor_id%>">
+                        <input class="dropdown-item" <%if (count === index) {%> type="button"<%} else {%> type="submit"<%}%> value="<%=sensors[count].sensor_nick%>">
+                    </form>
+                    <%}%>
                 </div>
-                <form class="wrapper" action="/config/local-sensors" method="get">
-                    <input  class="button" type="submit"  value="Local Sensors">
-                </form>
-                <form class="wrapper" action="/config/sensor-types" method="get">
-                    <input class="button" type="submit" value="Edit Sensor Types">
-                </form>
-            </nav>
-        </div>
+            </div>
+            <form class="wrapper" action="/config/local-sensors" method="get">
+                <input  class="button" type="submit"  value="Local Sensors">
+            </form>
+            <form class="wrapper" action="/config/sensor-types" method="get">
+                <input class="button" type="submit" value="Edit Sensor Types">
+            </form>
+        </nav>
+    </div>
 
-        <div class="row" >
-            <section class="col-12 displayRowContainer">
-                <h1 id="current" class="displayRow" data-unit="<%=sensors[index].unit%>">Current Value: LOADING...</h1>
-            </section>
-        </div>
-        <div class="row">
-            <section class="col-12" id="chart">
-                <canvas id="myChart"></canvas>
-            </section>
-        </div>
-        <div class="row">
-            <section class="col-2" >
-                <button class="button buttonBig" onclick="getDataGraph(60);">1 hour</button>
-            </section>
-            <section class="col-2" >
-                <button class="button buttonBig" onclick="getDataGraph(360);">6 hour</button>
-            </section>
-            <section class="col-2" >
-                <button class="button buttonBig" onclick="getDataGraph(720);">12 hour</button>
-            </section>
-            <section class="col-2" >
-                <button class="button buttonBig" onclick="getDataGraph(1440);">1 day</button>
-            </section>
-            <section class="col-2" >
-                <button class=" button buttonBig" onclick="getDataGraph(10080);">7 days</button>
-            </section>
-            <section class="col-2" >
-                <button class="button buttonBig" onclick="getDataGraph(20160);">14 days</button>
-            </section>
-        </div>
-        <div class="row">
-            <section class="col-12 displayRowContainer">
-                <h1 class="displayRow">Sensor Type: <%=sensors[index].sensorType%></h1>
-            </section>
-        </div>
-    </main>
+    <div class="row" >
+        <section class="col-12 displayRowContainer">
+            <h1 id="current" class="displayRow" data-unit="<%=sensors[index].unit%>">Current Value: LOADING...</h1>
+        </section>
+    </div>
+    <div class="row">
+        <section class="col-12" id="chart">
+            <canvas id="myChart"></canvas>
+        </section>
+    </div>
+    <div class="row">
+        <section class="col-2" >
+            <button class="button buttonBig" onclick="getDataGraph(60);">1 hour</button>
+        </section>
+        <section class="col-2" >
+            <button class="button buttonBig" onclick="getDataGraph(360);">6 hour</button>
+        </section>
+        <section class="col-2" >
+            <button class="button buttonBig" onclick="getDataGraph(720);">12 hour</button>
+        </section>
+        <section class="col-2" >
+            <button class="button buttonBig" onclick="getDataGraph(1440);">1 day</button>
+        </section>
+        <section class="col-2" >
+            <button class=" button buttonBig" onclick="getDataGraph(10080);">7 days</button>
+        </section>
+        <section class="col-2" >
+            <button class="button buttonBig" onclick="getDataGraph(20160);">14 days</button>
+        </section>
+    </div>
+    <div class="row">
+        <section class="col-12 displayRowContainer">
+            <h1 class="displayRow">Sensor Type: <%=sensors[index].sensor_type%></h1>
+        </section>
+    </div>
+</main>
 
-    <footer>
-        <h1>https://github.com/lr101/REST_Server</h1>
-    </footer>
-    <script src="./javascript/jquery-3.6.0.min.js"></script>
-    <script src="./javascript/display.js"></script>
-    <script src="./javascript/chart.js"></script>
+<footer>
+    <h1>https://github.com/lr101/REST_Server</h1>
+</footer>
+<script src="./javascript/jquery-3.6.0.min.js"></script>
+<script src="./javascript/display.js"></script>
+<script src="./javascript/chart.js"></script>
 
 </body>
 </html>
