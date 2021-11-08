@@ -228,6 +228,30 @@ module.exports  = {
         }
     },
 
+    GET_display_graph : async function (sensor_id, interval, date1, date2) {
+        try {
+            const sql = "with a as (select date, row_id," +
+                "AVG(value) over (" +
+                "partition by " +
+                "(round(extract(epoch from date) / " + interval +  ") * " + interval + ") " +
+                "order by row_id " +
+                "rows between unbounded preceding and current row " +
+                ") as value, row_number() over ( " +
+                "partition by " +
+                "(round(extract(epoch from date) / " + interval + ") * " + interval +") " +
+                "order by row_id desc " +
+                "rows between unbounded preceding and current row " +
+                ") as row " +
+                "from "+ sensor_id + " where date <= '" + date1 +"' and date >= '" + date2 + "') " +
+                "select date, row_id, value from a where row = 1 order by row_id;";
+            logDB(sql);
+            return await con.query(sql);
+        } catch (e) {
+            logDB(e);
+            return e;
+        }
+    }
+
 }
 
 /**

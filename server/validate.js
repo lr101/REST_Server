@@ -101,6 +101,14 @@ module.exports  = {
         if (isNaN(timezone)) return undefined;
         if (timezone < -720 && timezone > 840) return undefined;
         return parseInt(timezone);
+    },
+
+    validate_intervall: function (intervall) {
+        if (intervall === undefined) return undefined;
+        intervall = escape(intervall);
+        if (isNaN(intervall)) return undefined;
+        if (intervall <= 0) return undefined;
+        return parseInt(intervall);
     }
 
 

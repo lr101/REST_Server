@@ -75,7 +75,7 @@ function getDataGraph(offset, date1, date2) {
     if (date1 === undefined)  date1 = getCurrentDate(0);
     if (date2 === undefined)  date2 = getCurrentDate(offset);
     const ajax = new XMLHttpRequest();
-    ajax.open("GET", "/display/graph?sensor_id=" + id + "&date1=" + date1 + "&date2=" + date2 + "&timezone=" + (new Date(new Date().getTime() + 2 * 3600 * 1000).getTimezoneOffset() + TIME_ZONE_OFFSET), true);
+    ajax.open("GET", "/display/graph?sensor_id=" + id + "&date1=" + date1 + "&date2=" + date2 + "&timezone=" + (new Date(new Date().getTime() + 2 * 3600 * 1000).getTimezoneOffset() + TIME_ZONE_OFFSET) + "&interval=" + (offset/6) , true);
     ajax.send(null);
     ajax.onreadystatechange = function () {
         if (ajax.readyState === 4) {
