@@ -176,9 +176,8 @@ app.get('/display/graph/', async function (req, res) {
     let timezone = validate.validate_timezone(req.query.timezone);
     let date1 = validate.validateDate(req.query.date1);
     let date2 = validate.validateDate(req.query.date2);
-    let interval = req.query.interval;
+    let interval = validate.validate_intervall(req.query.interval);
     let values = await REST_API.GET_display_graph(sensor_id, interval, date1, date2);
-    //let values = await REST_API.GET_sensor_id( sensor_id, date1, date2);
     values = webpageParser.formatForGraph(values, timezone);
     res.json(values);
 });

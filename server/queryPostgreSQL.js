@@ -210,13 +210,10 @@ module.exports  = {
 
     DELETE_sensor_type_id : async function (sensor_type_id) {
         try {
-            if (sensor_type_id.toString() !== "0") {
+            if (sensor_type_id.toString() !== "1") {
                 let sql = "DELETE FROM types WHERE sensor_type_id='" + sensor_type_id + "';";
                 logDB(sql);
-                await con.query(sql).then(function () {
-                    sql = "UPDATE id SET sensor_type_id=0 WHERE sensor_type_id=" +sensor_type_id + ";";
-                    con.query(sql);
-                });
+                await con.query(sql);
                 return true;
             } else {
                 logDB("CAN'T DELETE DEFAULT VALUE");
