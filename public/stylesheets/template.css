@@ -145,3 +145,56 @@ button {
 [class^="col"] {
     padding-bottom: 10px;
 }
+
+
+
+/*Modal*/
+h4 {
+    font-weight: bold;
+    color: #fff;
+}
+.close {
+    color: #fff;
+    transform: scale(1.2)
+}
+.modal-content {
+    font-weight: bold;
+    background: linear-gradient(to bottom right, #f14541,#B05574);
+}
+
+
+.form-control:hover, .form-control:focus {
+    box-shadow: none;
+    border-color: #fff;
+}
+.username, .password {
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    border-bottom: 2px solid #eee;
+    padding-left: 0;
+    font-weight: normal;
+    background: transparent;
+}
+.form-control::-webkit-input-placeholder {
+    color: #eee;
+}
+.form-control:focus::-webkit-input-placeholder {
+    font-weight: bold;
+    color: #fff;
+}
+
+.login {
+    padding: 6px 20px;
+    border-radius: 20px;
+    background: none;
+    border: 2px solid white;
+    color: white;
+    font-weight: bold;
+    transition: all .5s;
+    margin-top: 1em;
+}
+.login:hover {
+    background: white;
+    color: #f14541;
+}

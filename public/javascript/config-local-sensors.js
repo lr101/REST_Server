@@ -46,11 +46,6 @@ function updatesensor_types() {
     };
 }
 
-function editButton(input_id) {
-    let input = document.getElementById(input_id);
-    input.disabled =  !input.disabled;
-}
-
 function submitData() {
     const sensor_id = document.getElementById("id").value;
     const select = document.getElementById("selectType");
@@ -59,6 +54,9 @@ function submitData() {
     if (sensor_nick.length > 0 && sensor_nick.length < 17 && sensor_type_id !== "" && sensor_id !== "") {
         const ajax = new XMLHttpRequest();
         ajax.open("PUT", "/sensors/id/" + sensor_id, true);
+        const username = document.getElementById("username_sub").value;
+        const password = document.getElementById("password_sub").value;
+        ajax.setRequestHeader ("Authorization", "Basic " + btoa(username + ":" + password));
         ajax.setRequestHeader("Content-Type", "application/json");
         let json = {sensor_id : sensor_id, sensor_type_id :sensor_type_id, sensor_nick: sensor_nick}
         ajax.send(JSON.stringify(json));
@@ -67,8 +65,6 @@ function submitData() {
                 if(ajax.status === 200) {
                     document.getElementById("list_" +sensor_id).innerHTML = sensor_nick;
                     document.getElementById("dropdown_" + sensor_id).value = sensor_nick;
-                    document.getElementById("nickname").disabled = true;
-                    document.getElementById("selectType").disabled = true;
 
                 } else {
                     alert(ajax.responseText);
@@ -102,25 +98,26 @@ function checkActive(id) {
 
 updatesensor_types();
 
-document.getElementById("submit").addEventListener("click", function () {
+document.getElementById("submit_login").addEventListener("click", function () {
     submitData();
 });
 
-document.getElementById("delete").addEventListener("click", function () {
-    if (confirm("Are you sure to delete?")) {
-        const id = document.getElementById("id").value;
-        if (id !== "") {
-            const ajax = new XMLHttpRequest();
-            ajax.open("DELETE", "/sensors/id/" + id, true);
-            ajax.send(null);
-            ajax.onreadystatechange = function () {
-                if (ajax.readyState === 4) {
-                    if (ajax.status === 201) {
-                        document.getElementById("list").removeChild(document.getElementById("list_" + id));
-                        document.getElementById("dropdown").removeChild(document.getElementById("dropdown_" + id));
-                    } else {
-                        alert(ajax.responseText);
-                    }
+document.getElementById("delete_login2").addEventListener("click", function () {
+    const id = document.getElementById("id").value;
+    if (id !== "") {
+        const ajax = new XMLHttpRequest();
+        ajax.open("DELETE", "/sensors/id/" + id, true);
+        const username = document.getElementById("username_del1").value;
+        const password = document.getElementById("password_del1").value;
+        ajax.setRequestHeader ("Authorization", "Basic " + btoa(username + ":" + password));
+        ajax.send(null);
+        ajax.onreadystatechange = function () {
+            if (ajax.readyState === 4) {
+                if (ajax.status === 201) {
+                    document.getElementById("list").removeChild(document.getElementById("list_" + id));
+                    document.getElementById("dropdown").removeChild(document.getElementById("dropdown_" + id));
+                } else {
+                    alert(ajax.responseText);
                 }
             }
         }
@@ -154,6 +151,11 @@ function alterTempData (method) {
         if (date1 > date2) {
             const ajax = new XMLHttpRequest();
             ajax.open(method, "/sensors/" + id + "?date1=" + date1.toISOString().slice(0, 19).replace('T', ' ') + "&date2=" + date2.toISOString().slice(0, 19).replace('T', ' '), true);
+            if (method === "DELETE") {
+                const username = document.getElementById("username_del1").value;
+                const password = document.getElementById("password_del1").value;
+                ajax.setRequestHeader ("Authorization", "Basic " + btoa(username + ":" + password));
+            }
             ajax.send(null);
             ajax.onreadystatechange = function () {
                 if (ajax.readyState === 4 && ajax.status === 200 && method === "GET") {
@@ -172,14 +174,7 @@ document.getElementById("getTempData").addEventListener("click", function () {
     alterTempData("GET");
 });
 
-document.getElementById("deleteTempData").addEventListener("click", function () {
-    if (confirm("Are you sure to delete?")) {
-        alterTempData("DELETE");
-    }
-});
-
-document.getElementById("getDeleteTempData").addEventListener("click", function () {
-    alterTempData("GET");
+document.getElementById("delete_login1").addEventListener("click", function () {
     if (confirm("Are you sure to delete?")) {
         alterTempData("DELETE");
     }

@@ -44,7 +44,6 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(bodyParser.json());
-
 console.log(__dirname);
 
 /**
@@ -102,29 +101,34 @@ app.get("/sensors/id/:sensor_id/sensor_type/", function (req, res) {
 
 app.put("/sensors/id/:sensor_id/", async function (req, res) {
     try {
-        let success = false;
-        const sensor_id = validate.validatesensor_id(req.params.sensor_id);
-        if (req.body.sensor_type_id !== undefined) {
-            const sensor_type_id = validate.validatesensor_type(req.body.sensor_type_id);
-            await REST_API.PUT_id_sensor_id_sensor_type_id( sensor_id, sensor_type_id).then(function (result) {
-                success = result;
-            });
-        } else {
-            success = true;
-        }
-        if (req.body.sensor_nick !== undefined) {
-            const sensor_nick = validate.validatesensor_nick(req.body.sensor_nick);
-            await REST_API.PUT_id_sensor_id_sensor_nick( sensor_id, sensor_nick).then(function (result) {
-                if (result === true && success) {
-                    success = result;
+        auth(req.headers.authorization).then(async function (value){
+            if (!value) {
+                res.status(400).send("AUTHENTIFIKATION UNSUCCESSFUL");
+            } else {
+                let success = false;
+                const sensor_id = validate.validatesensor_id(req.params.sensor_id);
+                if (req.body.sensor_type_id !== undefined) {
+                    const sensor_type_id = validate.validatesensor_type(req.body.sensor_type_id);
+                    await REST_API.PUT_id_sensor_id_sensor_type_id(sensor_id, sensor_type_id).then(function (result) {
+                        success = result;
+                    });
+                } else {
+                    success = true;
                 }
-            });
-        }
-        if (success === true) {
-            res.status(200).send("SENSOR SUCCESSFULLY UPDATED");
-        } else {
-            res.status(500).send("SERVER/DATABASE ERROR: " + success);
-        }
+                if (req.body.sensor_nick !== undefined) {
+                    const sensor_nick = validate.validatesensor_nick(req.body.sensor_nick);
+                    await REST_API.PUT_id_sensor_id_sensor_nick(sensor_id, sensor_nick).then(function (result) {
+                        if (result === true && success) {
+                            success = result;
+                        }
+                    });
+                }
+                if (success === true) {
+                    res.status(200).send("SENSOR SUCCESSFULLY UPDATED");
+                } else {
+                    res.status(500).send("SERVER/DATABASE ERROR: " + success);
+                }
+            }});
     } catch (e) {
         res.status(500).send(e);
     }
@@ -132,15 +136,20 @@ app.put("/sensors/id/:sensor_id/", async function (req, res) {
 
 app.post("/sensors/id/", function (req, res) {
     try {
-        const sensor_id = validate.validatesensor_id(req.body.sensor_id);
-        const sensor_nick = validate.validatesensor_nick(req.body.sensor_nick);
-        REST_API.POST_id( sensor_id, sensor_nick).then(function (result) {
-            if (result === true) {
-                res.status(201).send("SENSOR SUCCESSFULLY ADDED");
+        auth(req.headers.authorization).then(function (value){
+            if (!value) {
+                res.status(400).send("AUTHENTIFIKATION UNSUCCESSFUL");
             } else {
-                res.status(500).send("SERVER/DATABASE ERROR: " + result);
-            }
-        });
+                const sensor_id = validate.validatesensor_id(req.body.sensor_id);
+                const sensor_nick = validate.validatesensor_nick(req.body.sensor_nick);
+                REST_API.POST_id(sensor_id, sensor_nick).then(function (result) {
+                    if (result === true) {
+                        res.status(201).send("SENSOR SUCCESSFULLY ADDED");
+                    } else {
+                        res.status(500).send("SERVER/DATABASE ERROR: " + result);
+                    }
+                });
+            }});
     } catch (e) {
         res.status(400).send(e);
     }
@@ -148,14 +157,19 @@ app.post("/sensors/id/", function (req, res) {
 
 app.delete("/sensors/id/:sensor_id/", function (req, res) {
     try {
-        let sensor_id = validate.validatesensor_id(req.params.sensor_id);
-        REST_API.DELETE_id_sensor_id( sensor_id).then(function (result) {
-            if (result === true) {
-                res.status(201).send("SENSOR SUCCESSFULLY DELETED");
+        auth(req.headers.authorization).then(function (value){
+            if (!value) {
+                res.status(400).send("AUTHENTIFIKATION UNSUCCESSFUL");
             } else {
-                res.status(500).send("SERVER/DATABASE ERROR " + result);
-            }
-        });
+                let sensor_id = validate.validatesensor_id(req.params.sensor_id);
+                REST_API.DELETE_id_sensor_id(sensor_id).then(function (result) {
+                    if (result === true) {
+                        res.status(201).send("SENSOR SUCCESSFULLY DELETED");
+                    } else {
+                        res.status(500).send("SERVER/DATABASE ERROR " + result);
+                    }
+                });
+            }});
     } catch (e) {
         res.status(400).send(e);
     }
@@ -184,17 +198,22 @@ app.get('/display/graph/', async function (req, res) {
 
 app.post("/sensors/types/", async function (req, res) {
     try{
-        const sensor_type = validate.validatesensor_type(req.body.sensor_type);
-        const unit = validate.validateUnit(req.body.unit);
-        const repetitions = validate.validateRepetitions(req.body.repetitions);
-        const sleep_time = validate.validatesleep_time(req.body.sleep_time);
-        REST_API.POST_types( sensor_type, unit, repetitions, sleep_time).then(function (result) {
-            if (result === true) {
-                res.status(200).send("ROW ADDED TO TABLE");
+        auth(req.headers.authorization).then(function (value){
+            if (!value) {
+                res.status(400).send("AUTHENTIFIKATION UNSUCCESSFUL");
             } else {
-                res.status(500).send("ERROR: " + result);
-            }
-        });
+                const sensor_type = validate.validatesensor_type(req.body.sensor_type);
+                const unit = validate.validateUnit(req.body.unit);
+                const repetitions = validate.validateRepetitions(req.body.repetitions);
+                const sleep_time = validate.validatesleep_time(req.body.sleep_time);
+                REST_API.POST_types(sensor_type, unit, repetitions, sleep_time).then(function (result) {
+                    if (result === true) {
+                        res.status(200).send("ROW ADDED TO TABLE");
+                    } else {
+                        res.status(500).send("ERROR: " + result);
+                    }
+                });
+            }});
     } catch (e) {
         res.status(500).send(e);
     }
@@ -202,14 +221,19 @@ app.post("/sensors/types/", async function (req, res) {
 
 app.delete("/sensors/types/:sensor_type_id/", function (req, res) {
     try {
-        let sensor_type_id = validate.validatesensor_type_id(req.params.sensor_type_id);
-        REST_API.DELETE_sensor_type_id( sensor_type_id).then(function (result) {
-            if (result === true) {
-                res.status(201).send("SENSOR SUCCESSFULLY DELETED");
+        auth(req.headers.authorization).then(function (value){
+            if (!value) {
+                res.status(400).send("AUTHENTIFIKATION UNSUCCESSFUL");
             } else {
-                res.status(500).send("SERVER/DATABASE ERROR " + result);
-            }
-        });
+                let sensor_type_id = validate.validatesensor_type_id(req.params.sensor_type_id);
+                REST_API.DELETE_sensor_type_id(sensor_type_id).then(function (result) {
+                    if (result === true) {
+                        res.status(201).send("SENSOR SUCCESSFULLY DELETED");
+                    } else {
+                        res.status(500).send("SERVER/DATABASE ERROR " + result);
+                    }
+                });
+            }});
     } catch (e) {
         res.status(500).send(e);
     }
@@ -238,16 +262,21 @@ app.get("/sensors/:sensor_id/", function (req, res) {
 
 app.post("/sensors/:sensor_id/", function (req, res) {
     try {
-        const sensor_id = validate.validatesensor_id(req.params.sensor_id);
-        const date = validate.validateDate(req.body.date);
-        const value = validate.validateValue(req.body.value);
-        REST_API.POST_sensor_id( sensor_id, date, value).then(function (result) {
-            if (result === true) {
-                res.status(200).send("ROW ADDED TO TABLE");
+        auth(req.headers.authorization).then(function (value){
+            if (!value) {
+                res.status(400).send("AUTHENTIFIKATION UNSUCCESSFUL");
             } else {
-                res.status(500).send("ERROR: " + result);
-            }
-        });
+                const sensor_id = validate.validatesensor_id(req.params.sensor_id);
+                const date = validate.validateDate(req.body.date);
+                const value = validate.validateValue(req.body.value);
+                REST_API.POST_sensor_id(sensor_id, date, value).then(function (result) {
+                    if (result === true) {
+                        res.status(200).send("ROW ADDED TO TABLE");
+                    } else {
+                        res.status(500).send("ERROR: " + result);
+                    }
+                });
+            }});
     } catch (e) {
         res.status(500).send(e);
     }
@@ -255,16 +284,21 @@ app.post("/sensors/:sensor_id/", function (req, res) {
 
 app.delete("/sensors/:sensor_id/", function (req, res) {
     try {
-        let sensor_id = validate.validatesensor_id(req.params.sensor_id);
-        let date1 = validate.validateDate(req.query.date1);
-        let date2 = validate.validateDate(req.query.date2);
-        REST_API.DELETE_sensor_id( sensor_id, date1, date2).then(function (result) {
-            if (result === true) {
-                res.status(200).send("VALUES SUCCESSFULLY DELETED");
+        auth(req.headers.authorization).then(function (value){
+            if (!value) {
+                res.status(400).send("AUTHENTIFIKATION UNSUCCESSFUL");
             } else {
-                res.status(500).send("ERROR: " + result);
-            }
-        });
+                let sensor_id = validate.validatesensor_id(req.params.sensor_id);
+                let date1 = validate.validateDate(req.query.date1);
+                let date2 = validate.validateDate(req.query.date2);
+                REST_API.DELETE_sensor_id(sensor_id, date1, date2).then(function (result) {
+                    if (result === true) {
+                        res.status(200).send("VALUES SUCCESSFULLY DELETED");
+                    } else {
+                        res.status(500).send("ERROR: " + result);
+                    }
+                });
+            }});
     } catch (e) {
         res.status(500).send(e);
     }
@@ -274,18 +308,23 @@ app.delete("/sensors/:sensor_id/", function (req, res) {
 
 app.put("/sensors/types/", async function (req, res) {
     try{
-        const sensor_type = validate.validatesensor_type(req.body.sensor_type);
-        const unit = validate.validateUnit(req.body.unit);
-        const sensor_type_id = validate.validatesensor_type_id(req.body.sensor_type_id);
-        const repetitions = validate.validateRepetitions(req.body.repetitions);
-        const sleep_time = validate.validatesleep_time(req.body.sleep_time);
-        REST_API.PUT_types( sensor_type, sensor_type_id, unit, repetitions, sleep_time).then(function (result) {
-            if (result === true) {
-                res.status(200).send("ROW ADDED TO TABLE");
+        auth(req.headers.authorization).then(function (value){
+            if (!value) {
+                res.status(400).send("AUTHENTIFIKATION UNSUCCESSFUL");
             } else {
-                res.status(500).send("ERROR: " + result);
-            }
-        });
+                const sensor_type = validate.validatesensor_type(req.body.sensor_type);
+                const unit = validate.validateUnit(req.body.unit);
+                const sensor_type_id = validate.validatesensor_type_id(req.body.sensor_type_id);
+                const repetitions = validate.validateRepetitions(req.body.repetitions);
+                const sleep_time = validate.validatesleep_time(req.body.sleep_time);
+                REST_API.PUT_types(sensor_type, sensor_type_id, unit, repetitions, sleep_time).then(function (result) {
+                    if (result === true) {
+                        res.status(200).send("ROW ADDED TO TABLE");
+                    } else {
+                        res.status(500).send("ERROR: " + result);
+                    }
+                });
+            }});
     } catch (e) {
         res.status(500).send(e);
     }
@@ -328,6 +367,19 @@ app.get('/config/sensor-types/',  async function (req, res) {
     const types = await REST_API.GET_types();
     res.render('config-sensor-types.ejs', {sensors : sensors, types : types});
 });
+
+
+/**
+ * helper methods
+ */
+async function auth (auth_header) {
+    if (auth_header === undefined) return false;
+    const base64Credentials =  auth_header.split(' ')[1];
+    const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii');
+    const [username, password] = credentials.split(':');
+    console.log(username + " p:" + password);
+    return await REST_API.authenticate(username, password, 0);
+}
 
 /**
  * set ejs as View Engine

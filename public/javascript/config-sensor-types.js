@@ -11,10 +11,6 @@ function select(sensor_type, sensor_type_id, unit, repetitions, sleep_time) {
     document.getElementById("sleep_time").value = sleep_time;
 }
 
-function editButton(input_id) {
-    let input = document.getElementById(input_id);
-    input.disabled =  !input.disabled;
-}
 
 function submitData() {
     const sensor_type = document.getElementById("typeName").value;
@@ -33,19 +29,16 @@ function submitData() {
         json = {sensor_type : sensor_type, unit : unit, repetitions: repetitions, sleep_time : sleep_time}
     }
     if (json !== undefined && !isNaN(repetitions)  && !isNaN(sleep_time) && unit.length > 0 && unit.length < 6 && sensor_type.length > 0 && sensor_type.length < 17) {
+        const username = document.getElementById("username_sub").value;
+        const password = document.getElementById("password_sub").value;
+        ajax.setRequestHeader ("Authorization", "Basic " + btoa(username + ":" + password));
         ajax.setRequestHeader("Content-Type", "application/json");
         ajax.send(JSON.stringify(json));
         ajax.onreadystatechange = function () {
             if (ajax.readyState === 4) {
                 if (ajax.status === 200) {
                     updateTypes();
-                    document.getElementById("typeName").disabled = true;
-                    document.getElementById("typeUnit").disabled = true;
-                    document.getElementById("repetitions").disabled = true;
-                    document.getElementById("sleep_time").disabled = true;
-                    document.getElementById("typeUnit").value = "";
-                    document.getElementById("repetitions").value = "";
-                    document.getElementById("sleep_time").value = "";
+
                 } else {
                     alert(ajax.responseText);
                 }
@@ -78,6 +71,10 @@ function updateTypes() {
                     listElement.appendChild(btn);
                 }
                 document.getElementById("typeName").value = "";
+                document.getElementById("typeUnit").value = "";
+                document.getElementById("repetitions").value = "";
+                document.getElementById("sleep_time").value = "";
+                document.getElementById("typeName").setAttribute("data-id", "");
             } else {
                 alert(ajax.responseText);
             }
@@ -85,23 +82,24 @@ function updateTypes() {
     };
 }
 
-document.getElementById("submit").addEventListener("click", function () {
+document.getElementById("submit_login").addEventListener("click", function () {
     submitData();
 });
 
-document.getElementById("delete").addEventListener("click", function () {
-    if (confirm("Are you sure to delete?")) {
-        const sensor_type_id = document.getElementById("typeName").getAttribute("data-id");
-        const ajax = new XMLHttpRequest();
-        ajax.open("DELETE", "/sensors/types/" + sensor_type_id, true);
-        ajax.send();
-        ajax.onreadystatechange = function () {
-            if (ajax.readyState === 4) {
-                if (ajax.status === 201) {
-                    updateTypes();
-                } else {
-                    alert(ajax.responseText);
-                }
+document.getElementById("delete_login").addEventListener("click", function () {
+    const sensor_type_id = document.getElementById("typeName").getAttribute("data-id");
+    const username = document.getElementById("username_del").value;
+    const password = document.getElementById("password_del").value;
+    const ajax = new XMLHttpRequest();
+    ajax.open("DELETE", "/sensors/types/" + sensor_type_id, true);
+    ajax.setRequestHeader ("Authorization", "Basic " + btoa(username + ":" + password));
+    ajax.send();
+    ajax.onreadystatechange = function () {
+        if (ajax.readyState === 4) {
+            if (ajax.status === 201) {
+                updateTypes();
+            } else {
+                alert(ajax.responseText);
             }
         }
     }

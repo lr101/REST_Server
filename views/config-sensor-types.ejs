@@ -44,7 +44,7 @@
                 <h2>Selection</h2>
                 <div class="list-group" id="list">
                     <%for (let count = 0; count < types.length; count++) { %>
-                    <button id="list_<%=types[count].sensor_type_id%>" type="button" data-toggle="list" onclick="select('<%=types[count].sensor_type%>', '<%=types[count].sensor_type_id%>', '<%=types[count].unit%>' , '<%=types[count].repetitions%>', '<%=types[count].brakeTime%>', '<%=types[count].sleep_time%>')" class="list-group-item list-group-item-action"><%=types[count].sensor_type%></button>
+                    <button id="list_<%=types[count].sensor_type_id%>" type="button" data-toggle="list" onclick="select('<%=types[count].sensor_type%>', '<%=types[count].sensor_type_id%>', '<%=types[count].unit%>' , '<%=types[count].repetitions%>', '<%=types[count].sleep_time%>')" class="list-group-item list-group-item-action"><%=types[count].sensor_type%></button>
                     <%}%>
                     <button id="list_new"  type="button" data-toggle="list" onclick="select('', '', '')" class="list-group-item list-group-item-action active">+</button>
                 </div>
@@ -57,27 +57,54 @@
                 <form id="form">
                     <label  class="form-label" for="typeName">Sensor Type Name:</label>
                     <div class="input-group mb-3">
-                        <input data-id="" maxlength="16" minlength="1" autocomplete="off" class="form-control" type="text" id="typeName" name="sensor_type" disabled required>
-                        <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="editButton('typeName')">Edit</button>
+                        <input data-id="" maxlength="16" minlength="1" autocomplete="off" class="form-control" type="text" id="typeName" name="sensor_type" required>
                     </div>
                     <label class="form-label"  for="typeUnit">Sensor Unit:</label>
                     <div class="input-group mb-3">
-                        <input maxlength="5" minlength="1" autocomplete="off" class="form-control" type="text" id="typeUnit" name="unit" disabled required>
-                        <button class="btn btn-outline-secondary" type="button" id="button-unit" onclick="editButton('typeUnit')">Edit</button>
+                        <input maxlength="5" minlength="1" autocomplete="off" class="form-control" type="text" id="typeUnit" name="unit" required>
                     </div>
                     <label  class="form-label" for="repetitions">Number of Repetitions before calculating average value:</label>
                     <div class="input-group mb-3">
-                        <input data-id="" min="1" autocomplete="off" class="form-control" type="number" id="repetitions" name="repetitions" disabled required>
-                        <button class="btn btn-outline-secondary" type="button" id="button-rep" onclick="editButton('repetitions')">Edit</button>
+                        <input data-id="" min="1" autocomplete="off" class="form-control" type="number" id="repetitions" name="repetitions" required>
                     </div>
                     <label  class="form-label" for="sleep_time">Time between two sets of measurements in ms:</label>
                     <div class="input-group mb-3">
-                        <input data-id="" min="1" autocomplete="off" class="form-control" type="number" id="sleep_time" name="sleep_time" disabled required>
-                        <button class="btn btn-outline-secondary" type="button" id="button-sleep" onclick="editButton('sleep_time')">Edit</button>
+                        <input data-id="" min="1" autocomplete="off" class="form-control" type="number" id="sleep_time" name="sleep_time" required>
                     </div>
                     <div class="input-group mb-3">
-                        <input id="submit" class="button"  value="Submit">
-                        <input id="delete" class="button" value="Delete">
+                        <input data-target="#login_sub" data-toggle="modal"  id="submit" class="button login-trigger"  value="Submit">
+                        <div id="login_sub" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <button data-dismiss="modal" class="close">&times;</button>
+                                        <h4>Login</h4>
+                                        <form>
+                                            <input type="text" name="username" id="username_sub" class="username form-control" value=""/>
+                                            <input type="password" name="password" id="password_sub" class="password form-control" value=""/>
+                                            <input data-dismiss="modal" class="btn login" type="button" id="submit_login" value="Login to Submit" />
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <input data-target="#login_del" data-toggle="modal" id="delete" class="button login-trigger" value="Delete">
+                        <div id="login_del" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <button data-dismiss="modal" class="close">&times;</button>
+                                        <h4>Login</h4>
+                                        <form>
+                                            <input type="text" name="username" id="username_del" class="username form-control" placeholder="Username"/>
+                                            <input type="password" name="password" id="password_del" class="password form-control" placeholder="password"/>
+                                            <input data-dismiss="modal" class="btn login" type="button" id="delete_login" value="Login to Delete" />
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>

@@ -58,24 +58,53 @@ let len = sensors.length;
                 <form id="form">
                     <label  class="form-label" for="nickname">Nick Name:</label>
                     <div class="input-group mb-3">
-                        <input maxlength="16" minlength="1" autocomplete="off" class="form-control" type="text" id="nickname" name="sensor_nick" disabled required>
-                        <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="editButton('nickname')">Edit</button>
+                        <input maxlength="16" minlength="1" autocomplete="off" class="form-control" type="text" id="nickname" name="sensor_nick" required>
                     </div>
 
                     <label  class="form-label" for="type">Sensor Type:</label>
                     <div class="input-group mb-3">
-                        <select class="form-select" id="selectType" aria-label="Select Sensor Type" disabled>
+                        <select class="form-select" id="selectType" aria-label="Select Sensor Type" >
                             <option >Choose...</option>
                         </select>
-                        <button class="btn btn-outline-secondary" type="button" onclick="editButton('selectType')">Edit</button>
                     </div>
                     <label   class="form-label" for="id">Sensor ID:</label>
                     <div class="input-group mb-3">
-                        <input autocomplete="off" class="form-control" type="text" id="id" name="sensor_id" value="" readonly disabled>
+                        <input autocomplete="off" class="form-control login-trigger" type="text" id="id" name="sensor_id" value="" readonly disabled>
                     </div><br>
                     <div class="input-group mb-3">
-                        <input id="submit" class="button"  value="Submit">
-                        <input id="delete" class="button" value="Delete">
+                        <input data-target="#login_sub" data-toggle="modal" id="submit" class="button"  value="Submit">
+                        <div id="login_sub" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <button data-dismiss="modal" class="close">&times;</button>
+                                        <h4>Login</h4>
+                                        <form>
+                                            <input type="text" name="username" id="username_sub" class="username form-control" value=""/>
+                                            <input type="password" name="password" id="password_sub" class="password form-control" value=""/>
+                                            <input data-dismiss="modal" class="btn login" type="button" id="submit_login" value="Login to Submit" />
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <input data-target="#login_sub" data-toggle="modal" id="delete" class="button  login-trigger" value="Delete">
+                        <div id="login_del2" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <button data-dismiss="modal" class="close">&times;</button>
+                                        <h4>Login</h4>
+                                        <form>
+                                            <input type="text" name="username" id="username_del2" class="username form-control" placeholder="Username"/>
+                                            <input type="password" name="password" id="password_del2" class="password form-control" placeholder="password"/>
+                                            <input data-dismiss="modal" class="btn login" type="button" id="delete_login2" value="Login to Delete" />
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -104,10 +133,22 @@ let len = sensors.length;
                         <input id="getTempData"  type="button" class="button" value="Request">
                     </section>
                     <section class="col col-lg-auto">
-                        <input id="getDeleteTempData"  type="button" class="button" value="Request & Delete">
-                    </section>
-                    <section class="col col-lg-auto">
-                        <input id="deleteTempData"  type="button" class="button" value="Delete">
+                        <input data-target="#login_del1" data-toggle="modal" id="deleteTempData"  type="button" class="button login-trigger" value="Delete">
+                        <div id="login_del1" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <button data-dismiss="modal" class="close">&times;</button>
+                                        <h4>Login</h4>
+                                        <form>
+                                            <input type="text" name="username" id="username_del1" class="username form-control" placeholder="Username"/>
+                                            <input type="password" name="password" id="password_del1" class="password form-control" placeholder="password"/>
+                                            <input data-dismiss="modal" class="btn login" type="button" id="delete_login1" value="Login to Delete" />
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </section>
                 </div>
             </form>

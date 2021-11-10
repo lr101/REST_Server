@@ -247,6 +247,21 @@ module.exports  = {
             logDB(e);
             return e;
         }
+    },
+
+    authenticate : async function (username, password, level) {
+        try {
+            const sql = "SELECT * FROM users WHERE " +
+                "password='" + password + "' AND " +
+                "username='" + username + "' AND " +
+                "level=" + level +
+                ";";
+            logDB(sql);
+            return (await con.query(sql))[0] !== undefined;
+        } catch (e) {
+            logDB(e);
+            return e;
+        }
     }
 
 }
